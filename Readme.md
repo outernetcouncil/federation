@@ -1,6 +1,6 @@
 # Outernet Council Federation API
 
-The Spacetime Federation API enables dynamic orchestration and resource sharing between multiple satellite communication networks.
+The Outernet Council Federation API enables dynamic orchestration and resource sharing between multiple satellite communication networks.
 
 ## Overview
 
