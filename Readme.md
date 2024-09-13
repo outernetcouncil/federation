@@ -93,9 +93,9 @@ rpc CancelService(CancelServiceRequest)
 
 5. Services can be cancelled via `CancelService` when no longer needed
 
-## Detailed Guide
+## Detailed API Guide
 
-[Coming Soon]
+[Detailed API Guide](API Guide.md)
 
 ## Documentation  
 
