@@ -20,9 +20,11 @@ bazel_dep(name = "rules_go", version = "0.50.1")
 bazel_dep(name = "gazelle", version = "0.39.1")
 bazel_dep(name = "org_outernetcouncil_nmts")
 
-local_path_override(
+git_override(
     module_name = "org_outernetcouncil_nmts",
-    path = "../../nmts",
+    remote = "https://github.com/outernetcouncil/nmts.git",
+
+    commit = "d35be0eb35cf4abf2cb00fbf713369a2a2dc53d0", # v0.0.7
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
