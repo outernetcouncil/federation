@@ -18,11 +18,9 @@ syntax = "proto3";
 
 package oc.smo.api.fed.v1alpha;
 
-import "api/common/bent_pipe.proto";
-import "api/common/coordinates.proto";
-import "api/common/time.proto";
-import "api/common/wireless_transceiver.proto";
-import "api/types/ietf.proto";
+import "nmts/proto/types/ietf/inet.proto";
+import "nmts/proto/types/geophys/motion.proto";
+import "nmts/proto/nmts.proto";
 import "google/protobuf/duration.proto";
 import "google/type/interval.proto";
 
@@ -198,18 +196,15 @@ message InterconnectionPoint {
   // across mutations to this entity.
   string uuid = 1;
 
-  oneof type {
-    // The transceiver model used by this interconnection point.
-    oc.smo.api.common.TransceiverModel transceiver_model = 2;
-    // The bent pipe payload model used by this interconnection point.
-    oc.smo.api.common.BentPipePayload bent_pipe_payload = 3;
-  }
+  // TODO: Add better documentation for these fields.
+  nmts.Fragment transceiver_model = 2;
+
   // The location over time of this interconnection point.
-  oc.smo.api.common.Motion coordinates = 4;
+  nmts.types.geophys.Motion coordinates = 4;
 
   // The interface's IP address represented as a CIDR notation subnet or
   // single IP address string.
-  oc.smo.api.types.IPNetwork ip_network = 5;
+  nmts.types.ietf.IPNetwork ip_network = 5;
 
   // Ethernet address in readable colon separated format. e.g.
   // "1:23:45:67:89:ab" or "01:23:45:67:89:ab"
@@ -302,7 +297,7 @@ message RequestorEdgeToIpNetwork {
   repeated InterconnectionPoint x_interconnection_points = 1;
   // The IP address the requestor wishes to reach, represented as a CIDR
   // notation subnet or single IP address string.
-  oc.smo.api.types.IPNetwork y_ip_network = 2;
+  nmts.types.ietf.IPNetwork y_ip_network = 2;
   // Defines the directionality of this pair of endpoint sets. Assumed to be
   // bidirectional by default.
   Directionality directionality = 3;
@@ -361,7 +356,7 @@ message ProviderEdgeToIpNetwork {
 
   // The IP address the requestor wishes to reach, represented as a CIDR
   // notation subnet or single IP address string.
-  oc.smo.api.types.IPNetwork y_ip_network = 3;
+  nmts.types.ietf.IPNetwork y_ip_network = 3;
 
   // Defines the directionality of this pair of endpoint sets. Assumed to be
   // bidirectional by default.
@@ -488,7 +483,7 @@ message ServiceOption {
     InterconnectionPoint y_provider_interconnection = 5;
     // An IP address, represented as a CIDR notation subnet or single IP address
     // string.
-    oc.smo.api.types.IPNetwork ip_network = 6;
+    nmts.types.ietf.IPNetwork ip_network = 6;
   }
 
   // Defines the directionality of this pair of endpoint sets. Assumed to be
