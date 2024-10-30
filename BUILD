@@ -1,4 +1,4 @@
-# Copyright 2024 Outernet Council Foundation
+# Copyright (c) Outernet Council and Contributors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
 
 proto_library(
     name = "federation_proto",
     srcs = ["federation.proto"],
     visibility = ["//visibility:public"],
     deps = [
-        "//api/common:common_proto",
-        "//api/types:types_proto",
+        "@org_outernetcouncil_nmts//proto/types/geophys:motion_proto",
+        "@org_outernetcouncil_nmts//proto/types/ietf:inet_proto",
+        "@org_outernetcouncil_nmts//proto:nmts_proto",
         "@googleapis//google/type:interval_proto",
         "@protobuf//:duration_proto",
     ],
@@ -29,29 +30,13 @@ proto_library(
 
 go_proto_library(
     name = "federation_go_proto",
-    compilers = ["@rules_go//proto:go_grpc"],
-    importpath = "aalyria.com/spacetime/api/federation",
-    proto = ":federation_proto",
+    importpath = "oc.com/smo/api/fed/v1alpha",
+    protos = [":federation_proto"],
     visibility = ["//visibility:public"],
     deps = [
-        "//api/common:common_go_proto",
-        "//api/types:types_go_proto",
-        "@org_golang_google_genproto//googleapis/type/interval",
-    ],
-)
-
-go_proto_library(
-    name = "v1alpha_go_proto",
-    compilers = [
-        "@rules_go//proto:go_proto",
-        "@rules_go//proto:go_grpc_v2",
-    ],
-    importpath = "aalyria.com/spacetime/api/fed/v1alpha",
-    proto = ":federation_proto",
-    visibility = ["//visibility:public"],
-    deps = [
-        "//api/common:common_go_proto",
-        "//api/types:types_go_proto",
+        "@org_outernetcouncil_nmts//proto/types/geophys:geophys_go_proto",
+        "@org_outernetcouncil_nmts//proto/types/ietf:ietf_go_proto",
+        "@org_outernetcouncil_nmts//proto:nmts_go_proto",
         "@org_golang_google_genproto//googleapis/type/interval",
     ],
 )
