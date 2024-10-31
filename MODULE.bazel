@@ -35,3 +35,4 @@ go_sdk.download(
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 use_repo(go_deps, "org_golang_google_genproto")
+use_repo(go_deps, "org_golang_google_protobuf")

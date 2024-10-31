@@ -18,7 +18,7 @@ go_binary(
     name = "federation_example",
     srcs = ["main.go"],
     deps = [
-        "@org_outernetcouncil_federation//:federation_go_proto",
+        "//:federation_go_proto",
         "@org_golang_google_protobuf//proto",
     ],
 
