@@ -13,7 +13,7 @@
 # limitations under the License.
 
 module(
-    name = "org_outernetcouncil_federation",
+    name = "org_outernet_federation",
     version = "1.0.0",
     compatibility_level = 1,
     # compatibility_level history
