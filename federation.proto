@@ -16,7 +16,7 @@
 
 syntax = "proto3";
 
-package oc.smo.api.fed.v1alpha;
+package outernet.federation.v1alpha;
 
 import "nmts/proto/types/ietf/inet.proto";
 import "nmts/proto/types/geophys/motion.proto";
@@ -24,9 +24,8 @@ import "nmts/proto/nmts.proto";
 import "google/protobuf/duration.proto";
 import "google/type/interval.proto";
 
-option java_package = "com.oc.smo.api.fed.v1alpha";
-option go_package = "oc.com/smo/api/fed/v1alpha";
-
+option go_package = "github.com/outernetcouncil/federation/gen/go/federation/v1alpha;federationpb";
+option java_package = "com.outernet.federation.v1alpha";
 // FEDERATION OF NETWORKS
 //
 // Networks in the Federation operate as peers to one another, communicating via

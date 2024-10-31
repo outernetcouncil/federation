@@ -12,7 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module(name = "org_outernetcouncil_federation")
+module(
+    name = "org_outernetcouncil_federation",
+    version = "1.0.0",
+    compatibility_level = 1,
+    # compatibility_level history
+    # 1 -> version 1.x.x initial release
+)
 
 bazel_dep(name = "protobuf", version = "28.2")
 bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")

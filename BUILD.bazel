@@ -30,7 +30,7 @@ proto_library(
 
 go_proto_library(
     name = "federation_go_proto",
-    importpath = "oc.com/smo/api/fed/v1alpha",
+    importpath = "github.com/outernetcouncil/federation/gen/go/federation/v1alpha",
     protos = [":federation_proto"],
     visibility = ["//visibility:public"],
     deps = [

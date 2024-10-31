@@ -17,12 +17,12 @@ package main
 import (
 	"os"
 
+	federationpb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
 	"google.golang.org/protobuf/proto"
-	"oc.com/smo/api/fed/v1alpha"
 )
 
 func main() {
-	e := v1alpha.CancelServiceRequest{
+	e := federationpb.CancelServiceRequest{
 		ServiceId: "service-id",
 	}
 
