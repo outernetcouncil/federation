@@ -15,18 +15,23 @@
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_binary(
-    name = "federation_example",
-    embed = [":examples_lib"],
+    name = "cosmic_connector",
+    embed = [":example_lib"],
+    pure = "on",
+    static = "on",
     visibility = ["//visibility:public"],
 )
 
 go_library(
-    name = "examples_lib",
+    name = "example_lib",
     srcs = ["main.go"],
-    importpath = "github.com/outernetcouncil/federation/examples",
+    importpath = "github.com/outernetcouncil/federation/examples/golang/cosmicconnector/example",
     visibility = ["//visibility:private"],
     deps = [
-        "//:federation_go_grpc",
-        "@org_golang_google_protobuf//proto",
+        "//examples/golang/cosmicconnector/config",
+        "//examples/golang/cosmicconnector/example/handler",
+        "//pkg/go/cosmicconnector",
+        "//pkg/go/server",
+        "@com_github_rs_zerolog//:zerolog",
     ],
 )

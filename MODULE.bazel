@@ -29,7 +29,6 @@ bazel_dep(name = "org_outernetcouncil_nmts")
 git_override(
     module_name = "org_outernetcouncil_nmts",
     remote = "https://github.com/outernetcouncil/nmts.git",
-
     commit = "d35be0eb35cf4abf2cb00fbf713369a2a2dc53d0", # v0.0.7
 )
 
@@ -40,5 +39,71 @@ go_sdk.download(
 )
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
-use_repo(go_deps, "org_golang_google_genproto")
-use_repo(go_deps, "org_golang_google_protobuf")
+
+go_deps.module(
+    path = "github.com/google/go-cmp",
+    sum = "h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=",
+    version = "v0.6.0",
+)
+
+go_deps.module(
+    path = "google.golang.org/grpc",
+    sum = "h1:rQOsyJ/8+ufEDJd/Gdsz7HG220Mh9HAhFHRGnIjda0w=",
+    version = "v1.48.1",
+)
+
+go_deps.module(
+    path = "github.com/golang-jwt/jwt/v5",
+    sum = "h1:1n1XNM9hk7O9mnQoNBGolZvzebBQ7p93ULHRc28XJUE=",
+    version = "v5.0.0",
+)
+
+go_deps.module(
+    path = "golang.org/x/oauth2",
+    sum = "h1:6dkIjl3j3LtZ/O3sTgZTMsLKSftL/B8Zgq4huOIIUu8=",
+    version = "v0.8.0",
+)
+
+go_deps.module(
+    path = "github.com/jonboulle/clockwork",
+    sum = "h1:p4Cf1aMWXnXAUh8lVfewRBx1zaTSYKrKMF2g3ST4RZ4=",
+    version = "v0.4.0",
+)
+
+go_deps.module(
+    path = "github.com/rs/zerolog",
+    sum = "h1:keLypqrlIjaFsbmJOBdB/qvyF8KEtCWHwobLp5l/mQ0=",
+    version = "v1.32.0",
+)
+
+go_deps.module(
+    path = "github.com/mattn/go-colorable",
+    sum = "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+    version = "v0.1.13",
+)
+
+go_deps.module(
+    path = "github.com/mattn/go-isatty",
+    sum = "h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=",
+    version = "v0.0.20",
+)
+
+go_deps.module(
+    path = "golang.org/x/sync",
+    sum = "h1:3NFvSEYkUoMifnESzZl15y791HH1qU2xm6eCJU5ZPXQ=",
+    version = "v0.8.0",
+)
+
+use_repo(go_deps,
+    "org_golang_google_genproto",
+    "org_golang_google_protobuf",
+    "org_golang_google_grpc",
+    "com_github_golang_jwt_jwt_v5",
+    "org_golang_x_oauth2",
+    "com_github_jonboulle_clockwork",
+    "com_github_rs_zerolog",
+    "com_github_mattn_go_isatty",
+    "com_github_mattn_go_colorable",
+    "com_github_google_go_cmp",
+    "org_golang_x_sync",
+)

@@ -126,6 +126,20 @@ bazel build federation_go_proto
 
 You can also see how the protobufs can be used in a go bazel project by looking at the examples folder.
 
+### Adding Go Dependencies
+
+To add a new go dependency, you'll be adding a new `go_deps.module` to the `MODULE.bazel` file like this:
+
+```bazel
+go_deps.module(
+    path = "github.com/mattn/go-isatty",
+    sum = "h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=",
+    version = "v0.0.20",
+)
+```
+
+And then adding it to the `use_repo` clause.
+
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE.txt) file for details.

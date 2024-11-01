@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
 
-go_binary(
-    name = "federation_example",
-    embed = [":examples_lib"],
-    visibility = ["//visibility:public"],
+package(
+    default_visibility = ["//visibility:public"],
 )
 
 go_library(
-    name = "examples_lib",
-    srcs = ["main.go"],
-    importpath = "github.com/outernetcouncil/federation/examples",
-    visibility = ["//visibility:private"],
+    name = "cosmicconnector",
+    srcs = ["cosmicconnector.go"],
+    importpath = "github.com/outernetcouncil/federation/pkg/go/cosmicconnector",
     deps = [
-        "//:federation_go_grpc",
-        "@org_golang_google_protobuf//proto",
+        "//pkg/go/server",
+        "@com_github_rs_zerolog//:zerolog",
+        "@org_golang_x_sync//errgroup",
     ],
 )
