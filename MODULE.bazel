@@ -1,0 +1,44 @@
+# Copyright 2024 Outernet Council Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+module(
+    name = "org_outernet_federation",
+    version = "1.0.0",
+    compatibility_level = 1,
+    # compatibility_level history
+    # 1 -> version 1.x.x initial release
+)
+
+bazel_dep(name = "protobuf", version = "28.2")
+bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")
+bazel_dep(name = "rules_go", version = "0.50.1")
+bazel_dep(name = "gazelle", version = "0.39.1")
+bazel_dep(name = "org_outernetcouncil_nmts")
+
+git_override(
+    module_name = "org_outernetcouncil_nmts",
+    remote = "https://github.com/outernetcouncil/nmts.git",
+
+    commit = "d35be0eb35cf4abf2cb00fbf713369a2a2dc53d0", # v0.0.7
+)
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+
+go_sdk.download(
+    version = "1.23.0",
+)
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+use_repo(go_deps, "org_golang_google_genproto")
+use_repo(go_deps, "org_golang_google_protobuf")

@@ -108,6 +108,24 @@ Each paradigm offers unique advantages depending on the specific needs of the Re
 
 ## Contributing
 
+This project requires [Bazel](https://bazel.build/) for building and testing.
+Please refer to the [Bazel documentation](https://docs.bazel.build/versions/main/install.html) for installation instructions.
+
+To build all targets of the project, run the following command:
+
+```bash
+bazel build //...
+```
+
+To just build the protobuf definitions and the go definitions, run:
+
+```bash
+bazel build federation_proto
+bazel build federation_go_proto
+```
+
+You can also see how the protobufs can be used in a go bazel project by looking at the examples folder.
+
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE.txt) file for details.
