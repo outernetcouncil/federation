@@ -12,31 +12,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_go//proto:def.bzl", "go_proto_library")
+load("@gazelle//:def.bzl", "gazelle")
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
+load("@rules_go//proto:def.bzl", "go_proto_library")
+
+# gazelle:prefix github.com/outernetcouncil/federation
+gazelle(name = "gazelle")
 
 proto_library(
     name = "federation_proto",
     srcs = ["federation.proto"],
     visibility = ["//visibility:public"],
     deps = [
+        "@googleapis//google/type:interval_proto",
+        "@org_outernetcouncil_nmts//proto:nmts_proto",
         "@org_outernetcouncil_nmts//proto/types/geophys:motion_proto",
         "@org_outernetcouncil_nmts//proto/types/ietf:inet_proto",
-        "@org_outernetcouncil_nmts//proto:nmts_proto",
-        "@googleapis//google/type:interval_proto",
         "@protobuf//:duration_proto",
     ],
 )
 
 go_proto_library(
-    name = "federation_go_proto",
+    name = "federation_go_grpc",
+    compilers = [
+        "@rules_go//proto:go_proto",
+        "@rules_go//proto:go_grpc_v2",
+    ],
     importpath = "github.com/outernetcouncil/federation/gen/go/federation/v1alpha",
     protos = [":federation_proto"],
     visibility = ["//visibility:public"],
     deps = [
+        "@org_golang_google_genproto//googleapis/type/interval",
+        "@org_outernetcouncil_nmts//proto:nmts_go_proto",
         "@org_outernetcouncil_nmts//proto/types/geophys:geophys_go_proto",
         "@org_outernetcouncil_nmts//proto/types/ietf:ietf_go_proto",
-        "@org_outernetcouncil_nmts//proto:nmts_go_proto",
-        "@org_golang_google_genproto//googleapis/type/interval",
     ],
 )
