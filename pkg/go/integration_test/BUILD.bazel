@@ -1,0 +1,16 @@
+load("@rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "integration_test",
+    srcs = ["integration.go"],
+    importpath = "github.com/outernetcouncil/federation/pkg/go/integration_test",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:federation_go_grpc",
+        "//pkg/go/cosmicconnector",
+        "//pkg/go/server",
+        "@com_github_rs_zerolog//:zerolog",
+        "@org_golang_google_grpc//:grpc",
+        "@org_golang_google_grpc//credentials/insecure",
+    ],
+)

@@ -25,20 +25,51 @@ bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")
 bazel_dep(name = "rules_go", version = "0.50.1")
 bazel_dep(name = "gazelle", version = "0.39.1")
 bazel_dep(name = "org_outernetcouncil_nmts")
-
 git_override(
     module_name = "org_outernetcouncil_nmts",
+    commit = "d35be0eb35cf4abf2cb00fbf713369a2a2dc53d0",  # v0.0.7
     remote = "https://github.com/outernetcouncil/nmts.git",
-
-    commit = "d35be0eb35cf4abf2cb00fbf713369a2a2dc53d0", # v0.0.7
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-
 go_sdk.download(
     version = "1.23.0",
 )
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
-use_repo(go_deps, "org_golang_google_genproto")
-use_repo(go_deps, "org_golang_google_protobuf")
+go_deps.module(
+    path = "google.golang.org/grpc",
+    sum = "h1:zWnc1Vrcno+lHZCOofnIMvycFcc0QRGIzm9dhnDX68E=",
+    version = "v1.67.1",
+)
+go_deps.module(
+    path = "github.com/rs/zerolog",
+    sum = "h1:keLypqrlIjaFsbmJOBdB/qvyF8KEtCWHwobLp5l/mQ0=",
+    version = "v1.32.0",
+)
+go_deps.module(
+    path = "github.com/mattn/go-colorable",
+    sum = "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+    version = "v0.1.13",
+)
+go_deps.module(
+    path = "github.com/mattn/go-isatty",
+    sum = "h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=",
+    version = "v0.0.20",
+)
+go_deps.module(
+    path = "golang.org/x/sync",
+    sum = "h1:3NFvSEYkUoMifnESzZl15y791HH1qU2xm6eCJU5ZPXQ=",
+    version = "v0.8.0",
+)
+
+use_repo(
+    go_deps,
+    "org_golang_google_genproto",
+    "org_golang_google_protobuf",
+    "com_github_mattn_go_colorable",
+    "com_github_mattn_go_isatty",
+    "com_github_rs_zerolog",
+    "org_golang_google_grpc",
+    "org_golang_x_sync",
+)
