@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@gazelle//:def.bzl", "gazelle")
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_buf//buf:defs.bzl", "buf_lint_test")
@@ -22,9 +21,6 @@ buf_lint_test(
     targets = [":federation_proto"],
     config = "buf.yaml",
 )
-
-# gazelle:prefix github.com/outernetcouncil/federation
-gazelle(name = "gazelle")
 
 proto_library(
     name = "federation_proto",
@@ -55,4 +51,3 @@ go_proto_library(
         "@org_outernetcouncil_nmts//proto/types/ietf:ietf_go_proto",
     ],
 )
-
