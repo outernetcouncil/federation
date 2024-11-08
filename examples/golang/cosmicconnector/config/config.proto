@@ -1,0 +1,80 @@
+// Copyright 2024 Outernet Council Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Structured configuration for the reference SBI agent binary.
+
+syntax = "proto3";
+
+package outernet.federation.v1alpha.cosmicconnector;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/outernetcouncil/federation/gen/go/examples/golang/cosmicconnector/config;configpb";
+
+// A strategy for signing a JWT.
+message SigningStrategy {
+  oneof type {
+    // The bytes of a PEM-encoded RSA private key in PKCS #1, ASN.1 DER form or
+    // in (unencrypted) PKCS #8, ASN.1 DER form.
+    bytes private_key_bytes = 1;
+    // The path to a PEM-encoded RSA private key in PKCS #1, ASN.1 DER form or
+    // in (unencrypted) PKCS #8, ASN.1 DER form.
+    string private_key_file = 2;
+  }
+}
+
+// For details on Spacetime Auth, see https://docs.spacetime.aalyria.com/authentication.
+message AuthStrategy {
+  // Jwt is a JSON web token. See https://jwt.io/introduction for more
+  // information.
+  message Jwt {
+    string email = 1;
+    string audience = 2;
+    string private_key_id = 3;
+    SigningStrategy signing_strategy = 4;
+  }
+
+  oneof type {
+    // The specifications for a JWT that should be generated and signed by the
+    // agent.
+    Jwt jwt = 1;
+
+    // No authentication options should be used. This is unlikely to work for
+    // you.
+    google.protobuf.Empty none = 2;
+  }
+}
+
+message ObservabilityParams {
+  // Channelz is a gRPC introspection service that can aid in debugging and
+  // understanding gRPC behavior. See
+  // https://grpc.io/blog/a-short-introduction-to-channelz/ and
+  // https://github.com/grpc/proposal/blob/master/A14-channelz.md for more
+  // details.
+  //
+  // The address to start the channelz server on. If blank, the channelz
+  // server will not be started.
+  string channelz_address = 2;
+
+  // The address to start Go's standard net/http/pprof server on. If blank, the
+  // pprof server will not be started.
+  string pprof_address = 3;
+}
+
+message ConnectorParams {
+  // The port on which to offer the Federation gRPC service.
+  uint32 port = 1;
+
+  ObservabilityParams observability_params = 2;
+}
