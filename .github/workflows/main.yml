@@ -34,4 +34,4 @@ jobs:
       - run: |
           bazelisk build //...:all
       - run: |
-          bazelisk test //...:all --test_output=errors --verbose_failures --test_summary=detailed
+          bazelisk test //...:all --test_output=errors --verbose_failures --test_summary=detailed --test_verbose_timeout_warnings
