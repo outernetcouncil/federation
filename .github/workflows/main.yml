@@ -16,7 +16,6 @@ name: Bazel
 
 on:
   pull_request: {}
-  push: {}
   release:
     types: [published]
 
