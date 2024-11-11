@@ -20,5 +20,5 @@ go_library(
     name = "handler",
     srcs = ["handler.go"],
     importpath = "github.com/outernetcouncil/federation/pkg/go/handler",
-    deps = ["//:federation_go_grpc"],
+    deps = ["//outernet/federation/v1alpha:federation_go_grpc"],
 )
