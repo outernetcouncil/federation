@@ -35,4 +35,4 @@ jobs:
       - run: |
           bazelisk build //...:all
       - run: |
-          bazelisk test //...:all
+          bazelisk test //...:all --test_output=errors --verbose_failures --test_summary=detailed
