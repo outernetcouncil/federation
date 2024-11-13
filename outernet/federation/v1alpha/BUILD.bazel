@@ -19,7 +19,6 @@ load("@rules_buf//buf:defs.bzl", "buf_lint_test")
 buf_lint_test(
     name = "federation_lint_test",
     targets = [":federation_proto"],
-    config = "buf.yaml",
 )
 
 proto_library(
