@@ -259,7 +259,7 @@ func TestPrototypeHandler_ListServiceOptions(t *testing.T) {
 							},
 						},
 					},
-					Directionality: pb.Directionality_DIRECTIONALITY_BIDIRECTIONAL,
+					Directionality: pb.Directionality_DIRECTIONALITY_BIDIRECTIONAL_UNSPECIFIED,
 				},
 			},
 		},
