@@ -71,7 +71,7 @@ option java_package = "com.outernet.federation.v1alpha";
 //   Requestor of Service termination.
 // - CancelService enables Requestor cancellation of an existing
 //   `service_id`.
-service Federation {
+service FederationService {
   // Request a potentially long-lived stream of available
   // `InterconnectionPoints`. The connection will stream one complete snapshot
   // of InterconnectionPoints from the Provider. If the request specifies
@@ -213,7 +213,7 @@ message InterconnectionPoint {
   // promiscuous mode, or if it can receive L2 packets only if the L2
   // destination address matches it's own physical address.
   enum Mode {
-    MODE_PROMISCUOUS = 0;
+    MODE_PROMISCUOUS_UNSPECIFIED = 0;
     MODE_NON_PROMISCUOUS = 1;
   }
   Mode rx_mode = 7;
@@ -261,7 +261,7 @@ message InterconnectionPointFilters {
 // Requests will be treated as bidirectional by default, unless otherwise
 // specified in the proto documentation.
 enum Directionality {
-  DIRECTIONALITY_BIDIRECTIONAL = 0;
+  DIRECTIONALITY_BIDIRECTIONAL_UNSPECIFIED = 0;
   DIRECTIONALITY_X_TO_Y = 1;
   DIRECTIONALITY_Y_TO_X = 2;
 }
