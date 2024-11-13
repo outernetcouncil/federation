@@ -6,7 +6,7 @@ go_test(
     importpath = "github.com/outernetcouncil/federation/pkg/go/integration_test",
     visibility = ["//visibility:public"],
     deps = [
-        "//:federation_go_grpc",
+        "//outernet/federation/v1alpha:federation_go_grpc",
         "//pkg/go/cosmicconnector",
         "//pkg/go/server",
         "@com_github_rs_zerolog//:zerolog",

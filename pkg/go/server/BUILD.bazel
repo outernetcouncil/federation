@@ -27,7 +27,7 @@ go_library(
     ],
     importpath = "github.com/outernetcouncil/federation/pkg/go/server",
     deps = [
-        "//:federation_go_grpc",
+        "//outernet/federation/v1alpha:federation_go_grpc",
         "//pkg/go/handler",
         "@com_github_rs_zerolog//:zerolog",
         "@org_golang_google_grpc//:grpc",

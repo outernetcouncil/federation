@@ -12,13 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_go//go:def.bzl", "go_library")
-
-package(default_visibility = ["//visibility:public"])
-
-go_library(
-    name = "handler",
-    srcs = ["handler.go"],
-    importpath = "github.com/outernetcouncil/federation/pkg/go/handler",
-    deps = ["//outernet/federation/v1alpha:federation_go_grpc"],
-)
+version: v1
+name: ""
+deps: []
+build:
+  excludes: []
+lint:
+  use:
+    - BASIC
+  except: []
+  ignore: []
+  ignore_only: {}
+  allow_comment_ignores: false
+  enum_zero_value_suffix: _UNSPECIFIED
+  rpc_allow_same_request_response: false
+  rpc_allow_google_protobuf_empty_requests: false
+  rpc_allow_google_protobuf_empty_responses: false
+  service_suffix: Service
+breaking:
+  use:
+    - FILE
+  except: []
+  ignore: []
+  ignore_only: {}
+  ignore_unstable_packages: false
