@@ -152,7 +152,7 @@ The Federation API defines several message types that are used for requests, res
 Some key message types include:
 
 - Request messages (e.g., `StreamInterconnectionPointsRequest`, `ScheduleServiceRequest`)
-- Response messages (e.g., `StreamInterconnectionPointsResponseChunk`, `ScheduleServiceResponse`)
+- Response messages (e.g., `StreamInterconnectionPointsResponse`, `ScheduleServiceResponse`)
 - Update messages (e.g., `MonitorServicesResponse`, `ServiceStatus`)
 
 These message types often contain common fields, such as identifiers, timestamps, and metadata, to facilitate consistent handling and processing across different API methods.
@@ -394,7 +394,7 @@ The `StreamInterconnectionPoints` method allows a Requestor to receive a stream 
 **Method Signature:**
 ```protobuf
 rpc StreamInterconnectionPoints(StreamInterconnectionPointsRequest)
-    returns (stream StreamInterconnectionPointsResponseChunk) {}
+    returns (stream StreamInterconnectionPointsResponse) {}
 ```
 
 **Key Features:**
@@ -404,7 +404,7 @@ rpc StreamInterconnectionPoints(StreamInterconnectionPointsRequest)
 
 **Usage:**
 1. The Requestor initiates the stream with a `StreamInterconnectionPointsRequest`.
-2. The Provider responds with a series of `StreamInterconnectionPointsResponseChunk` messages.
+2. The Provider responds with a series of `StreamInterconnectionPointsResponse` messages.
 3. The Requestor processes the received `InterconnectionPoint` information and updates its local view of available resources.
 
 **Best Practices:**

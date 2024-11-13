@@ -43,8 +43,8 @@ func (h *PrototypeHandler) StreamInterconnectionPoints(req *pb.StreamInterconnec
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	chunk := &pb.StreamInterconnectionPointsResponseChunk{
-		SnapshotComplete: &pb.StreamInterconnectionPointsResponseChunk_SnapshotComplete{},
+	chunk := &pb.StreamInterconnectionPointsResponse{
+		SnapshotComplete: &pb.StreamInterconnectionPointsResponse_SnapshotComplete{},
 	}
 
 	for _, ip := range h.interconnections {
