@@ -64,6 +64,10 @@ Federation is a protocol that connects networks together in a way that unlocks n
 
 Federation is part of a larger vision of a connected, secure, resilient, network of communications satellites provisioned by a diverse ecosystem of operators across multiple countries – the Outernet. The Outernet has the potential to unify space and terrestrial network architectures across diverse network segments, including land, sea, air and space.
 
+The Outernet envisions broad interoperability between commercial and government satellite constellations, ground stations and user terminals.
+
+![outernetref](outernetref.png)
+
 The primary purposes of this specification are to:
 
 1. Establish a standardized approach for integrating diverse network resources  
