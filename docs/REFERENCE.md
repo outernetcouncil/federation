@@ -1,4 +1,4 @@
-![logo](OC-wob1.png)
+![logo](fedlogo.png)
 # Federation Reference Architecture v0.1
 
 # Table of Contents
