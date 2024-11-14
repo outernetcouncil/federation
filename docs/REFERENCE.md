@@ -67,6 +67,7 @@ Federation is part of a larger vision of a connected, secure, resilient, network
 The Outernet envisions broad interoperability between commercial and government satellite constellations, ground stations and user terminals.
 
 <img src="outernetref.png" width="986" height="646" alt="Description">
+
 ![outernetref](outernetref.png)
 
 The primary purposes of this specification are to:
