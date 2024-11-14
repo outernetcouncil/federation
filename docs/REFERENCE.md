@@ -1,6 +1,6 @@
 # Federation Reference Architecture v0.1
 
-![logo](OC.png)
+![logo](OC-white.png)
 
 # TOC
 
