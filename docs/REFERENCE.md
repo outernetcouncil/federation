@@ -1,8 +1,7 @@
+![logo](OC-white.png)
 # Federation Reference Architecture v0.1
 
-![logo](OC-white.png)
-
-# TOC
+# Table of Contents
 
 - [TOC](#toc)  
 - [1\. Introduction](#1-introduction)  
@@ -66,7 +65,7 @@
 
 # 1\. Introduction
 
-## 1.1. Introduction to Federation
+## 1.1 Purpose of the Federation Architecture Specification
 
 ## Federation is a protocol that connects networks together in a way that unlocks new capabilities and enables seamless interoperability between participant networks. Bringing together various interoperable networks with their unique strengths and capabilities enables more complex and capable user experiences. As an open community led by its contributors, Federation’s architecture is evolving as network technologies are brought in to adapt to evolving customer needs. The Outernet Council’s development and evolution of Federation is guided by how the network can serve the user’s needs along the following themes:
 
@@ -77,8 +76,6 @@
 * Enabling new capabilities
 
 Federation is part of a larger vision of a connected, secure, resilient, network of communications satellites provisioned by a diverse ecosystem of operators across multiple countries – the Outernet. The Outernet has the potential to unify space and terrestrial network architectures across diverse network segments, including land, sea, air and space.
-
-## 1.2 Purpose of the Federation Architecture Specification
 
 The primary purposes of this specification are to:
 
