@@ -129,10 +129,6 @@ The Federation Architecture is designed to support a wide range of use cases, in
 * Multiple projects are underway to develop "agile" user terminals with multiple physical or virtualized modems that share a single aperture and are capable of dynamically switching between multiple commercial or military SATCOM systems  
 * Federation enables just-in time on-demand ordering and provisioning of beams and transit for fixed terrestrial, land mobile, airborne, or maritime terminals to roam between these networks
 
-### Spectrum Coordination \[new\]
-
-\- TODO
-
 ### Service Requests
 
 #### Optimization Requests
