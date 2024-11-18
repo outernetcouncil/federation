@@ -3,8 +3,6 @@
 
 # Table of Contents
 
-<details>
-<summary>Table of Contents</summary>
 1. - [TOC](#toc)  
 2. - [1\. Introduction](#1-introduction)  
 3.   - [1.1. Purpose of the Federation Architecture Specification](#11-purpose-of-the-federation-architecture-specification)  
@@ -51,7 +49,6 @@
 44.  - [4.7. Scalability and Performance Considerations](#47-scalability-and-performance-considerations)  
 45.  - [4.8. Interoperability Decisions](#48-interoperability-decisions)  
 46.  - [4.9. Future Extensibility Considerations](#49-future-extensibility-considerations)
-</details>
 
 # 1\. Introduction
 
