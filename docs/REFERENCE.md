@@ -51,7 +51,7 @@
 44.  - [4.7. Scalability and Performance Considerations](#47-scalability-and-performance-considerations)  
 45.  - [4.8. Interoperability Decisions](#48-interoperability-decisions)  
 46.  - [4.9. Future Extensibility Considerations](#49-future-extensibility-considerations)
-</details>details>
+</details>
 
 # 1\. Introduction
 
