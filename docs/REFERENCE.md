@@ -3,6 +3,8 @@
 
 # Table of Contents
 
+<details>
+<summary>Table of Contents</summary>
 - [TOC](#toc)  
 - [1\. Introduction](#1-introduction)  
   - [1.1. Purpose of the Federation Architecture Specification](#11-purpose-of-the-federation-architecture-specification)  
