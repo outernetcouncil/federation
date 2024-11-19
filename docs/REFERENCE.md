@@ -4,8 +4,8 @@
 # Table of Contents
 
   
-1. - [1\. Introduction](#1-introduction)  
-1.1   - [1.1. Purpose of the Federation Architecture Specification](#11-purpose-of-the-federation-architecture-specification)  
+1. [Introduction](#1-introduction)  
+1.1 [Purpose of the Federation Architecture Specification](#11-purpose-of-the-federation-architecture-specification)  
 4.   - [1.2. Scope of the Document](#12-scope-of-the-document)  
 5.   - [1.3. Background and Context](#13-background-and-context)  
 6.   - [1.4. Key Use Cases](#14-key-use-cases)  
