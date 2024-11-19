@@ -6,9 +6,9 @@
   
 1. [Introduction](#1-introduction)  
 1.1 [Purpose of the Federation Architecture Specification](#11-purpose-of-the-federation-architecture-specification)  
-4.   - [1.2. Scope of the Document](#12-scope-of-the-document)  
-5.   - [1.3. Background and Context](#13-background-and-context)  
-6.   - [1.4. Key Use Cases](#14-key-use-cases)  
+1.2 [Scope of the Document](#12-scope-of-the-document)  
+1.3 [Background and Context](#13-background-and-context)  
+1.4 [Key Use Cases](#14-key-use-cases)  
 7.   - [1.5 Intended Audience](#15-intended-audience)  
 8.   - [1.6. Related Documents and Resources](#16-related-documents-and-resources)  
 9.   - [1.7. Versioning and Updates](#17-versioning-and-updates)  
