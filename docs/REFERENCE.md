@@ -36,8 +36,8 @@
 4.7 [Scalability and Performance Considerations](#47-scalability-and-performance-considerations)  
 4.8 [Interoperability Decisions](#48-interoperability-decisions)  
 4.9 [Future Extensibility Considerations](#49-future-extensibility-considerations)
-5.0 [Open Issues and Future Work](#5-open-issues-and-future-work)
-6.0 [Contributors](#6-contributors)
+5. [Open Issues and Future Work](#5-open-issues-and-future-work)
+6. [Contributors](#6-contributors)
 </details>
 
 # 1\. Introduction
