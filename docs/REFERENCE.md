@@ -355,7 +355,7 @@ The Federation API is built on gRPC and uses Protocol Buffers for efficient data
 ## 3.5. Federation Workflow Overview
 
 The following sequence diagram gives the high level lifecycle for a Federation request.  
-![][image1]  
+![][requestor.png]  
 *A sample Federation workflow between peers which supports Query (discovery of service opportunities that meet some Requestor needs), Request (explicit ask for services from the Provider), Monitoring (of resources, pricing, service planned vs reported attributes), and finally Termination*.”
 
 ## 3.6. Temporal Considerations
