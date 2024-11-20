@@ -102,6 +102,8 @@ This specification builds upon these early efforts and lessons learned from init
 
 By providing a robust framework for Federation, this specification seeks to enable a new era of global connectivity, where terrestrial, satellite, and aerial networks seamlessly integrate to provide ubiquitous, efficient, and resilient communication services.
 
+![ref-ext](fed-ex1.png)
+
 ## 1.4. Key Use Cases
 
 The Federation Architecture is designed to support a wide range of use cases, including but not limited to:
