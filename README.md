@@ -104,8 +104,8 @@ Each paradigm offers unique advantages depending on the specific needs of the Re
 
 ## Detailed API Guide & Reference Architecture
 
-[Detailed API Guide](APIGUIDE.md)
-[Reference Architecture](https://github.com/outernetcouncil/federation/blob/main/docs/REFERENCE.md)
+* [Detailed API Guide](APIGUIDE.md)
+* [Reference Architecture](https://github.com/outernetcouncil/federation/blob/main/docs/REFERENCE.md)
 
 ## Contributing
 
