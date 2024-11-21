@@ -1,4 +1,5 @@
 <img src="fedlogo2.png" width="681" height="257" alt="Description">
+
 # Federation Reference Architecture v0.1
 
 # Table of Contents
