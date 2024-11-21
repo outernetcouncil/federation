@@ -778,7 +778,7 @@ This section outlines known limitations, areas requiring further development, an
 
 These open issues and future work items represent active areas of development within the Federation Architecture. They are being addressed through ongoing research, development, and community feedback. Contributors are encouraged to participate in discussions and development efforts around these topics through the project's communication channels and development processes.
 
-## 6.0. Contributors
+# 6.0. Contributors
 
 The Outernet Council is thankful to the following individuals for their contributions to this reference architecture:
 
