@@ -279,6 +279,8 @@ This section provides definitions for key terms and concepts used throughout the
 
 The Federation Architecture aims to create a unified framework for seamlessly integrating space and terrestrial network architectures. This vision addresses the growing need for global connectivity across diverse network segments, including space, land, and air networks.
 
+<img src="federation-concepts.png" width="546.9" height="402.4" alt="Description">
+
 Key objectives of the Federation Architecture include:
 
 - Enabling dynamic sharing of information, resources, and spectrum across networks  
