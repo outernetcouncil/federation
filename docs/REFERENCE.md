@@ -100,13 +100,14 @@ This specification builds upon these early efforts and lessons learned from init
 4. Complex spatio-temporal considerations, especially in satellite-based systems  
 5. Scalability to accommodate growing networks and increasing data demands
 
-By providing a robust framework for Federation, this specification seeks to enable a new era of global connectivity, where terrestrial, satellite, and aerial networks seamlessly integrate to provide ubiquitous, efficient, and resilient communication services.
+By providing a robust framework for Federation, this specification seeks to enable a new era of global connectivity, where terrestrial, satellite, and aerial networks seamlessly integrate to provide ubiquitous, efficient, and resilient communication services. 
 
+## 1.4. Key Use Cases
+
+In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- rerouting elsewhere 
 
 <img src="fed-ex1.png" width="760.2" height="433.3" alt="Description">
 </div>
-
-## 1.4. Key Use Cases
 
 The Federation Architecture is designed to support a wide range of use cases, including but not limited to:
 
