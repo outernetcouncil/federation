@@ -104,12 +104,12 @@ By providing a robust framework for Federation, this specification seeks to enab
 
 ## 1.4. Key Use Cases
 
-In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- rerouting elsewhere 
+In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- allowing two networks to fulfil a service request that wouldn't otherwise be possible.
 
 <img src="ref-ex1.png" width="760.2" height="433.3" alt="Description">
 </div>
 
-The Federation Architecture is designed to support a wide range of use cases, including but not limited to:
+When leveraged more extensively, Federation has the potential to dramatically extend the capabilities and resillience of multiple archetypes of next generation networks:
 
 ### Space-Relay Interconnect and Transit
 
