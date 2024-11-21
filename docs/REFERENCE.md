@@ -461,7 +461,6 @@ This section provides insights into the key architectural decisions, trade-offs,
   - Pros: Simpler implementation, less information shared by requestor  
   - Cons: Potential inaccuracies in link evaluation, especially for multipoint or coverage beams
 
-
 - **Provider \+ Requestor Resource Path**:  
     
   - Pros: More accurate link evaluation, better handling of complex beam types  
