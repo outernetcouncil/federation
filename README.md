@@ -102,9 +102,10 @@ In this approach, Requestors directly provide their asset's InterconnectionPoint
 
 Each paradigm offers unique advantages depending on the specific needs of the Requestor and the nature of the partnership with the Provider. The choice of paradigm will depend on factors such as security requirements, desired level of control, and the degree of trust between parties.
 
-## Detailed API Guide
+## Detailed API Guide & Reference Architecture
 
 [Detailed API Guide](APIGUIDE.md)
+[Reference Architecture](https://github.com/outernetcouncil/federation/blob/main/docs/REFERENCE.md)
 
 ## Contributing
 
