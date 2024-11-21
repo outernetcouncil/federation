@@ -106,7 +106,7 @@ By providing a robust framework for Federation, this specification seeks to enab
 
 In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- rerouting elsewhere 
 
-<img src="fed-ex1.png" width="760.2" height="433.3" alt="Description">
+<img src="ref-ex1.png" width="760.2" height="433.3" alt="Description">
 </div>
 
 The Federation Architecture is designed to support a wide range of use cases, including but not limited to:
