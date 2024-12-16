@@ -1,5 +1,7 @@
 # 1. Introduction
 
+[Glossary of Terms](docs/GLOSSARY.md)
+
 - [1. Introduction](#1-introduction)
   - [1.1 Purpose of the Federation API](#11-purpose-of-the-federation-api)
   - [1.2 Benefits of Federation](#12-benefits-of-federation)
@@ -177,7 +179,7 @@ Reachability information typically includes:
 - Autonomous System Numbers (ASNs)
 - Named destinations (e.g., cloud provider regions, specific services)
 
-The API represents reachability information in various messages, often associated with Interconnection Points or Service Options. 
+The API represents reachability information in various messages, often associated with Interconnection Points or Service Options.
 
 Key considerations for Network Reachability:
 - Reachability can be dynamic, changing based on network conditions or time
@@ -251,7 +253,7 @@ The choice of authentication method depends on the specific requirements and sec
 
 ## 4.2 Authorization
 
-Provider implementations of the Federation Server may implement role-based access control (RBAC) for authorization. RBAC ensures that authenticated clients can only access and perform operations that they are explicitly authorized for, based on their assigned roles and permissions.  Authorization could be accomplished by the Provider's gRPC interceptor after Authentication, using access to authorization policies and role assignments made accessible by provider infrastructure.
+Provider implementations of the Federation Server may implement role-based access control ([RBAC](GLOSSARY.md#other-terms)) for authorization. RBAC ensures that authenticated clients can only access and perform operations that they are explicitly authorized for, based on their assigned roles and permissions.  Authorization could be accomplished by the Provider's gRPC interceptor after Authentication, using access to authorization policies and role assignments made accessible by provider infrastructure.
 
 ## 4.3 Data Protection
 

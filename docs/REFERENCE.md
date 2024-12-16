@@ -2,6 +2,8 @@
 
 # Federation Reference Architecture v0.1
 
+[Glossary of Terms](docs/GLOSSARY.md)
+
 # Table of Contents
 
 <details>
@@ -45,7 +47,7 @@
 
 ## 1.1 Purpose of the Federation Architecture Specification
 
-Federation is a protocol that connects networks together in a way that unlocks new capabilities and enables seamless interoperability between participant networks. Bringing together various interoperable networks with their unique strengths and capabilities enables more complex and capable user experiences. As an open community led by its contributors, Federation’s architecture is evolving as network technologies are brought in to adapt to evolving customer needs. The Outernet Council’s development and evolution of Federation is guided by how the network can serve the user’s needs along the following themes:
+[Federation](GLOSSARY.md#key-concepts) is a protocol that connects networks together in a way that unlocks new capabilities and enables seamless interoperability between participant networks. Bringing together various interoperable networks with their unique strengths and capabilities enables more complex and capable user experiences. As an open community led by its contributors, Federation’s architecture is evolving as network technologies are brought in to adapt to evolving customer needs. The Outernet Council’s development and evolution of Federation is guided by how the network can serve the user’s needs along the following themes:
 
 * Reducing costs
 * Improving choice
@@ -221,59 +223,6 @@ To access the most current version of this specification and stay informed about
 
 Feedback and contributions to the evolution of this specification are welcome from the community and industry partners.
 
-# 2\. Terms and Definitions
-
-This section provides definitions for key terms and concepts used throughout the Federation Architecture Specification. Understanding these terms is crucial for comprehending the architecture and its components.
-
-## 2.1. General Terms
-
-- **Access Control**: The selective restriction of access to network resources. In Federation, access control mechanisms must span multiple network domains.  
-- **API**: Application Programming Interface  
-- **Authentication**: The process of verifying the identity of a user or system. In Federation, robust authentication is crucial for secure inter-network communications.  
-- **Authorization**: The process of granting or denying access rights to resources. Federation requires careful management of authorization to protect sensitive network resources.  
-- **Bandwidth**: In the context of computer networking, the maximum rate of data transfer across a given path. In Federation, bandwidth may vary across different network segments and interconnections.  
-- **Bent Pipe Payload**: A satellite transponder that receives, amplifies, and retransmits signals without processing the signal content, essentially acting as a relay in space.  
-- **Centralized Orchestration**: A model where a single entity manages and coordinates the entire federated network. This approach can provide comprehensive optimization but may face scalability challenges.  
-- **Distributed Orchestration**: A model where network management is distributed among multiple entities in the Federation. This approach can offer greater scalability and resilience but may result in suboptimal global resource allocation.  
-- **DoDIN**: Department of Defense Information Network  
-- **Dynamic Pricing**: A pricing model that adjusts based on real-time demand and availability of network resources. This can help optimize resource utilization across the federated network.  
-- **End-to-End Encryption**: A system of communication where only the communicating users can read the messages. This is important for securing data as it traverses multiple network segments in a federated system.  
-- **Federation**: The act of combining multiple independent networks to create a larger, more capable network ecosystem. In the context of this architecture, it refers to the seamless integration of diverse network resources, including terrestrial, aerial, and space-based systems.  
-- **GEO**: Geostationary Earth Orbit  
-- **Ground Station**: Large, earth-based facilities equipped with substantial antennas and technology to manage communications with satellites and integrate these communications into terrestrial networks.  
-- **gRPC**: A high-performance, open-source universal RPC framework used as the foundation for the Federation API.  
-- **Handover**: The process of transferring an active network connection from one satellite or ground station to another as satellites move in their orbits or as user terminals change position.  
-- **Interconnection Candidate**: One or more interconnection points used to inform the provider of possible interconnections within line-of-sight.  
-- **Interconnection Point**: A physical or logical point where two federated networks can connect and exchange traffic. These points are crucial for establishing links between different network segments.  
-- **Interconnection**: An interconnection is a physical and/or logical link through which two networks connect and exchange traffic, enabling communication between requestor and provider networks.  
-- **Inter-Satellite Link (ISL)**: Communication link between satellites, allowing data to be relayed across a satellite constellation without passing through ground stations.  
-- **ISL**: Inter-Satellite Link  
-- **Latency**: The time delay between the transmission and reception of data.   
-- **LEO**: Low Earth Orbit  
-- **Link Budget**: A calculation of all the signal gains and losses in a transmission system, used to determine the quality and feasibility of a communication link.  
-- **MEO**: Medium Earth Orbit  
-- **MTU**: Maximum Transmission Unit  
-- **Network Reachability**: The set of destinations or network prefixes that can be accessed through a given network resource or service. Reachability information is crucial for effective network planning and service provisioning in a federated environment.  
-- **Network Segment**: A distinct part of a network, such as space, land, or air networks. Each segment may have unique characteristics and requirements.  
-- **Optical Inter-Satellite Link (OISL)**: A high-speed communication link between satellites using laser technology. OISLs enable efficient data transfer within satellite constellations.  
-- **Protocol Buffers**: A language-agnostic data serialization format used by gRPC for efficient and structured data exchange in the Federation API.  
-- **Provider**: An entity offering network services or resources to federated partners. Providers use the Federation API to advertise their capabilities, respond to service requests, and manage resource allocation.  
-- **QoS**: Quality of Service  
-- **Requestor**: An entity seeking network services or resources from federated partners. Requestors use the Federation API to discover available resources, request services, and manage ongoing connections.  
-- **Resource Allocation**: The process of assigning network resources to meet service requirements. In Federation, this process spans multiple network segments and providers.  
-- **Satellite Constellation**: A group of artificial satellites working together as a system. Constellations can be in various orbits (LEO, MEO, GEO) and serve different purposes in the federated network.  
-- **SDA**: Space Development Agency  
-- **Service Level Agreement (SLA)**: A commitment between a service provider and a client, defining the level of service expected. In Federation, SLAs play a crucial role in ensuring quality and reliability across different network segments.  
-- **Service Option**: A potential service offering from a provider, including details on availability, performance, and cost. Service options allow requestors to evaluate and select suitable network services.  
-- **Service Request**: A formal request for a specific service, chosen from the advertised service options. It contains details about the desired service, including performance requirements and preferences.  
-- **Service**: The result of the Federation negotiation. It represents an agreement between requestor and provider for a specific over specific intervals of time.  
-- **SLA**: Service Level Agreement  
-- **Streaming RPC**: A type of RPC that allows for long-lived, bidirectional data streams between clients and servers. Used in the Federation API for real-time updates and continuous data exchange.  
-- **Terrestrial Network**: Ground-based communication infrastructure, including fiber optic cables, cellular towers, and other land-based communication systems.  
-- **Topology**: The arrangement of the physical and logical connections between nodes  
-- **Unary RPC**: A single request-response style RPC, used in the Federation API for simpler, one-off interactions.  
-- **User Terminal (UT)**: Devices used by end-users to access satellite network services. They typically include smaller, ground-based antennas designed to communicate directly with satellites.
-
 # 3\. Architecture Description Overview
 
 ## 3.1. Federation Architecture Vision
@@ -313,7 +262,7 @@ These principles and concepts form the foundation of the Federation Architecture
 
 ## 3.3. Federation Models
 
-The Federation Architecture supports two primary models for network interaction: the Peer-to-Peer (Requestor-Provider) Model and the Multi-Party (Hub) Model. Each model has its own set of considerations, strengths, and potential drawbacks.
+The Federation Architecture supports two primary models for network interaction: the Peer-to-Peer ([Requestor](GLOSSARY.md#key-concepts)-[Provider](GLOSSARY.md#key-concepts)) Model and the Multi-Party (Hub) Model. Each model has its own set of considerations, strengths, and potential drawbacks.
 
 ### 3.3.1. Peer-to-Peer Model
 
@@ -392,7 +341,7 @@ The architecture is designed to handle large-scale Federations:
 
 - Efficient data structures and algorithms for managing time-series data
 - Support for streaming updates to handle real-time changes in network conditions
-- Optimization techniques for service option generation and evaluation
+- Optimization techniques for [Service Option](GLOSSARY.md#key-concepts) generation and evaluation
 
 ## 3.9. Interoperability and Standards
 
@@ -510,7 +459,7 @@ In this approach, service options are generated and evaluated solely based on th
 
 **Key Characteristics:**
 
-- Service options have Provider interconnection points as endpoints
+- Service options have Provider [Interconnection Points](GLOSSARY.md#key-concepts) as endpoints
 - Requires minimal information from the Requestor
 - Provider has full control over the service option generation process
 

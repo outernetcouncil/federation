@@ -2,6 +2,8 @@
 
 **Seamlessly integrate diverse network resources for unparalleled global connectivity**
 
+[Glossary of Terms](docs/GLOSSARY.md)
+
 ## Key Benefits of the Federation API
 
 1. **Enhanced Operational Flexibility**: Dynamically allocate resources across federated networks to adapt to changing needs and ensure continuous connectivity in any situation.
@@ -13,16 +15,6 @@
 4. **Accelerated Innovation**: Rapidly deploy new services and enter markets by leveraging existing infrastructure and partnerships, reducing time-to-market for new offerings.
 
 5. **Improved Global Connectivity**: Ensure reliable communications anywhere, anytime through seamless integration of terrestrial, aerial, and space-based networks, enhancing disaster response and emergency communications capabilities.
-
-## Key Terms
-
-- **Requestor**: An entity seeking network services or resources from federated partners.
-- **Provider**: An entity offering network services or resources to federated partners.
-- **Interconnection Point**: A physical or logical point where two federated networks can connect and exchange traffic.
-- **Service Option**: A potential service offering from a provider, including details on availability, performance, and cost.
-- **Availability**: The time periods during which a network resource or service is accessible for use.
-- **Reachability**: The set of destinations or network prefixes that can be accessed through a given network resource or service.
-- **Federation**: The act of combining multiple independent networks to create a larger, more capable network ecosystem.
 
 ## How the Federation API Works
 
