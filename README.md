@@ -4,95 +4,124 @@
 
 [Glossary of Terms](docs/GLOSSARY.md)
 
-## Key Benefits of the Federation API
+## Purpose of the Federation API
 
-1. **Enhanced Operational Flexibility**: Dynamically allocate resources across federated networks to adapt to changing needs and ensure continuous connectivity in any situation.
+[Federation](docs/GLOSSARY.md#key-concepts) is a protocol that connects networks together in a way that unlocks new capabilities and enables seamless interoperability between participant networks. Bringing together various interoperable networks with their unique strengths and capabilities enables more complex and capable user experiences. As an open community led by its contributors, Federation’s architecture is evolving as network technologies are brought in to adapt to evolving customer needs. The Outernet Council’s development and evolution of Federation is guided by how the network can serve the user’s needs along the following themes:
 
-2. **Expanded Market Reach**: Unlock new opportunities by making your network resources available to a wider range of customers and partners, including government, military, and commercial users.
+* Reducing costs
+* Improving choice
+* Network resilience
+* Network security
+* Enabling new capabilities
 
-3. **Optimized Resource Utilization**: Maximize the value of your network investments through intelligent resource sharing and dynamic capacity allocation, improving efficiency and reducing costs.
+Federation is part of a larger vision of a connected, secure, resilient, network of communications satellites provisioned by a diverse ecosystem of operators across multiple countries – the Outernet. The Outernet has the potential to unify space and terrestrial network architectures across diverse network segments, including land, sea, air and space.
 
-4. **Accelerated Innovation**: Rapidly deploy new services and enter markets by leveraging existing infrastructure and partnerships, reducing time-to-market for new offerings.
+The Outernet envisions broad interoperability between commercial and government satellite constellations, ground stations and user terminals.
 
-5. **Improved Global Connectivity**: Ensure reliable communications anywhere, anytime through seamless integration of terrestrial, aerial, and space-based networks, enhancing disaster response and emergency communications capabilities.
+<img src="docs/outernetref.png" width="690.2" height="452.2" alt="Description">
+</div>
 
-## How the Federation API Works
+The primary purposes of this specification are to:
 
-The Federation API enables seamless collaboration between diverse network operators by providing a standardized interface for resource advertising, discovery, and provisioning. Providers publish their available resources and interconnection points, which requestors can then discover and evaluate. Requestors can submit service requests, specifying their requirements and preferences. The API facilitates negotiation between parties, allowing for dynamic service provisioning and resource allocation across federated networks. Throughout the service lifecycle, the API enables real-time status updates and modifications, ensuring optimal performance and efficiency.
+1. Establish a standardized approach for integrating diverse network resources
+2. Enable dynamic allocation of resources across federated networks
+3. Facilitate seamless communication between terrestrial, aerial, and space-based systems
+4. Provide a framework for expanding market reach and optimizing resource utilization
+5. Accelerate innovation in global connectivity solutions
 
-## Real-World Use Cases
+Additionally, this specification directly addresses the complexities of spatio-temporal asset utilization, such as scheduling assets with complex time-dependent availability and capacity.
 
-1. **Military Operations**: A defense agency uses the Federation API to securely access commercial satellite capacity during a mission, enhancing communication capabilities without compromising operational security. The API enables rapid service provisioning and seamless integration with existing military networks.
+## Background and Context
 
-2. **GEO/LEO Hybrid Services**: A GEO satellite operator partners with a LEO constellation provider to offer low-latency, high-capacity services globally. The Federation API facilitates dynamic resource allocation between the two networks, optimizing performance and coverage for end-users.
+The Federation Architecture Specification emerges in response to the rapidly evolving landscape of global communications. As the boundaries between terrestrial and space-based networks continue to blur, there is an increasing need for a unified approach to network integration and resource sharing.
 
-3. **Cellular Coverage Expansion**: A major cellular provider leverages the Federation API to integrate satellite connectivity into its network, extending coverage to rural and remote areas. The API enables seamless handover between terrestrial and satellite resources, ensuring consistent user experience.
+Historically, different network segments \- terrestrial, satellite, and aerial \- have operated largely in isolation, with limited interoperability. This siloed approach has led to inefficiencies in resource utilization, gaps in global coverage, and challenges in providing seamless connectivity across diverse environments.
 
-4. **HAPS Network Integration**: A HAPS operator uses the Federation API to integrate its high-altitude platforms with existing satellite and terrestrial networks. This enables the HAPS provider to offer unique mid-altitude connectivity options and expand its service portfolio rapidly.
+Recent technological advancements, particularly in satellite communications with the proliferation of Low Earth Orbit (LEO) constellations, have opened new possibilities for global connectivity. Simultaneously, the demand for ubiquitous, high-bandwidth communications has surged across various sectors, including commercial, military, and emergency services.
 
-5. **Global IoT Deployment**: An IoT service provider utilizes the Federation API to create a global network leveraging multiple satellite constellations and terrestrial networks. The API enables efficient device management and data routing across diverse network segments.
+The concept of network Federation has gained traction as a solution to these challenges. Federation allows diverse network operators to share resources, extend their reach, and optimize service delivery. Past attempts at spectrum and/or capacity interoperability have demonstrated its potential but also highlighted the need for a standardized[^1], comprehensive approach.
 
-## Federation API Paradigms
+This specification builds upon these early efforts and lessons learned from initial implementations of federated systems. It aims to address key challenges such as:
 
-The Federation API supports three main paradigms for interaction between Requestors and Providers:
+1. Interoperability between disparate network technologies and protocols
+2. Dynamic resource allocation across multiple network domains
+3. Security and privacy concerns in shared network environments
+4. Complex spatio-temporal considerations, especially in satellite-based systems
+5. Scalability to accommodate growing networks and increasing data demands
 
-### Operational Security Paradigm
+By providing a robust framework for Federation, this specification seeks to enable a new era of global connectivity, where terrestrial, satellite, and aerial networks seamlessly integrate to provide ubiquitous, efficient, and resilient communication services.
 
-In this approach, Requestors prioritize security by minimizing exposure of their network details. They first explore the Provider's network using `StreamInterconnectionPoints`, then make a `ScheduleServiceRequest` with only essential information. This paradigm is ideal for military or sensitive commercial operations, allowing Requestors to maintain control over their network information while still leveraging federated resources.
+## Key Use Cases
 
-<details>
-<summary>Detailed Call Flow</summary>
+In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- allowing two networks to fulfil a service request that wouldn't otherwise be possible.
 
-1. Requestor calls `StreamInterconnectionPoints` to explore Provider's network
-2. Requestor processes received InterconnectionPoints and determines suitable options
-3. Requestor calls `ScheduleService` with minimal network details and preferred interconnection points
-4. Provider processes request and returns a `ScheduleServiceResponse` with a unique `service_id`
-5. Requestor calls `MonitorServices` to receive status updates for the service
-6. Provider sends `ServiceStatus` updates through the `MonitorServices` stream
-7. When service is no longer needed, Requestor calls `CancelService` with the `service_id`
-8. Provider confirms cancellation and terminates the service
+<img src="docs/ref-ex1.png" width="760.2" height="433.3" alt="Description">
+</div>
 
-</details>
+When leveraged more extensively, Federation has the potential to dramatically extend the capabilities and resillience of multiple archetypes of next generation networks:
 
-### Requestor-Evaluated ServiceOption Paradigm
+### Space-Relay Interconnect and Transit
 
-This paradigm allows Requestors to evaluate and select from a range of service options computed by the Provider. It begins with calls to `ListServiceOptions`, providing Requestor InterconnectionPoint details and desired service parameters. While less secure as it exposes more Provider network details, it eases the complexity of system modeling for the Requestor. The Requestor makes the final decision on ServiceOption selection via `ScheduleService`.
+* Government satellite interconnecting in space (via RF or optical) with a commercial constellation for on-demand network transit to a given destination
 
-<details>
-<summary>Detailed Call Flow</summary>
+### Ground Segment as a Service
 
-1. Requestor calls `ListServiceOptions` with details of their network assets and requirements
-2. Provider returns a stream of `ServiceOption` messages
-3. Requestor evaluates received options and selects preferred solution
-4. Requestor calls `ScheduleService` with chosen `ServiceOption` and additional details
-5. Provider processes request and returns a `ScheduleServiceResponse` with a unique `service_id`
-6. Requestor calls `MonitorServices` to receive status updates for the service
-7. Provider sends `ServiceStatus` updates through the `MonitorServices` stream
-8. If changes are needed, Requestor can update the service using `ScheduleService` with the existing `service_id`
-9. When service is no longer needed, Requestor calls `CancelService` with the `service_id`
-10. Provider confirms cancellation and terminates the service
+* Dynamic reservation of third party ground stations (optical or RF) for on-demand network transit to specified points of presence, ops centers, or storage
 
-</details>
+### “Agile” (Multi-Constellation) User Terminals
 
-### Provider-Optimized Paradigm
+* Multiple projects are underway to develop "agile" user terminals with multiple physical or virtualized modems that share a single aperture and are capable of dynamically switching between multiple commercial or military SATCOM systems
+* Federation enables just-in time on-demand ordering and provisioning of beams and transit for fixed terrestrial, land mobile, airborne, or maritime terminals to roam between these networks
 
-In this approach, Requestors directly provide their asset's InterconnectionPoint details in the `ScheduleService` call, leaving the selection of the service strategy up to the Provider. This paradigm allows Requestors to leverage the Provider's expertise and network knowledge to achieve the best possible service configuration. It's suitable for commercial partnerships where trust is established and optimizing performance is the primary goal.
+### Service Requests
 
-<details>
-<summary>Detailed Call Flow</summary>
+#### Optimization Requests
 
-1. Requestor calls `ScheduleService` with their asset's InterconnectionPoint details and service requirements
-2. Provider evaluates the request and determines the optimal service configuration
-3. Provider returns a `ScheduleServiceResponse` with a unique `service_id` and chosen configuration
-4. Requestor calls `MonitorServices` to receive status updates for the service
-5. Provider sends `ServiceStatus` updates through the `MonitorServices` stream
-6. If changes are needed, Provider may automatically adjust the service configuration
-7. When service is no longer needed, Requestor calls `CancelService` with the `service_id`
-8. Provider confirms cancellation and terminates the service
+Examples:
 
-</details>
+* **EO operator wants to land traffic as quickly as possible**
+  * Using the federation API, the operator requests providers (satellites or groundstations) that can make contact and land the data. The request allows specification of desired spectrum, required SLA, size of data, security requirements, etc.
+  * The federation engine queries available providers and generates a sorted list of options and their corresponding costs.
+  * Requesting operator selects an option to the federation engine which processes payment and issues network instructions to the involved parties
+  * Federation engine monitors the network KPIs and generates alerts
+* **EO operator wants to find the cheapest way to get data down**
+  * Using the federation API, the operator requests providers (satellites or groundstations) that can make contact and land the data. The request allows specification of desired spectrum, required SLA, size of data, security requirements, etc.
+  * The federation engine queries available providers and generates a sorted list of options and their corresponding costs.
+  * Requesting operator selects an option to the federation engine which processes payment and issues network instructions to the involved parties
+  * Federation engine monitors the network KPIs and generates alerts
 
-Each paradigm offers unique advantages depending on the specific needs of the Requestor and the nature of the partnership with the Provider. The choice of paradigm will depend on factors such as security requirements, desired level of control, and the degree of trust between parties.
+#### Multi party requests
+
+Examples:
+
+* **Newer LEO provider wants to start commercial service before MVP constellation has been built out**
+  * For the gaps in coverage for the newly launching constellation, the provider requests coverage via the federation API. The request allows specification of desired spectrum, required SLA, expected number of subscribers, security requirements, etc.
+  *  The federation engine provides a list of willing providers (LEO, MEO or GEO) for the provider to choose.
+  * This process can be dynamic as the LEO provider launches more satellites, onboards various customers or seeks to provide specific SLAs.
+  * Requesting operator selects an option to the federation engine which processes payment and issues network instructions to the involved parties
+  * Federation engine monitors the network KPIs and generates alert
+* **Fire monitoring service wants to source real time data**
+  * Application provider uses the Federation API to request all available data streams (LEO Earth observation satellite, GEO radar satellite, HAPS thermal monitoring, Optical systems of helicopters, etc) for a given area to be routed to their data lake in real time
+  * Federation engine provides the network instructions and the API keys needed to route traffic to the desired destination
+  * Federation engine monitors the network KPIs and issues alerts
+  * For TS-SDN tenants using the east-west interface, the federation API enables coordination between networks as they anticipate and preempt disruptions
+
+### Resource sharing
+
+#### Temporary Allocation
+
+Examples:
+
+* **LEO operator needs to take a ground station offline for maintenance.**
+  * Using the federation API, the operator requests alternate ground stations to land data. The request allows specification of desired spectrum, duration of request, security requirements, etc.
+  * The federation engine queries available providers and generates a sorted list of options and their corresponding costs.
+  * Requesting operator selects an option to the federation engine which processes payment and issues network instructions to the involved parties
+  * Federation engine monitors the network KPIs and generates alerts
+* **LEO operator sees higher than serviceable demand for a region**
+  * Using the federation API, the operator requests alternate constellations for available front haul spectrum. The request allows specification of desired spectrum, region, duration of request, security requirements, etc.
+  * The federation engine queries available providers and generates a sorted list of options and their corresponding costs.
+  * Requesting operator selects an option to the federation engine which processes payment and issues network instructions to the involved parties
+  * Federation engine monitors the network KPIs and generates alerts
 
 ## Detailed API Guide & Reference Architecture
 
