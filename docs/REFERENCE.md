@@ -1,4 +1,4 @@
-<img src="fedlogo2.png" width="681" height="257" alt="Description">
+<img src="resources/fedlogo2.png" width="681" height="257" alt="Description">
 
 # Federation Reference Architecture v0.1
 
@@ -110,7 +110,7 @@ Feedback and contributions to the evolution of this specification are welcome fr
 
 The Federation Architecture aims to create a unified framework for seamlessly integrating space and terrestrial network architectures. This vision addresses the growing need for global connectivity across diverse network segments, including space, land, and air networks.
 
-<img src="federation-concepts.png" width="546.9" height="402.4" alt="Description">
+<img src="resources/federation-concepts.png" width="546.9" height="402.4" alt="Description">
 
 Key objectives of the Federation Architecture include:
 
@@ -194,7 +194,7 @@ The Federation API is built on gRPC and uses Protocol Buffers for efficient data
 
 The following sequence diagram gives the high level lifecycle for a Federation request.
 
-<img src="requestor.png" width="338" height="583" alt="Description">
+<img src="resources/requestor.png" width="338" height="583" alt="Description">
 </div>
 
 *A sample Federation workflow between peers which supports Query (discovery of service opportunities that meet some Requestor needs), Request (explicit ask for services from the Provider), Monitoring (of resources, pricing, service planned vs reported attributes), and finally Termination*.”

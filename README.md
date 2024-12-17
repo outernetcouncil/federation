@@ -18,7 +18,7 @@ Federation is part of a larger vision of a connected, secure, resilient, network
 
 The Outernet envisions broad interoperability between commercial and government satellite constellations, ground stations and user terminals.
 
-<img src="docs/outernetref.png" width="690.2" height="452.2" alt="Description">
+<img src="docs/resources/outernetref.png" width="690.2" height="452.2" alt="Description">
 </div>
 
 The primary purposes of this specification are to:
@@ -55,7 +55,7 @@ By providing a robust framework for Federation, this specification seeks to enab
 
 In the most basic form, Federation enables cooperation between two disparate networks to overcome the outage/unavailability of a node -- allowing two networks to fulfil a service request that wouldn't otherwise be possible.
 
-<img src="docs/ref-ex1.png" width="760.2" height="433.3" alt="Description">
+<img src="docs/resources/ref-ex1.png" width="760.2" height="433.3" alt="Description">
 </div>
 
 When leveraged more extensively, Federation has the potential to dramatically extend the capabilities and resillience of multiple archetypes of next generation networks:
