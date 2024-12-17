@@ -78,6 +78,6 @@ For a complete implementation example, see the [examples/golang/cosmicconnector]
 
 ## References
 
-- [Federation API Guide](../../APIGUIDE.md)
+- [Federation API Reference](../../docs/API_REFERENCE.md)
 - [Example Implementation](../../examples/golang/cosmicconnector)
 - [API Reference](https://pkg.go.dev/github.com/outernetcouncil/federation/pkg/go)

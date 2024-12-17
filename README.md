@@ -125,7 +125,7 @@ Examples:
 
 ## Detailed API Guide & Reference Architecture
 
-* [Detailed API Guide](APIGUIDE.md)
+* [Detailed API Reference](docs/API_REFERENCE.md)
 * [Reference Architecture](https://github.com/outernetcouncil/federation/blob/main/docs/REFERENCE.md)
 
 ## Contributing

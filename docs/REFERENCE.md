@@ -77,9 +77,9 @@ Readers are expected to have a basic understanding of network architectures, sat
 For a comprehensive understanding of Federation, the following related documents and resources may be consulted:
 
 - Existing documentation from [Outernet Council's Federation Repo](https://github.com/outernetcouncil/federation)
-  - [APIGUIDE.md](http://APIGUIDE.md](https://github.com/outernetcouncil/federation/blob/main/APIGUIDE.md)), a detailed guide to supporting the Federation API
-  - [README.md](http://README.md](https://github.com/outernetcouncil/federation/blob/main/README.md)), a succinct motivation summary of the Federation API
-  - [Federation.proto]([http://federation.proto](https://github.com/outernetcouncil/federation/blob/main/outernet/federation/v1alpha/federation.proto)) Protocol Buffer definitions for the Federation Service
+  - [API_REFERENCE.md](../docs/API_REFERENCE.md), a detailed guide to supporting the Federation API
+  - [README.md](../README.md), a succinct motivation summary of the Federation API
+  - [Federation.proto](../outernet/federation/v1alpha/federation.proto) Protocol Buffer definitions for the Federation Service
 - [Outernet Council's Network Model for Temporospatial Systems (NMTS) Repo](https://github.com/outernetcouncil/nmts)
   - This comprehensive network model supports network representation across space, ground, air paradigms
 
