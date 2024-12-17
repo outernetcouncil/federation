@@ -17,7 +17,6 @@
 1.5 [Intended Audience](#15-intended-audience)
 1.6 [Related Documents and Resources](#16-related-documents-and-resources)
 1.7 [Versioning and Updates](#17-versioning-and-updates)
-2. [Terms and Definitions](#2-terms-and-definitions)
 3. [Architecture Description Overview](#3-architecture-description-overview)
 3.1 [Federation Architecture Vision](#31-federation-architecture-vision)
 3.2 [Key Principles and Concepts](#32-key-principles-and-concepts)

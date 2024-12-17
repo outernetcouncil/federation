@@ -2,15 +2,53 @@
 
 This section provides definitions for key terms and concepts used throughout the Federation Architecture Specification.
 
-## Key Concepts
+# Key Concepts
 
-- **Requestor**: An entity seeking network services or resources from federated partners.
-- **Provider**: An entity offering network services or resources to federated partners.
-- **Interconnection Point**: A physical or logical point where two federated networks can connect and exchange traffic.
-- **Service Option**: A potential service offering from a provider, including details on availability, performance, and cost.
-- **Federation**: The act of combining multiple independent networks to create a larger, more capable network ecosystem.
+## Requestor and Provider Roles
 
-## Other Terms
+In the Federation API ecosystem, network entities interact primarily through two roles:
+
+- **Requestor**: An entity seeking network services or resources from federated partners. Requestors use the API to discover available resources, request services, and manage ongoing connections.
+
+- **Provider**: An entity offering network services or resources to federated partners. Providers use the API to advertise their capabilities, respond to service requests, and manage resource allocation.
+
+It is entirely possible that bidirectional Federation Services are being offered between two entities, each offering their own Federation API Server for their partner to use as a Requestor.  This flexibility allows for dynamic, multi-directional resource sharing across the federated network.
+
+## Interconnection Points
+
+Interconnection Points are fundamental elements in the Federation API, representing the interfaces where different networks can connect and exchange traffic. They are essential for establishing the physical or logical links that enable federated services.
+
+Characteristics of Interconnection Points:
+- Can be physical (e.g., a satellite ground station) or logical (e.g., a virtual network interface)
+- Contain information about their capabilities, location, and availability
+- May have temporal aspects, especially for mobile or orbiting assets
+
+The `InterconnectionPoint` message in the API provides detailed information about these points, including:
+- Unique identifier
+- Physical and logical attributes
+- Temporal availability
+- Associated network interfaces
+
+Understanding and effectively managing Interconnection Points is crucial for creating robust, flexible federated network solutions.
+
+## Service Options
+
+Service Options represent potential service offerings that a Provider can offer to Requestors. They encapsulate the details of a possible network service, allowing Requestors to evaluate and select the most suitable options for their needs.
+
+Components of a Service Option typically include:
+- Endpoints (Interconnection Points involved)
+- Service attributes (bandwidth, latency, availability)
+- Pricing and cost information
+- Temporal considerations (time windows for service availability)
+
+The API uses the `ServiceOption` message to convey this information. Requestors can retrieve and analyze Service Options to make informed decisions about which services to request.
+
+Key aspects of working with Service Options:
+- Providers generate and update Service Options based on their current network state and policies
+- Requestors can filter and sort Service Options based on their requirements
+- Selected Service Options form the basis for actual service requests
+
+## General Terms
 
 - **Access Control**: The selective restriction of access to network resources. In Federation, access control mechanisms must span multiple network domains.
 - **API**: Application Programming Interface
