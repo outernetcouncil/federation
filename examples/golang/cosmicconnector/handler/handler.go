@@ -92,7 +92,7 @@ func (h *PrototypeHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest,
 				EndpointY: &pb.ServiceOption_IpNetwork{
 					IpNetwork: ipNetwork,
 				},
-				Directionality: pb.Directionality_DIRECTIONALITY_BIDIRECTIONAL_UNSPECIFIED,
+				Directionality: pb.Directionality_DIRECTIONALITY_BIDIRECTIONAL,
 			},
 		},
 	}

@@ -212,11 +212,12 @@ message InterconnectionPoint {
   // Mode field indicates whether or not the interface can receive packets in
   // promiscuous mode, or if it can receive L2 packets only if the L2
   // destination address matches it's own physical address.
-  enum Mode {
-    MODE_PROMISCUOUS_UNSPECIFIED = 0;
-    MODE_NON_PROMISCUOUS = 1;
+  enum PromiscuousMode {
+    PROMISCUOUS_MODE_UNSPECIFIED = 0;
+    PROMISCUOUS_MODE_ENABLED = 1;
+    PROMISCUOUS_MODE_DISABLED = 2;
   }
-  Mode rx_mode = 7;
+  PromiscuousMode rx_mode = 7;
 
   // Optionally specifies the local/hardware IDs within the platform or
   // switch. These are not used by network controllers but may be useful for
@@ -261,9 +262,10 @@ message InterconnectionPointFilters {
 // Requests will be treated as bidirectional by default, unless otherwise
 // specified in the proto documentation.
 enum Directionality {
-  DIRECTIONALITY_BIDIRECTIONAL_UNSPECIFIED = 0;
-  DIRECTIONALITY_X_TO_Y = 1;
-  DIRECTIONALITY_Y_TO_X = 2;
+  DIRECTIONALITY_UNSPECIFIED = 0;
+  DIRECTIONALITY_BIDIRECTIONAL = 1;
+  DIRECTIONALITY_X_TO_Y = 2;
+  DIRECTIONALITY_Y_TO_X = 3;
 }
 
 // This request message allows filtering of requested interconnection points.
