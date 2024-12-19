@@ -34,6 +34,9 @@ git_override(
 
 bazel_dep(name = "rules_buf", version = "0.1.1")
 
+buf = use_extension("@rules_buf//buf:extensions.bzl", "buf")
+buf.toolchains(version = "v1.47.0")
+
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(
     version = "1.23.0",
