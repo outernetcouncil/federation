@@ -71,7 +71,7 @@ option java_package = "com.outernet.federation.v1alpha";
 //   Requestor of Service termination.
 // - CancelService enables Requestor cancellation of an existing
 //   `service_id`.
-service Federation {
+service FederationService {
   // Request a potentially long-lived stream of available
   // `InterconnectionPoints`. The connection will stream one complete snapshot
   // of InterconnectionPoints from the Provider. If the request specifies
@@ -79,7 +79,7 @@ service Federation {
   // sending the snapshot. Otherwise, the Provider continues to stream any
   // updates in real-time.
   rpc StreamInterconnectionPoints(StreamInterconnectionPointsRequest)
-      returns (stream StreamInterconnectionPointsResponseChunk) {}
+      returns (stream StreamInterconnectionPointsResponse) {}
 
   // Request a finite stream of `ServiceOptions`.
   rpc ListServiceOptions(ListServiceOptionsRequest)
@@ -121,22 +121,22 @@ message MonitorServicesResponse {
   repeated ServiceStatus updated_services =1;
 }
 
-// A StreamInterconnectionPointsResponseChunk returns a collection of Provider
+// A StreamInterconnectionPointsResponse returns a collection of Provider
 // InterconnectionPoint updates and signals when an entire snapshot has
 // successfully been transferred (leaving only live updates remaining).
 //
 // When streaming Interconnections, one or more
-// StreamInterconnectionPointsResponseChunks with `mutations` may be transmitted
+// StreamInterconnectionPointsResponses with `mutations` may be transmitted
 // in order to fully transfer the initial snapshot of InterconnectionPoints.
 //
 // For the longevity of a StreamInterconnectionPoints, there will be exactly one
-// StreamInterconnectionPointsResponseChunk in which `snapshot_complete` is set,
+// StreamInterconnectionPointsResponse in which `snapshot_complete` is set,
 // indicating that the mutations up to and including this Chunk complete the
 // initial system view at the start of streaming (initial snapshot). Future
-// StreamInterconnectionPointsResponseChunk (if `snapshot_only=False` or is
+// StreamInterconnectionPointsResponse (if `snapshot_only=False` or is
 // unset) will contain further live updates. Otherwise the stream is closed by
 // the Provider.
-message StreamInterconnectionPointsResponseChunk {
+message StreamInterconnectionPointsResponse {
   // Notification that the initial state snapshot has been fully provided, up
   // to and including the `mutations` in this message.
   optional SnapshotComplete snapshot_complete = 1;
@@ -212,11 +212,12 @@ message InterconnectionPoint {
   // Mode field indicates whether or not the interface can receive packets in
   // promiscuous mode, or if it can receive L2 packets only if the L2
   // destination address matches it's own physical address.
-  enum Mode {
-    MODE_PROMISCUOUS = 0;
-    MODE_NON_PROMISCUOUS = 1;
+  enum PromiscuousMode {
+    PROMISCUOUS_MODE_UNSPECIFIED = 0;
+    PROMISCUOUS_MODE_ENABLED = 1;
+    PROMISCUOUS_MODE_DISABLED = 2;
   }
-  Mode rx_mode = 7;
+  PromiscuousMode rx_mode = 7;
 
   // Optionally specifies the local/hardware IDs within the platform or
   // switch. These are not used by network controllers but may be useful for
@@ -261,9 +262,10 @@ message InterconnectionPointFilters {
 // Requests will be treated as bidirectional by default, unless otherwise
 // specified in the proto documentation.
 enum Directionality {
-  DIRECTIONALITY_BIDIRECTIONAL = 0;
-  DIRECTIONALITY_X_TO_Y = 1;
-  DIRECTIONALITY_Y_TO_X = 2;
+  DIRECTIONALITY_UNSPECIFIED = 0;
+  DIRECTIONALITY_BIDIRECTIONAL = 1;
+  DIRECTIONALITY_X_TO_Y = 2;
+  DIRECTIONALITY_Y_TO_X = 3;
 }
 
 // This request message allows filtering of requested interconnection points.

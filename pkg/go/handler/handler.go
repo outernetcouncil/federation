@@ -23,10 +23,10 @@ import (
 
 // FederationHandler defines the interface for handling Federation gRPC requests.
 type FederationHandler interface {
-	pb.FederationServer
-	StreamInterconnectionPoints(*pb.StreamInterconnectionPointsRequest, pb.Federation_StreamInterconnectionPointsServer) error
-	ListServiceOptions(*pb.ListServiceOptionsRequest, pb.Federation_ListServiceOptionsServer) error
+	pb.FederationServiceServer
+	StreamInterconnectionPoints(*pb.StreamInterconnectionPointsRequest, pb.FederationService_StreamInterconnectionPointsServer) error
+	ListServiceOptions(*pb.ListServiceOptionsRequest, pb.FederationService_ListServiceOptionsServer) error
 	ScheduleService(context.Context, *pb.ScheduleServiceRequest) (*pb.ScheduleServiceResponse, error)
-	MonitorServices(pb.Federation_MonitorServicesServer) error
+	MonitorServices(pb.FederationService_MonitorServicesServer) error
 	CancelService(context.Context, *pb.CancelServiceRequest) (*pb.CancelServiceResponse, error)
 }
