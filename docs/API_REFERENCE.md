@@ -1,14 +1,11 @@
 # 1. Introduction
 
+[Glossary of Terms](docs/GLOSSARY.md)
+
 - [1. Introduction](#1-introduction)
   - [1.1 Purpose of the Federation API](#11-purpose-of-the-federation-api)
   - [1.2 Benefits of Federation](#12-benefits-of-federation)
   - [1.3 Supported Use Cases](#13-supported-use-cases)
-- [2. Key Concepts](#2-key-concepts)
-  - [2.1 Requestor and Provider Roles](#21-requestor-and-provider-roles)
-  - [2.2 Interconnection Points](#22-interconnection-points)
-  - [2.3 Service Options](#23-service-options)
-  - [2.4 Network Reachability](#24-network-reachability)
 - [3. API Structure](#3-api-structure)
   - [3.1 Protocol Overview](#31-protocol-overview)
   - [3.2 Data Models](#32-data-models)
@@ -119,75 +116,6 @@ By providing a standardized interface for these diverse scenarios, the Federatio
 
 In the following sections, we'll delve deeper into the key concepts, technical details, and best practices for leveraging the full potential of the Federation API in your network integration projects.
 
-
-# 2. Key Concepts
-
-To effectively utilize the Federation API, it's crucial to understand several fundamental concepts that underpin its functionality and structure. This section will introduce and explain these key ideas, providing a solid foundation for working with the API.
-
-## 2.1 Requestor and Provider Roles
-
-In the Federation API ecosystem, network entities interact primarily through two roles:
-
-- **Requestor**: An entity seeking network services or resources from federated partners. Requestors use the API to discover available resources, request services, and manage ongoing connections.
-
-- **Provider**: An entity offering network services or resources to federated partners. Providers use the API to advertise their capabilities, respond to service requests, and manage resource allocation.
-
-It is entirely possible that bidirectional Federation Services are being offered between two entities, each offering their own Federation API Server for their partner to use as a Requestor.  This flexibility allows for dynamic, multi-directional resource sharing across the federated network.
-
-## 2.2 Interconnection Points
-
-Interconnection Points are fundamental elements in the Federation API, representing the interfaces where different networks can connect and exchange traffic. They are essential for establishing the physical or logical links that enable federated services.
-
-Characteristics of Interconnection Points:
-- Can be physical (e.g., a satellite ground station) or logical (e.g., a virtual network interface)
-- Contain information about their capabilities, location, and availability
-- May have temporal aspects, especially for mobile or orbiting assets
-
-The `InterconnectionPoint` message in the API provides detailed information about these points, including:
-- Unique identifier
-- Physical and logical attributes
-- Temporal availability
-- Associated network interfaces
-
-Understanding and effectively managing Interconnection Points is crucial for creating robust, flexible federated network solutions.
-
-## 2.3 Service Options
-
-Service Options represent potential service offerings that a Provider can offer to Requestors. They encapsulate the details of a possible network service, allowing Requestors to evaluate and select the most suitable options for their needs.
-
-Components of a Service Option typically include:
-- Endpoints (Interconnection Points involved)
-- Service attributes (bandwidth, latency, availability)
-- Pricing and cost information
-- Temporal considerations (time windows for service availability)
-
-The API uses the `ServiceOption` message to convey this information. Requestors can retrieve and analyze Service Options to make informed decisions about which services to request.
-
-Key aspects of working with Service Options:
-- Providers generate and update Service Options based on their current network state and policies
-- Requestors can filter and sort Service Options based on their requirements
-- Selected Service Options form the basis for actual service requests
-
-## 2.4 Network Reachability
-
-Network Reachability in the context of the Federation API refers to the set of destinations or network prefixes that can be accessed through a given Interconnection Point or Service Option. Understanding reachability is crucial for effective network planning and service provisioning in a federated environment.
-
-Reachability information typically includes:
-- IP prefixes or address ranges
-- Autonomous System Numbers (ASNs)
-- Named destinations (e.g., cloud provider regions, specific services)
-
-The API represents reachability information in various messages, often associated with Interconnection Points or Service Options. 
-
-Key considerations for Network Reachability:
-- Reachability can be dynamic, changing based on network conditions or time
-- Providers must keep reachability information up-to-date
-- Requestors should consider reachability when selecting services to ensure end-to-end connectivity for their use cases
-
-By understanding these key concepts - Requestor and Provider roles, Interconnection Points, Service Options, and Network Reachability - you'll be well-equipped to navigate the capabilities of the Federation API and leverage its power to create innovative, integrated network solutions.
-
-In the next section, we'll explore the structure of the API itself, including its protocol, data models, and message types.
-
 # 3. API Structure
 
 The Federation API is built on top of the gRPC framework, leveraging Protocol Buffers for efficient and structured data exchange. This section provides an overview of the API's structure, including its protocol, data models, and message types.
@@ -251,7 +179,7 @@ The choice of authentication method depends on the specific requirements and sec
 
 ## 4.2 Authorization
 
-Provider implementations of the Federation Server may implement role-based access control (RBAC) for authorization. RBAC ensures that authenticated clients can only access and perform operations that they are explicitly authorized for, based on their assigned roles and permissions.  Authorization could be accomplished by the Provider's gRPC interceptor after Authentication, using access to authorization policies and role assignments made accessible by provider infrastructure.
+Provider implementations of the Federation Server may implement role-based access control ([RBAC](GLOSSARY.md#other-terms)) for authorization. RBAC ensures that authenticated clients can only access and perform operations that they are explicitly authorized for, based on their assigned roles and permissions.  Authorization could be accomplished by the Provider's gRPC interceptor after Authentication, using access to authorization policies and role assignments made accessible by provider infrastructure.
 
 ## 4.3 Data Protection
 
