@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
-	inet "outernetcouncil.org/nmts/proto/types/ietf"
+	inet "outernetcouncil.org/nmts/v1alpha/proto/types/ietf"
 )
 
 type PrototypeHandler struct {
