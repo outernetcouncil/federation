@@ -28,7 +28,7 @@ import (
 
 // GrpcServer implements the Server interface for gRPC services.
 type GrpcServer struct {
-	pb.UnimplementedFederationServer
+	pb.UnimplementedFederationServiceServer
 	port    int
 	handler handler.FederationHandler
 	logger  zerolog.Logger
@@ -60,7 +60,7 @@ func (g *GrpcServer) Start(ctx context.Context) error {
 	g.lis = lis
 
 	g.srv = grpc.NewServer()
-	pb.RegisterFederationServer(g.srv, g.handler)
+	pb.RegisterFederationServiceServer(g.srv, g.handler)
 	reflection.Register(g.srv)
 
 	g.logger.Info().Msgf("Starting gRPC server on port %d", g.port)

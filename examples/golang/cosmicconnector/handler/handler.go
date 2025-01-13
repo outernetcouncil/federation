@@ -26,7 +26,7 @@ import (
 )
 
 type PrototypeHandler struct {
-	pb.UnimplementedFederationServer
+	pb.UnimplementedFederationServiceServer
 	mu               sync.Mutex
 	services         map[string]*pb.ServiceStatus
 	interconnections map[string]*pb.InterconnectionPoint
@@ -39,12 +39,12 @@ func NewPrototypeHandler() *PrototypeHandler {
 	}
 }
 
-func (h *PrototypeHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.Federation_StreamInterconnectionPointsServer) error {
+func (h *PrototypeHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.FederationService_StreamInterconnectionPointsServer) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
-	chunk := &pb.StreamInterconnectionPointsResponseChunk{
-		SnapshotComplete: &pb.StreamInterconnectionPointsResponseChunk_SnapshotComplete{},
+	chunk := &pb.StreamInterconnectionPointsResponse{
+		SnapshotComplete: &pb.StreamInterconnectionPointsResponse_SnapshotComplete{},
 	}
 
 	for _, ip := range h.interconnections {
@@ -67,7 +67,7 @@ func (h *PrototypeHandler) StreamInterconnectionPoints(req *pb.StreamInterconnec
 	return stream.Context().Err()
 }
 
-func (h *PrototypeHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.Federation_ListServiceOptionsServer) error {
+func (h *PrototypeHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.FederationService_ListServiceOptionsServer) error {
 	ipNetwork := &inet.IPNetwork{
 		Prefix: &inet.IPPrefix{
 			Version: &inet.IPPrefix_Ipv4{
@@ -119,7 +119,7 @@ func (h *PrototypeHandler) ScheduleService(ctx context.Context, req *pb.Schedule
 	}, nil
 }
 
-func (h *PrototypeHandler) MonitorServices(stream pb.Federation_MonitorServicesServer) error {
+func (h *PrototypeHandler) MonitorServices(stream pb.FederationService_MonitorServicesServer) error {
 	for {
 		req, err := stream.Recv()
 		if err != nil {

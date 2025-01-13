@@ -19,7 +19,7 @@ import (
 
 // testHandler implements the FederationHandler interface for testing
 type testHandler struct {
-	pb.UnimplementedFederationServer
+	pb.UnimplementedFederationServiceServer
 }
 
 func createTestHandler(t *testing.T) *testHandler {
@@ -27,11 +27,11 @@ func createTestHandler(t *testing.T) *testHandler {
 }
 
 // Implement the required FederationHandler interface methods
-func (h *testHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.Federation_StreamInterconnectionPointsServer) error {
+func (h *testHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.FederationService_StreamInterconnectionPointsServer) error {
 	return nil
 }
 
-func (h *testHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.Federation_ListServiceOptionsServer) error {
+func (h *testHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.FederationService_ListServiceOptionsServer) error {
 	// Send a test response
 	return stream.Send(&pb.ListServiceOptionsResponse{
 		ServiceOptions: []*pb.ServiceOption{
@@ -48,7 +48,7 @@ func (h *testHandler) ScheduleService(ctx context.Context, req *pb.ScheduleServi
 	}, nil
 }
 
-func (h *testHandler) MonitorServices(stream pb.Federation_MonitorServicesServer) error {
+func (h *testHandler) MonitorServices(stream pb.FederationService_MonitorServicesServer) error {
 	return nil
 }
 
@@ -159,7 +159,7 @@ func TestBasicServerLifecycle(t *testing.T) {
 		}
 		defer conn.Close()
 
-		client := pb.NewFederationClient(conn)
+		client := pb.NewFederationServiceClient(conn)
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
