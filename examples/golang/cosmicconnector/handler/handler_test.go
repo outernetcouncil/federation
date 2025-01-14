@@ -177,7 +177,7 @@ func TestPrototypeHandler_StreamInterconnectionPoints(t *testing.T) {
 			stream := &mockStreamInterconnectionPointsServer{
 				ctx:      ctx,
 				recvChan: make(chan *pb.StreamInterconnectionPointsRequest, 1),
-				sendChan: make(chan *pb.StreamInterconnectionPointsResponseChunk, 10),
+				sendChan: make(chan *pb.StreamInterconnectionPointsResponse, 10),
 			}
 
 			// Send initial request
@@ -214,7 +214,7 @@ func TestPrototypeHandler_StreamInterconnectionPoints(t *testing.T) {
 type mockStreamInterconnectionPointsServer struct {
 	ctx      context.Context
 	recvChan chan *pb.StreamInterconnectionPointsRequest
-	sendChan chan *pb.StreamInterconnectionPointsResponseChunk
+	sendChan chan *pb.StreamInterconnectionPointsResponse
 	grpc.ServerStream
 }
 
@@ -222,7 +222,7 @@ func (m *mockStreamInterconnectionPointsServer) Context() context.Context {
 	return m.ctx
 }
 
-func (m *mockStreamInterconnectionPointsServer) Send(chunk *pb.StreamInterconnectionPointsResponseChunk) error {
+func (m *mockStreamInterconnectionPointsServer) Send(chunk *pb.StreamInterconnectionPointsResponse) error {
 	select {
 	case m.sendChan <- chunk:
 		return nil
