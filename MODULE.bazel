@@ -32,10 +32,10 @@ git_override(
     remote = "https://github.com/outernetcouncil/nmts.git",
 )
 
-bazel_dep(name = "rules_buf", version = "0.1.1")
+bazel_dep(name = "rules_buf", version = "0.3.0")
 
 buf = use_extension("@rules_buf//buf:extensions.bzl", "buf")
-buf.toolchains(version = "v1.47.0")
+buf.toolchains(version = "v1.49.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(
