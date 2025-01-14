@@ -37,7 +37,7 @@ option go_package = "github.com/outernetcouncil/federation/gen/go/federation/int
 // which connectivity is available. This wireless link could be a link to an
 // optical terminal on a low-Earth-orbiting satellite, or it could be a link to
 // a ground station, among other possibilities.
-service Interconnect {
+service InterconnectService {
   // Lists the types of transceivers with which the connectivity service
   // provider's network is compatible. This enables the client to provide the
   // service provider with the details of only the transceivers that might
