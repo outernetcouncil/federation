@@ -18,9 +18,9 @@ syntax = "proto3";
 
 package outernet.federation.v1alpha;
 
-import "nmts/proto/types/ietf/inet.proto";
-import "nmts/proto/types/geophys/motion.proto";
-import "nmts/proto/nmts.proto";
+import "nmts/v1alpha/proto/types/ietf/inet.proto";
+import "nmts/v1alpha/proto/types/geophys/motion.proto";
+import "nmts/v1alpha/proto/nmts.proto";
 import "google/protobuf/duration.proto";
 import "google/type/interval.proto";
 
@@ -196,14 +196,14 @@ message InterconnectionPoint {
   string uuid = 1;
 
   // TODO: Add better documentation for these fields.
-  nmts.Fragment transceiver_model = 2;
+  nmts.v1alpha.Fragment transceiver_model = 2;
 
   // The location over time of this interconnection point.
-  nmts.types.geophys.Motion coordinates = 4;
+  nmts.v1alpha.types.geophys.Motion coordinates = 4;
 
   // The interface's IP address represented as a CIDR notation subnet or
   // single IP address string.
-  nmts.types.ietf.IPNetwork ip_network = 5;
+  nmts.v1alpha.types.ietf.IPNetwork ip_network = 5;
 
   // Ethernet address in readable colon separated format. e.g.
   // "1:23:45:67:89:ab" or "01:23:45:67:89:ab"
@@ -298,7 +298,7 @@ message RequestorEdgeToIpNetwork {
   repeated InterconnectionPoint x_interconnection_points = 1;
   // The IP address the requestor wishes to reach, represented as a CIDR
   // notation subnet or single IP address string.
-  nmts.types.ietf.IPNetwork y_ip_network = 2;
+  nmts.v1alpha.types.ietf.IPNetwork y_ip_network = 2;
   // Defines the directionality of this pair of endpoint sets. Assumed to be
   // bidirectional by default.
   Directionality directionality = 3;
@@ -357,7 +357,7 @@ message ProviderEdgeToIpNetwork {
 
   // The IP address the requestor wishes to reach, represented as a CIDR
   // notation subnet or single IP address string.
-  nmts.types.ietf.IPNetwork y_ip_network = 3;
+  nmts.v1alpha.types.ietf.IPNetwork y_ip_network = 3;
 
   // Defines the directionality of this pair of endpoint sets. Assumed to be
   // bidirectional by default.
@@ -484,7 +484,7 @@ message ServiceOption {
     InterconnectionPoint y_provider_interconnection = 5;
     // An IP address, represented as a CIDR notation subnet or single IP address
     // string.
-    nmts.types.ietf.IPNetwork ip_network = 6;
+    nmts.v1alpha.types.ietf.IPNetwork ip_network = 6;
   }
 
   // Defines the directionality of this pair of endpoint sets. Assumed to be
