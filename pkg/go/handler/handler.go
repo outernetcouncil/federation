@@ -12,21 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// package handler defines the interface for handling Federation gRPC requests.
+// package handler defines the interface for handling Interconnect gRPC requests.
 package handler
 
 import (
-	"context"
-
-	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
+	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 )
 
-// FederationHandler defines the interface for handling Federation gRPC requests.
-type FederationHandler interface {
-	pb.FederationServiceServer
-	StreamInterconnectionPoints(*pb.StreamInterconnectionPointsRequest, pb.FederationService_StreamInterconnectionPointsServer) error
-	ListServiceOptions(*pb.ListServiceOptionsRequest, pb.FederationService_ListServiceOptionsServer) error
-	ScheduleService(context.Context, *pb.ScheduleServiceRequest) (*pb.ScheduleServiceResponse, error)
-	MonitorServices(pb.FederationService_MonitorServicesServer) error
-	CancelService(context.Context, *pb.CancelServiceRequest) (*pb.CancelServiceResponse, error)
+// InterconnectHandler defines the interface for handling Federation gRPC requests.
+type InterconnectHandler interface {
+	pb.InterconnectServiceServer
 }

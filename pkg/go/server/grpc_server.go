@@ -22,22 +22,22 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
+	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 	"github.com/outernetcouncil/federation/pkg/go/handler"
 )
 
 // GrpcServer implements the Server interface for gRPC services.
 type GrpcServer struct {
-	pb.UnimplementedFederationServiceServer
+	pb.UnimplementedInterconnectServiceServer
 	port    int
-	handler handler.FederationHandler
+	handler handler.InterconnectHandler
 	logger  zerolog.Logger
 	srv     *grpc.Server
 	lis     net.Listener
 }
 
 // NewGrpcServer creates a new GrpcServer with the given port, handler, and logger.
-func NewGrpcServer(port int, handler handler.FederationHandler, logger zerolog.Logger) *GrpcServer {
+func NewGrpcServer(port int, handler handler.InterconnectHandler, logger zerolog.Logger) *GrpcServer {
 	return &GrpcServer{
 		port:    port,
 		handler: handler,
@@ -60,7 +60,7 @@ func (g *GrpcServer) Start(ctx context.Context) error {
 	g.lis = lis
 
 	g.srv = grpc.NewServer()
-	pb.RegisterFederationServiceServer(g.srv, g.handler)
+	pb.RegisterInterconnectServiceServer(g.srv, g.handler)
 	reflection.Register(g.srv)
 
 	g.logger.Info().Msgf("Starting gRPC server on port %d", g.port)
