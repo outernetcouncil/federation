@@ -21,21 +21,21 @@ Provides JWT-based authentication for gRPC services:
 - RSA public/private key pair support
 
 ### Cosmic Connector (`cosmicconnector/`)
-Core implementation of the Federation service:
+Core implementation of the Interconnect service:
 - Service lifecycle management
 - Configuration handling
 - Server component coordination
 
 ### Handler Framework (`handler/`)
-Interface definitions for implementing Federation services:
-- `FederationHandler` interface
+Interface definitions for implementing Interconnect Federation services:
+- `InterconnectHandler` interface
 - Support for service scheduling
 - Monitoring capabilities
 - Service cancellation
 
 ### Server Components (`server/`)
 Complete server implementations:
-- gRPC server for Federation API
+- gRPC server for Interconnect API
 - Channelz server for monitoring/introspection
 - pprof server for profiling
 - Generic `Server` interface
@@ -70,7 +70,7 @@ import (
 )
 ```
 
-2. Implement the `FederationHandler` interface
+2. Implement the `InterconnectHandler` interface
 3. Configure authentication as needed
 4. Create and start server components
 
