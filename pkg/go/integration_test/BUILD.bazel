@@ -6,11 +6,12 @@ go_test(
     importpath = "github.com/outernetcouncil/federation/pkg/go/integration_test",
     visibility = ["//visibility:public"],
     deps = [
-        "//outernet/federation/v1alpha:federation_go_grpc",
+        "//outernet/federation/interconnect/v1alpha:federation_interconnect_go_grpc",
         "//pkg/go/cosmicconnector",
         "//pkg/go/server",
         "@com_github_rs_zerolog//:zerolog",
         "@org_golang_google_grpc//:grpc",
         "@org_golang_google_grpc//credentials/insecure",
+        "@org_golang_google_protobuf//types/known/emptypb"
     ],
 )
