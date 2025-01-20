@@ -14,7 +14,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
-	"github.com/outernetcouncil/federation/pkg/go/cosmicconnector"
+	"github.com/outernetcouncil/federation/pkg/go/interconnectprovider"
 	"github.com/outernetcouncil/federation/pkg/go/server"
 )
 
@@ -87,7 +87,7 @@ type testServers struct {
 	grpcAddr     string
 	channelzAddr string
 	pprofAddr    string
-	cc           *cosmicconnector.CosmicConnector
+	cc           *interconnectprovider.InterconnectProvider
 	cleanup      func()
 }
 
@@ -115,7 +115,7 @@ func setupTestServers(t *testing.T) *testServers {
 	channelzServer := server.NewChannelzServer(fmt.Sprintf(":%d", channelzPort), logger)
 	pprofServer := server.NewPprofServer(fmt.Sprintf(":%d", pprofPort), logger)
 
-	cc := cosmicconnector.NewCosmicConnector(
+	cc := interconnectprovider.NewInterconnectProvider(
 		logger,
 		grpcServer,
 		channelzServer,

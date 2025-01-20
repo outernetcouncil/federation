@@ -19,9 +19,9 @@ PprofServer, all implementing the common Server interface.
 
 Server Types:
 
- - GrpcServer: Handles the main gRPC communication for the Federation service
- - ChannelzServer: Provides gRPC channelz monitoring capabilities
- - PprofServer: Exposes Go runtime profiling data via HTTP endpoints
+  - GrpcServer: Handles the main gRPC communication for the Federation service
+  - ChannelzServer: Provides gRPC channelz monitoring capabilities
+  - PprofServer: Exposes Go runtime profiling data via HTTP endpoints
 
 Each server implementation provides consistent Start and Shutdown methods for
 lifecycle management. The servers can be used independently or together as part
@@ -29,38 +29,38 @@ of a larger application.
 
 Example usage:
 
- import (
-  "context"
-  "github.com/rs/zerolog"
-  "aalyria.com/spacetime/apps/cosmicconnector/server"
-  "aalyria.com/spacetime/apps/cosmicconnector/handler"
- )
+	import (
+	 "context"
+	 "github.com/rs/zerolog"
+	 "aalyria.com/spacetime/apps/interconnectprovider/server"
+	 "aalyria.com/spacetime/apps/interconnectprovider/handler"
+	)
 
- func main() {
-  logger := zerolog.New(os.Stdout)
+	func main() {
+	 logger := zerolog.New(os.Stdout)
 
-  // Create a new gRPC server
-  federationHandler := handler.NewFederationHandler()
-  grpcServer := server.NewGrpcServer(8080, federationHandler, logger)
+	 // Create a new gRPC server
+	 federationHandler := handler.NewFederationHandler()
+	 grpcServer := server.NewGrpcServer(8080, federationHandler, logger)
 
-  // Start the server
-  ctx := context.Background()
-  if err := grpcServer.Start(ctx); err != nil {
-   logger.Fatal().Err(err).Msg("Failed to start gRPC server")
-  }
+	 // Start the server
+	 ctx := context.Background()
+	 if err := grpcServer.Start(ctx); err != nil {
+	  logger.Fatal().Err(err).Msg("Failed to start gRPC server")
+	 }
 
-  // Graceful shutdown
-  if err := grpcServer.Shutdown(ctx); err != nil {
-   logger.Error().Err(err).Msg("Error during server shutdown")
-  }
- }
+	 // Graceful shutdown
+	 if err := grpcServer.Shutdown(ctx); err != nil {
+	  logger.Error().Err(err).Msg("Error during server shutdown")
+	 }
+	}
 
 The Server interface ensures consistent behavior across all server implementations:
 
- type Server interface {
-  Start(ctx context.Context) error
-  Shutdown(ctx context.Context) error
- }
+	type Server interface {
+	 Start(ctx context.Context) error
+	 Shutdown(ctx context.Context) error
+	}
 
 All server implementations use structured logging via zerolog and support graceful
 shutdown operations. They are designed to be concurrent-safe and suitable for

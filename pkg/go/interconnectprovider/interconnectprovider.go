@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package CosmicConector provides a Cosmic Connector, a Federation gRPC bridge to
+// Package InterconnectProvider provides an Interconnect Provider, a Federation gRPC bridge to
 // RESTFUL Providers.
-package cosmicconnector
+package interconnectprovider
 
 import (
 	"context"
@@ -26,16 +26,16 @@ import (
 	"github.com/outernetcouncil/federation/pkg/go/server"
 )
 
-type CosmicConnector struct {
+type InterconnectProvider struct {
 	servers []server.Server
 	logger  zerolog.Logger
 }
 
-func NewCosmicConnector(logger zerolog.Logger, servers ...server.Server) *CosmicConnector {
-	return &CosmicConnector{servers: servers, logger: logger}
+func NewInterconnectProvider(logger zerolog.Logger, servers ...server.Server) *InterconnectProvider {
+	return &InterconnectProvider{servers: servers, logger: logger}
 }
 
-func (o *CosmicConnector) Run(ctx context.Context) error {
+func (o *InterconnectProvider) Run(ctx context.Context) error {
 	g, ctx := errgroup.WithContext(ctx)
 
 	// Add shutdown goroutine
@@ -56,7 +56,7 @@ func (o *CosmicConnector) Run(ctx context.Context) error {
 	return g.Wait()
 }
 
-func (o *CosmicConnector) shutdown(ctx context.Context) error {
+func (o *InterconnectProvider) shutdown(ctx context.Context) error {
 	var errs []error
 	for _, srv := range o.servers {
 		if err := srv.Shutdown(ctx); err != nil {

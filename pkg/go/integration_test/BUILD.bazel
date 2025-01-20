@@ -7,7 +7,7 @@ go_test(
     visibility = ["//visibility:public"],
     deps = [
         "//outernet/federation/interconnect/v1alpha:federation_interconnect_go_grpc",
-        "//pkg/go/cosmicconnector",
+        "//pkg/go/interconnectprovider",
         "//pkg/go/server",
         "@com_github_rs_zerolog//:zerolog",
         "@org_golang_google_grpc//:grpc",

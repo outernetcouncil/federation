@@ -7,7 +7,7 @@ Core implementation packages for building Federation services in Go.
 ```
 pkg/go/
 ├── auth/          # Authentication and authorization
-├── cosmicconnector/  # Core Federation service implementation
+├── interconnectprovider/  # Core Federation Interconnect service implementation
 ├── handler/       # Federation service interfaces
 └── server/        # Server implementations
 ```
@@ -20,7 +20,7 @@ Provides JWT-based authentication for gRPC services:
 - JWT validation and verification
 - RSA public/private key pair support
 
-### Cosmic Connector (`cosmicconnector/`)
+### Interconnect Provider (`interconnectprovider/`)
 Core implementation of the Interconnect service:
 - Service lifecycle management
 - Configuration handling
@@ -53,7 +53,7 @@ bazel build //pkg/go/...
 bazel test //pkg/go/...
 
 # Build specific component
-bazel build //pkg/go/cosmicconnector
+bazel build //pkg/go/interconnectprovider
 ```
 
 ## Usage
@@ -64,7 +64,7 @@ To use these packages in your own Federation service:
 ```go
 import (
     "github.com/outernetcouncil/federation/pkg/go/auth"
-    "github.com/outernetcouncil/federation/pkg/go/cosmicconnector"
+    "github.com/outernetcouncil/federation/pkg/go/interconnectprovider"
     "github.com/outernetcouncil/federation/pkg/go/handler"
     "github.com/outernetcouncil/federation/pkg/go/server"
 )
@@ -74,10 +74,10 @@ import (
 3. Configure authentication as needed
 4. Create and start server components
 
-For a complete implementation example, see the [examples/golang/cosmicconnector](../../examples/golang/cosmicconnector) directory.
+For a complete implementation example, see the [examples/golang/simpleinterconnectprovider](../../examples/golang/simpleinterconnectprovider) directory.
 
 ## References
 
 - [Federation API Reference](../../docs/API_REFERENCE.md)
-- [Example Implementation](../../examples/golang/cosmicconnector)
+- [Example Implementation](../../examples/golang/simpleinterconnectprovider)
 - [API Reference](https://pkg.go.dev/github.com/outernetcouncil/federation/pkg/go)

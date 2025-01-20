@@ -21,12 +21,12 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
+	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 	inet "outernetcouncil.org/nmts/v1alpha/proto/types/ietf"
 )
 
 type PrototypeHandler struct {
-	pb.UnimplementedFederationServiceServer
+	pb.UnimplementedInterconnectServiceServer
 	mu               sync.Mutex
 	services         map[string]*pb.ServiceStatus
 	interconnections map[string]*pb.InterconnectionPoint

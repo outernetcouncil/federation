@@ -15,22 +15,22 @@
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_binary(
-    name = "cosmic_connector",
-    embed = [":cosmicconnector_lib"],
+    name = "simple_interconnect_provider",
+    embed = [":simpleinterconnectprovider_lib"],
     pure = "on",
     static = "on",
     visibility = ["//visibility:public"],
 )
 
 go_library(
-    name = "cosmicconnector_lib",
+    name = "simpleinterconnectprovider_lib",
     srcs = ["main.go"],
-    importpath = "github.com/outernetcouncil/federation/examples/golang/cosmicconnector/example",
+    importpath = "github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider/example",
     visibility = ["//visibility:private"],
     deps = [
-        "//examples/golang/cosmicconnector/config",
-        "//examples/golang/cosmicconnector/handler",
-        "//pkg/go/cosmicconnector",
+        "//examples/golang/simpleinterconnectprovider/config",
+        "//examples/golang/simpleinterconnectprovider/handler",
+        "//pkg/go/interconnectprovider",
         "//pkg/go/server",
         "@com_github_rs_zerolog//:zerolog",
     ],

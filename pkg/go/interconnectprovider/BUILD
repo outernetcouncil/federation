@@ -19,9 +19,9 @@ package(
 )
 
 go_library(
-    name = "cosmicconnector",
-    srcs = ["cosmicconnector.go"],
-    importpath = "github.com/outernetcouncil/federation/pkg/go/cosmicconnector",
+    name = "interconnectprovider",
+    srcs = ["interconnectprovider.go"],
+    importpath = "github.com/outernetcouncil/federation/pkg/go/interconnectprovider",
     deps = [
         "//pkg/go/server",
         "@com_github_rs_zerolog//:zerolog",

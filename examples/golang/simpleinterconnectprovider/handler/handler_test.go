@@ -26,7 +26,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/testing/protocmp"
 
-	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
+	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 	inet "outernetcouncil.org/nmts/v1alpha/proto/types/ietf"
 )
 

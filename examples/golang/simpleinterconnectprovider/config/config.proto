@@ -16,11 +16,11 @@
 
 syntax = "proto3";
 
-package outernet.federation.v1alpha.cosmicconnector;
+package outernet.federation.v1alpha.simpleinterconnectprovider;
 
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/outernetcouncil/federation/gen/go/examples/golang/cosmicconnector/config;configpb";
+option go_package = "github.com/outernetcouncil/federation/gen/go/examples/golang/simpleinterconnectprovider/config;configpb";
 
 // A strategy for signing a JWT.
 message SigningStrategy {
