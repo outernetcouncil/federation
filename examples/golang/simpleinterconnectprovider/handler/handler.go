@@ -20,6 +20,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"outernetcouncil.org/nmts/v1alpha/proto/ek/physical"
 
 	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 )
@@ -43,20 +44,70 @@ func NewPrototypeHandler() *PrototypeHandler {
 }
 
 func (p *PrototypeHandler) ListCompatibleTransceiverTypes(context.Context, *pb.ListCompatibleTransceiverTypesRequest) (*pb.ListCompatibleTransceiverTypesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCompatibleTransceiverTypes not implemented")
+	// TODO: Is this enough as an example? Constraining the antenna types?
+	return &pb.ListCompatibleTransceiverTypesResponse{
+		CompatibleTransceiverTypes: []*pb.CompatibleTransceiverType{
+			{
+				TransceiverFilter: "transmit_signal_chain.antenna.type = OPTICAL AND receive_signal_chain.antenna.type = OPTICAL",
+			},
+		},
+	}, nil
 }
-func (p *PrototypeHandler) GetTransceiver(context.Context, *pb.GetTransceiverRequest) (*pb.Transceiver, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTransceiver not implemented")
+
+func (p *PrototypeHandler) GetTransceiver(ctx context.Context, trans *pb.GetTransceiverRequest) (*pb.Transceiver, error) {
+	// TODO: Is name here the same as ID? It's a bit weird that the request has a separate ID field, but the update, get and Delete does not...
+	if p.transceivers[trans.Name] == nil {
+		return nil, status.Errorf(codes.NotFound, "transceiver with requested ID was not found")
+	}
+
+	return p.transceivers[trans.Name], nil
 }
-func (p *PrototypeHandler) CreateTransceiver(context.Context, *pb.CreateTransceiverRequest) (*pb.Transceiver, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateTransceiver not implemented")
+
+func (p *PrototypeHandler) CreateTransceiver(_ context.Context, trans *pb.CreateTransceiverRequest) (*pb.Transceiver, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.transceivers[trans.TransceiverId] != nil {
+		return nil, status.Errorf(codes.AlreadyExists, "transceiver with requested ID was already created")
+	}
+	if trans.Transceiver.ReceiveSignalChain == nil ||
+		trans.Transceiver.TransmitSignalChain == nil ||
+		trans.Transceiver.ReceiveSignalChain.Antenna == nil ||
+		trans.Transceiver.TransmitSignalChain.Antenna == nil ||
+		trans.Transceiver.TransmitSignalChain.Antenna.Type != physical.Antenna_OPTICAL ||
+		trans.Transceiver.ReceiveSignalChain.Antenna.Type != physical.Antenna_OPTICAL {
+		return nil, status.Errorf(codes.FailedPrecondition, "transceiver is not compatible, see ListCompatibleTransceiverTypes for details")
+	}
+	p.transceivers[trans.TransceiverId] = trans.Transceiver
+
+	return trans.Transceiver, nil
 }
-func (p *PrototypeHandler) UpdateTransceiver(context.Context, *pb.UpdateTransceiverRequest) (*pb.Transceiver, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateTransceiver not implemented")
+
+func (p *PrototypeHandler) UpdateTransceiver(_ context.Context, trans *pb.UpdateTransceiverRequest) (*pb.Transceiver, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	// TODO: Is name here the same as ID? It's a bit weird that the request has a separate ID field, but the update, get and Delete does not...
+	if p.transceivers[trans.Transceiver.Name] == nil {
+		return nil, status.Errorf(codes.NotFound, "transceiver with requested ID was not found")
+	}
+	p.transceivers[trans.Transceiver.Name] = trans.Transceiver
+
+	return trans.Transceiver, nil
 }
-func (p *PrototypeHandler) DeleteTransceiver(context.Context, *pb.DeleteTransceiverRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteTransceiver not implemented")
+
+func (p *PrototypeHandler) DeleteTransceiver(_ context.Context, trans *pb.DeleteTransceiverRequest) (*emptypb.Empty, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	// TODO: Is name here the same as ID? It's a bit weird that the request has a separate ID field, but the update, get and Delete does not...
+	if p.transceivers[trans.Name] == nil {
+		return nil, status.Errorf(codes.NotFound, "transceiver with requested ID was not found")
+	}
+	delete(p.transceivers, trans.Name)
+
+	return &emptypb.Empty{}, nil
 }
+
 func (p *PrototypeHandler) ListContactWindows(context.Context, *pb.ListContactWindowsRequest) (*pb.ListContactWindowsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListContactWindows not implemented")
 }

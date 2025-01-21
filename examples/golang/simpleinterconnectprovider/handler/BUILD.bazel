@@ -27,7 +27,7 @@ go_library(
         "@org_golang_google_protobuf//types/known/emptypb",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
-        "@org_outernetcouncil_nmts//v1alpha/proto/types/ietf:ietf_go_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
     ],
 )
 
@@ -44,6 +44,6 @@ go_test(
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
         "@org_golang_google_protobuf//testing/protocmp",
-        "@org_outernetcouncil_nmts//v1alpha/proto/types/ietf:ietf_go_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
     ],
 )
