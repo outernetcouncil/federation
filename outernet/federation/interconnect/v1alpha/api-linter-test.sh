@@ -28,7 +28,7 @@ process_virtual_imports() {
 
 all_paths=$(process_virtual_imports "../org_outernetcouncil_nmts+")
 
-api-linter outernet/federation/interconnect/v1alpha/interconnect.proto \
+../gazelle++go_deps+com_github_googleapis_api_linter/cmd/api-linter/api-linter_/api-linter outernet/federation/interconnect/v1alpha/interconnect.proto \
     -I "$path_before_bazel_out" \
 	-I "../googleapis+" \
 	--descriptor-set-in "$path_before_bazel_out"protobuf+/src/google/protobuf/duration_proto-descriptor-set.proto.bin \

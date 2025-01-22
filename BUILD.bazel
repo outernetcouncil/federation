@@ -25,4 +25,3 @@ go_path(
         "//pkg/go/interconnectprovider:interconnectprovider",
     ],
 )
-

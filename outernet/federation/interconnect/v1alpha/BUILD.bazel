@@ -15,6 +15,7 @@
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_buf//buf:defs.bzl", "buf_lint_test")
+load("@rules_go//go:def.bzl", "go_library", "go_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 buf_lint_test(
@@ -72,5 +73,6 @@ sh_test(
         "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:motion_proto",
         "@protobuf//:duration_proto",
         "@protobuf//:empty_proto",
-    ]
+        "@com_github_googleapis_api_linter//cmd/api-linter:api-linter"
+    ],
 )
