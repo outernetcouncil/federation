@@ -15,6 +15,7 @@
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_buf//buf:defs.bzl", "buf_lint_test")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 buf_lint_test(
     name = "federation_interconnect_lint_test",
@@ -54,4 +55,22 @@ go_proto_library(
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto",
     ],
+)
+
+sh_test(
+    name = "api_linter_test",
+    srcs = ["api-linter-test.sh"],
+    data = [
+        "interconnect.proto",
+        "@googleapis//google/type:interval_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto:nmts_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:antenna_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:modem_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:platform_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:signal_processing_chain_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:transceiver_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:motion_proto",
+        "@protobuf//:duration_proto",
+        "@protobuf//:empty_proto",
+    ]
 )
