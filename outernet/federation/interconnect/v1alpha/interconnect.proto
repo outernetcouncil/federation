@@ -300,7 +300,7 @@ message Bearer {
   // The client's transceiver.
   string transceiver = 3 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "AttachmentCircuit"
+    (google.api.resource_reference).type = "Transceiver"
   ];
 
   string target = 4 [
