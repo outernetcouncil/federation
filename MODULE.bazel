@@ -78,7 +78,9 @@ go_deps.module(
     sum = "h1:sW/y+bPF9vHKDF0BlflyOSMJNNsGipZSoG64egByV0s=",
     version = "v1.68.0",
 )
-# Dependencies of api-lint
+# ---------------------------
+# Start of dependencies for api-lint only, may hopefully be swapped by https://github.com/googleapis/api-linter/issues/945 or https://github.com/googleapis/api-linter/issues/1095 eventually
+# ---------------------------
 go_deps.module(
     path = "honnef.co/go/tools",
     sum = "h1:oFEHCKeID7to/3autwsWfnuv69j3NsfcXbvJKuIcep8=",
@@ -469,13 +471,15 @@ go_deps.module(
     version = "v0.0.0-20191204190536-9bdfabe68543",
 )
 
-
 go_deps.gazelle_override(
     path = "github.com/bufbuild/protocompile",
     directives = [
         "gazelle:proto disable"
     ]
 )
+# ---------------------------
+# End of dependencies for api-lint only
+# ---------------------------
 
 use_repo(
     go_deps,
@@ -488,7 +492,7 @@ use_repo(
     "org_golang_google_grpc",
     "org_golang_google_protobuf",
     "org_golang_x_sync",
-    # Dependencies of api-lint
+    # The following are the dependencies of api-lint
     "co_honnef_go_tools",
     "com_github_bmatcuk_doublestar_v4",
     "com_github_bufbuild_protocompile",
