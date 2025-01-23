@@ -18,8 +18,6 @@
 // TODO: Rules that require extensive changes but should probably be fixed
 // (-- api-linter: core::0192::has-comments=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
-// (-- api-linter: core::0140::reserved-words=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
 
 // TODO: List rules should be paginated
 // (-- api-linter: core::0158::response-next-page-token-field=disabled
@@ -332,7 +330,7 @@ message AttachmentCircuit {
 
       oneof type {
         google.protobuf.Empty dynamic = 1;
-        Static static = 2;
+        Static static_type = 2;
       }
     }
 
@@ -362,7 +360,7 @@ message AttachmentCircuit {
     }
 
     oneof type {
-      Static static = 1;
+      Static static_type = 1;
       google.protobuf.Empty direct = 3;
     }
   }
