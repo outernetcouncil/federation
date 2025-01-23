@@ -249,10 +249,12 @@ message ContactWindow {
     (google.api.field_behavior) = REQUIRED
   ];
   string transceiver = 3 [
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "Transceiver"
   ];
   string target = 4 [
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "Target"
   ];
   int64 min_rx_center_frequency_hz = 5 [
     (google.api.field_behavior) = REQUIRED
@@ -304,7 +306,8 @@ message Bearer {
   ];
 
   string target = 4 [
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "Target"
   ];
 
   int64 rx_center_frequency_hz = 5 [
