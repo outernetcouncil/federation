@@ -33,10 +33,6 @@
 // (-- api-linter: core::0121::resource-must-support-get=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
 
-// TODO: Missing optional, required, etc.
-// (-- api-linter: core::0203::field-behavior-required=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
-
 syntax = "proto3";
 
 package outernet.federation.interconnect.v1alpha;
@@ -187,26 +183,50 @@ message Transceiver {
   };
 
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
-  ReceiveSignalChain receive_signal_chain = 2;
-  TransmitSignalChain transmit_signal_chain = 3;
+  ReceiveSignalChain receive_signal_chain = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  TransmitSignalChain transmit_signal_chain = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ReceiveSignalChain {
-  nmts.v1alpha.ek.physical.Demodulator demodulator = 1;
+  nmts.v1alpha.ek.physical.Demodulator demodulator = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
   repeated nmts.v1alpha.ek.physical.SignalProcessingChain
-    signal_processing_chains = 2;
-  nmts.v1alpha.ek.physical.Receiver receiver = 3;
-  nmts.v1alpha.ek.physical.Platform platform = 4;
-  nmts.v1alpha.ek.physical.Antenna antenna = 5;
+    signal_processing_chains = 2 [
+      (google.api.field_behavior) = REQUIRED
+    ];
+  nmts.v1alpha.ek.physical.Receiver receiver = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  nmts.v1alpha.ek.physical.Platform platform = 4 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  nmts.v1alpha.ek.physical.Antenna antenna = 5 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message TransmitSignalChain {
-  nmts.v1alpha.ek.physical.Modulator modulator = 1;
+  nmts.v1alpha.ek.physical.Modulator modulator = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
   repeated nmts.v1alpha.ek.physical.SignalProcessingChain
-    signal_processing_chains = 2;
-  nmts.v1alpha.ek.physical.Transmitter transmitter = 3;
-  nmts.v1alpha.ek.physical.Platform platform = 4;
-  nmts.v1alpha.ek.physical.Antenna antenna = 5;
+    signal_processing_chains = 2 [
+      (google.api.field_behavior) = REQUIRED
+    ];
+  nmts.v1alpha.ek.physical.Transmitter transmitter = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  nmts.v1alpha.ek.physical.Platform platform = 4 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  nmts.v1alpha.ek.physical.Antenna antenna = 5 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // An interval over which a client transceiver could feasibly connect to the
@@ -221,17 +241,39 @@ message ContactWindow {
   
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  google.type.Interval interval = 2;
-  string transceiver = 3;
-  string target = 4;
-  int64 min_rx_center_frequency_hz = 5;
-  int64 max_rx_center_frequency_hz = 6;
-  int64 min_rx_bandwidth_hz = 7;
-  int64 max_rx_bandwidth_hz = 8;
-  int64 min_tx_center_frequency_hz = 9;
-  int64 max_tx_center_frequency_hz = 10;
-  int64 min_tx_bandwidth_hz = 11;
-  int64 max_tx_bandwidth_hz = 12;
+  google.type.Interval interval = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string transceiver = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string target = 4 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 min_rx_center_frequency_hz = 5 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 max_rx_center_frequency_hz = 6 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 min_rx_bandwidth_hz = 7 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 max_rx_bandwidth_hz = 8 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 min_tx_center_frequency_hz = 9 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 max_tx_center_frequency_hz = 10 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 min_tx_bandwidth_hz = 11 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int64 max_tx_bandwidth_hz = 12 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // A bearer is the required underlying connection for the provisioning of an
@@ -247,7 +289,9 @@ message Bearer {
   // TODO: Major change: Bearer did not have a name, although DeleteBearerRequest refers to it.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
   
-  google.type.Interval interval = 2;
+  google.type.Interval interval = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The client's transceiver.
   string transceiver = 3 [
@@ -272,7 +316,9 @@ message Bearer {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  Mac mac = 9;
+  Mac mac = 9 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // An attachment circuit is a means of attaching to a router.
@@ -294,7 +340,9 @@ message AttachmentCircuit {
   message L2Connection {
     message Encapsulation {
       message Dot1Q {
-        int32 cvlan_id = 1;
+        int32 cvlan_id = 1 [
+          (google.api.field_behavior) = REQUIRED
+        ];
       }
       oneof type {
         google.protobuf.Empty ethernet = 1;
@@ -306,7 +354,9 @@ message AttachmentCircuit {
       message L2TunnelService {
         message Pseudowire {
           // Far end IP address.
-          string far_end = 1;
+          string far_end = 1 [
+            (google.api.field_behavior) = REQUIRED
+          ];
         }
 
         oneof type {
@@ -318,28 +368,40 @@ message AttachmentCircuit {
       }
     }
 
-    Encapsulation encapsulation = 1;
-    L2Service l2_service = 2;
+    Encapsulation encapsulation = 1 [
+      (google.api.field_behavior) = REQUIRED
+    ];
+    L2Service l2_service = 2 [
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
 
   message IpConnection {
     message AllocationType {
       message Static {
-        repeated string client_addresses = 1;
+        repeated string client_addresses = 1 [
+          (google.api.field_behavior) = REQUIRED
+        ];
       }
 
       oneof type {
         google.protobuf.Empty dynamic = 1;
-        Static static_type = 2;
+        Static static_type = 2 ;
       }
     }
 
-    string provider_address = 1;
-    int32 prefix_length = 2;
+    string provider_address = 1 [
+      (google.api.field_behavior) = REQUIRED
+    ];
+    int32 prefix_length = 2 [
+      (google.api.field_behavior) = REQUIRED
+    ];
 
     // Specifies the IP address allocation service provided to the client's
     // network by the service provider's network.
-    AllocationType allocation_type = 3;
+    AllocationType allocation_type = 3 [
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
 
   message RoutingProtocol {
@@ -349,14 +411,20 @@ message AttachmentCircuit {
         //
         // An IP or IPv6 address optionally followed by a slash and the prefix
         // length.
-        string prefix = 1;
+        string prefix = 1 [
+          (google.api.field_behavior) = REQUIRED
+        ];
 
         // The next hop to be used for the static route.
         //
         // An IP or IPv6 address.
-        string next_hop = 2;
+        string next_hop = 2 [
+          (google.api.field_behavior) = REQUIRED
+        ];
       }
-      repeated Prefix prefixes = 1;
+      repeated Prefix prefixes = 1 [
+        (google.api.field_behavior) = REQUIRED
+      ];
     }
 
     oneof type {
@@ -366,10 +434,18 @@ message AttachmentCircuit {
   }
 
 
-  google.type.Interval interval = 2;
-  L2Connection l2_connection = 3;
-  IpConnection ip_connection = 4;
-  repeated RoutingProtocol routing_protocols = 5;
+  google.type.Interval interval = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  L2Connection l2_connection = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  IpConnection ip_connection = 4 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  repeated RoutingProtocol routing_protocols = 5 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // The attributes of a target that are required for interconnection, such as the
@@ -384,7 +460,9 @@ message Target {
   
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  nmts.v1alpha.types.geophys.Motion motion = 2;
+  nmts.v1alpha.types.geophys.Motion motion = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // (-- api-linter: core::0132::request-parent-required=disabled
@@ -417,7 +495,9 @@ message CreateTransceiverRequest {
 // (-- api-linter: core::0134::request-mask-required=disabled
 //     aip.dev/not-precedent: We require the full data every time. --)
 message UpdateTransceiverRequest {
-  Transceiver transceiver = 1;
+  Transceiver transceiver = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message DeleteTransceiverRequest {
@@ -428,19 +508,27 @@ message DeleteTransceiverRequest {
 }
 
 message ListContactWindowsRequest {
-  string filter = 1;
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message ListContactWindowsResponse {
-  repeated ContactWindow contact_windows = 1;
+  repeated ContactWindow contact_windows = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ListBearersRequest {
-  string filter = 1;
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message ListBearersResponse {
-  repeated Bearer bearers = 1;
+  repeated Bearer bearers = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message CreateBearerRequest {
@@ -461,11 +549,15 @@ message DeleteBearerRequest {
 }
 
 message ListAttachmentCircuitsRequest {
-  string filter = 1;
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message ListAttachmentCircuitsResponse {
-  repeated AttachmentCircuit attachment_circuits = 1;
+  repeated AttachmentCircuit attachment_circuits = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message CreateAttachmentCircuitRequest {
@@ -496,7 +588,9 @@ message ListTargetsRequest {
 }
 
 message ListTargetsResponse {
-  repeated Target targets = 1;
+  repeated Target targets = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // A MAC protocol.
