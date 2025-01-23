@@ -30,6 +30,9 @@ proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googleapis//google/type:interval_proto",
+        "@googleapis//google/api:field_behavior_proto",
+        "@googleapis//google/api:client_proto",
+        "@googleapis//google/api:resource_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto:nmts_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:antenna_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:modem_proto",
@@ -53,6 +56,7 @@ go_proto_library(
     visibility = ["//visibility:public"],
     deps = [
         "@org_golang_google_genproto//googleapis/type/interval",
+        "@org_golang_google_genproto_googleapis_api//annotations",
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto",
     ],
@@ -64,6 +68,9 @@ sh_test(
     data = [
         "interconnect.proto",
         "@googleapis//google/type:interval_proto",
+        "@googleapis//google/api:field_behavior_proto",
+        "@googleapis//google/api:client_proto",
+        "@googleapis//google/api:resource_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto:nmts_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:antenna_proto",
         "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:modem_proto",
