@@ -27,11 +27,6 @@
 // (-- api-linter: core::0158::request-page-token-field=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
 
-// TODO Missing methods
-// (-- api-linter: core::0121::resource-must-support-list=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
-// (-- api-linter: core::0121::resource-must-support-get=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
 
 syntax = "proto3";
 
@@ -64,6 +59,8 @@ option java_package = "com.github.outernet.federation.interconnect.v1alpha";
 // which connectivity is available. This wireless link could be a link to an
 // optical terminal on a low-Earth-orbiting satellite, or it could be a link to
 // a ground station, among other possibilities.
+// (-- api-linter: core::0121::resource-must-support-get=disabled
+//     aip.dev/not-precedent: This requires a GetContactWindow method, which does not really make any sense. --)
 service InterconnectService {
   // Lists the types of transceivers with which the connectivity service
   // provider's network is compatible. This enables the client to provide the
@@ -71,6 +68,10 @@ service InterconnectService {
   // feasibly be capable of connecting to the service provider's network.
   rpc ListCompatibleTransceiverTypes(ListCompatibleTransceiverTypesRequest)
     returns (ListCompatibleTransceiverTypesResponse) {}
+
+  // Lists all client-operated wireless transceivers.
+  rpc ListTransceivers(ListTransceiversRequest)
+    returns(ListTransceiversResponse) {}
 
   // Gets the definition of a client-operated wireless transceiver.
   rpc GetTransceiver(GetTransceiverRequest)
@@ -109,6 +110,12 @@ service InterconnectService {
   rpc ListContactWindows(ListContactWindowsRequest)
     returns (ListContactWindowsResponse) {}
 
+  // Gets a bearer.
+  rpc GetBearer(GetBearerRequest)
+  returns (Bearer) {
+    option (google.api.method_signature) = "name";
+  }
+
   // Lists bearers.
   rpc ListBearers(ListBearersRequest)
     returns (ListBearersResponse) {}
@@ -128,6 +135,12 @@ service InterconnectService {
   // Lists attachment circuits.
   rpc ListAttachmentCircuits(ListAttachmentCircuitsRequest)
     returns (ListAttachmentCircuitsResponse) {}
+
+  // Gets an attachment circuit.
+  rpc GetAttachmentCircuit(GetAttachmentCircuitRequest)
+  returns (AttachmentCircuit) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates an attachment circuit.
   rpc CreateAttachmentCircuit(CreateAttachmentCircuitRequest)
@@ -474,6 +487,18 @@ message ListCompatibleTransceiverTypesResponse {
   repeated CompatibleTransceiverType compatible_transceiver_types = 1;
 }
 
+message ListTransceiversRequest {
+  string filter = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListTransceiversResponse {
+  repeated Transceiver transceivers = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
 message GetTransceiverRequest {
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -519,6 +544,13 @@ message ListContactWindowsResponse {
   ];
 }
 
+message GetBearerRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "interconnect.outernetcouncil.org/Bearer"
+  ];
+}
+
 message ListBearersRequest {
   string filter = 1 [
     (google.api.field_behavior) = OPTIONAL
@@ -557,6 +589,13 @@ message ListAttachmentCircuitsRequest {
 message ListAttachmentCircuitsResponse {
   repeated AttachmentCircuit attachment_circuits = 1 [
     (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GetAttachmentCircuitRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "interconnect.outernetcouncil.org/AttachmentCircuit"
   ];
 }
 
