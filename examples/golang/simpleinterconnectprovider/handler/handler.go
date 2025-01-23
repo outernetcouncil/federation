@@ -15,142 +15,72 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"sync"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
-	inet "outernetcouncil.org/nmts/v1alpha/proto/types/ietf"
 )
 
 type PrototypeHandler struct {
 	pb.UnimplementedInterconnectServiceServer
-	mu               sync.Mutex
-	services         map[string]*pb.ServiceStatus
-	interconnections map[string]*pb.InterconnectionPoint
+	mu                 sync.Mutex
+	transceivers       map[string]*pb.Transceiver
+	bearers            map[string]*pb.Bearer
+	target             map[string]*pb.Target
+	attachmentCircuits map[string]*pb.AttachmentCircuit
 }
 
 func NewPrototypeHandler() *PrototypeHandler {
 	return &PrototypeHandler{
-		services:         make(map[string]*pb.ServiceStatus),
-		interconnections: make(map[string]*pb.InterconnectionPoint),
+		transceivers:       make(map[string]*pb.Transceiver),
+		bearers:            make(map[string]*pb.Bearer),
+		target:             make(map[string]*pb.Target),
+		attachmentCircuits: make(map[string]*pb.AttachmentCircuit),
 	}
 }
 
-func (h *PrototypeHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.FederationService_StreamInterconnectionPointsServer) error {
-	h.mu.Lock()
-	defer h.mu.Unlock()
-
-	chunk := &pb.StreamInterconnectionPointsResponse{
-		SnapshotComplete: &pb.StreamInterconnectionPointsResponse_SnapshotComplete{},
-	}
-
-	for _, ip := range h.interconnections {
-		chunk.Mutations = append(chunk.Mutations, &pb.InterconnectionMutation{
-			Type: &pb.InterconnectionMutation_Upsert{
-				Upsert: ip,
-			},
-		})
-	}
-
-	if err := stream.Send(chunk); err != nil {
-		return err
-	}
-
-	if req.SnapshotOnly != nil && *req.SnapshotOnly {
-		return nil
-	}
-
-	<-stream.Context().Done()
-	return stream.Context().Err()
+func (p *PrototypeHandler) ListCompatibleTransceiverTypes(context.Context, *pb.ListCompatibleTransceiverTypesRequest) (*pb.ListCompatibleTransceiverTypesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCompatibleTransceiverTypes not implemented")
 }
-
-func (h *PrototypeHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.FederationService_ListServiceOptionsServer) error {
-	ipNetwork := &inet.IPNetwork{
-		Prefix: &inet.IPPrefix{
-			Version: &inet.IPPrefix_Ipv4{
-				Ipv4: &inet.IPv4Prefix{
-					Str: "192.168.1.0/24",
-				},
-			},
-		},
-		// Optionally set realm if needed
-		Realm: "",
-	}
-
-	response := &pb.ListServiceOptionsResponse{
-		ServiceOptions: []*pb.ServiceOption{
-			{
-				Id: "sample-service-option",
-				EndpointX: &pb.ServiceOption_XProviderInterconnection{
-					XProviderInterconnection: &pb.InterconnectionPoint{
-						Uuid: "sample-provider-interconnection",
-					},
-				},
-				EndpointY: &pb.ServiceOption_IpNetwork{
-					IpNetwork: ipNetwork,
-				},
-				Directionality: pb.Directionality_DIRECTIONALITY_BIDIRECTIONAL,
-			},
-		},
-	}
-
-	return stream.Send(response)
+func (p *PrototypeHandler) GetTransceiver(context.Context, *pb.GetTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransceiver not implemented")
 }
-
-func (h *PrototypeHandler) ScheduleService(ctx context.Context, req *pb.ScheduleServiceRequest) (*pb.ScheduleServiceResponse, error) {
-	h.mu.Lock()
-	defer h.mu.Unlock()
-
-	serviceID := fmt.Sprintf("service-%d", len(h.services)+1)
-	h.services[serviceID] = &pb.ServiceStatus{
-		Id: serviceID,
-		Type: &pb.ServiceStatus_ServiceUpdate_{
-			ServiceUpdate: &pb.ServiceStatus_ServiceUpdate{
-				IsActive: true,
-			},
-		},
-	}
-
-	return &pb.ScheduleServiceResponse{
-		ServiceId: serviceID,
-	}, nil
+func (p *PrototypeHandler) CreateTransceiver(context.Context, *pb.CreateTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTransceiver not implemented")
 }
-
-func (h *PrototypeHandler) MonitorServices(stream pb.FederationService_MonitorServicesServer) error {
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-
-		h.mu.Lock()
-		for _, serviceID := range req.AddServiceIds {
-			if status, exists := h.services[serviceID]; exists {
-				if err := stream.Send(&pb.MonitorServicesResponse{
-					UpdatedServices: []*pb.ServiceStatus{status},
-				}); err != nil {
-					h.mu.Unlock()
-					return err
-				}
-			}
-		}
-		h.mu.Unlock()
-	}
+func (p *PrototypeHandler) UpdateTransceiver(context.Context, *pb.UpdateTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTransceiver not implemented")
 }
-
-func (h *PrototypeHandler) CancelService(ctx context.Context, req *pb.CancelServiceRequest) (*pb.CancelServiceResponse, error) {
-	h.mu.Lock()
-	defer h.mu.Unlock()
-
-	if _, exists := h.services[req.ServiceId]; !exists {
-		return nil, status.Errorf(codes.NotFound, "service %s not found", req.ServiceId)
-	}
-
-	delete(h.services, req.ServiceId)
-	return &pb.CancelServiceResponse{
-		Cancelled: true,
-	}, nil
+func (p *PrototypeHandler) DeleteTransceiver(context.Context, *pb.DeleteTransceiverRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTransceiver not implemented")
+}
+func (p *PrototypeHandler) ListContactWindows(context.Context, *pb.ListContactWindowsRequest) (*pb.ListContactWindowsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListContactWindows not implemented")
+}
+func (p *PrototypeHandler) ListBearers(context.Context, *pb.ListBearersRequest) (*pb.ListBearersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBearers not implemented")
+}
+func (p *PrototypeHandler) CreateBearer(context.Context, *pb.CreateBearerRequest) (*pb.Bearer, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBearer not implemented")
+}
+func (p *PrototypeHandler) DeleteBearer(context.Context, *pb.DeleteBearerRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBearer not implemented")
+}
+func (p *PrototypeHandler) ListAttachmentCircuits(context.Context, *pb.ListAttachmentCircuitsRequest) (*pb.ListAttachmentCircuitsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAttachmentCircuits not implemented")
+}
+func (p *PrototypeHandler) CreateAttachmentCircuit(context.Context, *pb.CreateAttachmentCircuitRequest) (*pb.AttachmentCircuit, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAttachmentCircuit not implemented")
+}
+func (p *PrototypeHandler) DeleteAttachmentCircuit(context.Context, *pb.DeleteAttachmentCircuitRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAttachmentCircuit not implemented")
+}
+func (p *PrototypeHandler) GetTarget(context.Context, *pb.GetTargetRequest) (*pb.Target, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTarget not implemented")
+}
+func (p *PrototypeHandler) ListTargets(context.Context, *pb.ListTargetsRequest) (*pb.ListTargetsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTargets not implemented")
 }
