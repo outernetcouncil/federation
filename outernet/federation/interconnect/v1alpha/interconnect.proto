@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// (-- api-linter: core::0127::http-annotation=disabled
-//     aip.dev/not-precedent: The API is not yet intended to be used directly by REST services, so we don't provide a direct mapping. --)
-
 // TODO: Rules that require extensive changes but should probably be fixed
 // (-- api-linter: core::0192::has-comments=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
@@ -34,8 +31,9 @@ package outernet.federation.interconnect.v1alpha;
 
 import "google/protobuf/empty.proto";
 import "google/type/interval.proto";
-import "google/api/field_behavior.proto";
+import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "nmts/v1alpha/proto/ek/physical/antenna.proto";
 import "nmts/v1alpha/proto/ek/physical/modem.proto";
@@ -67,16 +65,27 @@ service InterconnectService {
   // service provider with the details of only the transceivers that might
   // feasibly be capable of connecting to the service provider's network.
   rpc ListCompatibleTransceiverTypes(ListCompatibleTransceiverTypesRequest)
-    returns (ListCompatibleTransceiverTypesResponse) {}
+    returns (ListCompatibleTransceiverTypesResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/compatibleTransceivers"
+      };
+    }
 
   // Lists all client-operated wireless transceivers.
   rpc ListTransceivers(ListTransceiversRequest)
-    returns(ListTransceiversResponse) {}
+    returns(ListTransceiversResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/transceivers"
+      };
+    }
 
   // Gets the definition of a client-operated wireless transceiver.
   rpc GetTransceiver(GetTransceiverRequest)
     returns (Transceiver) {
       option (google.api.method_signature) = "name";
+      option (google.api.http) = {
+        get: "/v1alpha/{name=transceivers/*}"
+      };
     }
 
   // Creates a transceiver resource representing a client-operated wireless
@@ -88,70 +97,115 @@ service InterconnectService {
   rpc CreateTransceiver(CreateTransceiverRequest)
     returns (Transceiver) {
       option (google.api.method_signature) = "transceiver,transceiver_id";
+      option (google.api.http) = {
+        post: "/v1alpha/transceivers"
+        body: "transceiver"
+      };
     }
 
   // Updates a transceiver. May be used to update a transceiver's predicted
   // trajectory, for example. The full transceiver data must always be submitted.
+  // (-- api-linter: core::0134::http-method=disabled
+  //     aip.dev/not-precedent: We require the full data every time. --)
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: We require the full data every time. --)
   rpc UpdateTransceiver(UpdateTransceiverRequest)
     returns (Transceiver) {
       option (google.api.method_signature) = "transceiver";
+      option (google.api.http) = {
+        put: "/v1alpha/{transceiver.name=transceivers/*}"
+        body: "transceiver"
+      };
     }
 
   // Deletes a transceiver.
   rpc DeleteTransceiver(DeleteTransceiverRequest)
     returns (google.protobuf.Empty) {
       option (google.api.method_signature) = "name";
+      option (google.api.http) = {
+        delete: "/v1alpha/{name=transceivers/*}"
+      };
     }
 
   // Lists all available contact windows between client-operated transceivers
   // and those in the connectivity service provider's network.
   rpc ListContactWindows(ListContactWindowsRequest)
-    returns (ListContactWindowsResponse) {}
+    returns (ListContactWindowsResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/contactWindows"
+      };
+    }
+
+  // Lists bearers.
+  rpc ListBearers(ListBearersRequest)
+    returns (ListBearersResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/bearers"
+      };
+    }
 
   // Gets a bearer.
   rpc GetBearer(GetBearerRequest)
   returns (Bearer) {
     option (google.api.method_signature) = "name";
+    option (google.api.http) = {
+      get: "/v1alpha/{name=bearers/*}"
+    };
   }
-
-  // Lists bearers.
-  rpc ListBearers(ListBearersRequest)
-    returns (ListBearersResponse) {}
 
   // Creates a bearer.
   rpc CreateBearer(CreateBearerRequest)
     returns (Bearer) {
       option (google.api.method_signature) = "bearer,bearer_id";
+      option (google.api.http) = {
+        post: "/v1alpha/bearers"
+        body: "bearer"
+      };
     }
 
   // Deletes a bearer.
   rpc DeleteBearer(DeleteBearerRequest)
     returns (google.protobuf.Empty) {
       option (google.api.method_signature) = "name";
+      option (google.api.http) = {
+        delete: "/v1alpha/{name=bearers/*}"
+      };
     }
 
   // Lists attachment circuits.
   rpc ListAttachmentCircuits(ListAttachmentCircuitsRequest)
-    returns (ListAttachmentCircuitsResponse) {}
+    returns (ListAttachmentCircuitsResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/attachmentCircuits"
+      };
+    }
 
   // Gets an attachment circuit.
   rpc GetAttachmentCircuit(GetAttachmentCircuitRequest)
   returns (AttachmentCircuit) {
     option (google.api.method_signature) = "name";
+    option (google.api.http) = {
+      get: "/v1alpha/{name=attachmentCircuits/*}"
+    };
   }
 
   // Creates an attachment circuit.
   rpc CreateAttachmentCircuit(CreateAttachmentCircuitRequest)
     returns (AttachmentCircuit) {
       option (google.api.method_signature) = "attachment_circuit,attachment_circuit_id";
+      option (google.api.http) = {
+        post: "/v1alpha/attachmentCircuits"
+        body: "attachment_circuit"
+      };
     }
 
   // Deletes an attachment circuit.
   rpc DeleteAttachmentCircuit(DeleteAttachmentCircuitRequest)
     returns (google.protobuf.Empty) {
       option (google.api.method_signature) = "name";
+      option (google.api.http) = {
+        delete: "/v1alpha/{name=attachmentCircuits/*}"
+      };
     }
 
   // Gets attributes of a target that are required for interconnection, such
@@ -159,13 +213,20 @@ service InterconnectService {
   rpc GetTarget(GetTargetRequest)
     returns (Target) {
       option (google.api.method_signature) = "name";
+      option (google.api.http) = {
+        get: "/v1alpha/{name=targets/*}"
+      };
     }
 
   // Lists all targets. This may not list all target assets in the service
   // provider's network. It may only return those targets referenced in contact
   // windows visible to the client.
   rpc ListTargets(ListTargetsRequest)
-    returns (ListTargetsResponse) {}
+    returns (ListTargetsResponse) {
+      option (google.api.http) = {
+        get: "/v1alpha/targets"
+      };
+    }
 }
 
 // Defines a class of transceivers that are compatible with the connectivity
@@ -482,7 +543,7 @@ message Target {
 }
 
 // (-- api-linter: core::0132::request-parent-required=disabled
-//     aip.dev/not-precedent: AIP requires resources to be a directed, acyclic graph with one origin, but we have a flat hierarchy, so parents don't exist today. --)
+//     aip.dev/not-precedent: This is supposed to be a top-level request, so no parent is required. --)
 message ListCompatibleTransceiverTypesRequest {
 }
 
