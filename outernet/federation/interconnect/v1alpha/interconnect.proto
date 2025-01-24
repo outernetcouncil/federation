@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// TODO: Rules that require extensive changes but should probably be fixed
 // (-- api-linter: core::0192::has-comments=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
+//     aip.dev/not-precedent: We need to do this because the linter requires comments over every field, which is a bit too much. --)
 
 // TODO: Pagination of List responses will be added in a future version of the API
 // (-- api-linter: core::0158::response-next-page-token-field=disabled
@@ -315,13 +314,18 @@ message ContactWindow {
   
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
+  // The interval over which contact is feasible.
   google.type.Interval interval = 2 [
     (google.api.field_behavior) = REQUIRED
   ];
+
+  // The name of the client's transceiver. Together with the target, it defines the endpoints of a feasible connection.
   string transceiver = 3 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "Transceiver"
   ];
+
+  // The name of the provider's target. Together with the target, it defines the endpoints of a feasible connection.
   string target = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "Target"
@@ -352,8 +356,10 @@ message ContactWindow {
   ];
 }
 
-// A bearer is the required underlying connection for the provisioning of an
-// attachment circuit.
+// TODO: Update documentation once RFCs are defined.
+// A bearer is the required underlying connection for the provisioning of an attachment circuit. 
+// It is used as defined in the current draft draft-ietf-opsawg-teas-attachment-circuit-20. 
+// Bearers must be defined within Contact Windows.
 message Bearer {
   option (google.api.resource) = {
     type: "interconnect.outernetcouncil.org/Bearer"
@@ -362,19 +368,20 @@ message Bearer {
     plural: "bearers"
   };
 
-  // TODO: Major change: Bearer did not have a name, although DeleteBearerRequest refers to it.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
   
+  // The interval over which the bearer is active. The interval must be covered by a contact window with the same specification.
   google.type.Interval interval = 2 [
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // The client's transceiver.
+  // The name of the client's transceiver. Together with the target, it defines the endpoints of the connection.
   string transceiver = 3 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "Transceiver"
   ];
 
+  // The name of the provider's target. Together with the target, it defines the endpoints of the connection.
   string target = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "Target"
@@ -411,7 +418,6 @@ message AttachmentCircuit {
     plural: "attachmentCircuits"
   };
   
-  // TODO: Major change: Bearer did not have a name, although it is referred to.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   message L2Connection {
