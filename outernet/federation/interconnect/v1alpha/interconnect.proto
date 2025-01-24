@@ -117,7 +117,9 @@ service InterconnectService {
       };
     }
 
-  // Deletes a transceiver.
+  // Deletes a transceiver. Transceivers may only be deleted if no bearer's are
+  // currently created between the transceiver and a target. In this case, the API
+  // will return a FAILED_PRECONDITION.
   rpc DeleteTransceiver(DeleteTransceiverRequest)
     returns (google.protobuf.Empty) {
       option (google.api.method_signature) = "name";
@@ -135,7 +137,7 @@ service InterconnectService {
       };
     }
 
-  // Lists bearers.
+  // Lists all bearers created between client-operated transceivers and provider's targets.
   rpc ListBearers(ListBearersRequest)
     returns (ListBearersResponse) {
       option (google.api.http) = {
@@ -143,7 +145,7 @@ service InterconnectService {
       };
     }
 
-  // Gets a bearer.
+  // Gets the information for a specific bearer created between a client's transceiver and a provider's target.
   rpc GetBearer(GetBearerRequest)
   returns (Bearer) {
     option (google.api.method_signature) = "name";
@@ -152,7 +154,13 @@ service InterconnectService {
     };
   }
 
-  // Creates a bearer.
+  // Creates a bearer. A bearer defines the physical connection necessary to create attachment circuits (data links)
+  // between client operated hardware and the provider's network. Bearers must reside within a contact window 
+  // both in terms of the time interval of their provisioning and the frequency band information. However, multiple
+  // bearers may in principle occupy the same contact window if their respective frequency bands or time intervals do not overlap.
+  // The provider can limit this possibility if their hardware does not support multiple bearers on different frequency bands at
+  // the same time.
+  // If the bearer cannot be created because it is not part of a valid contact window, the service should return a FAILED_RPECONDITION.
   rpc CreateBearer(CreateBearerRequest)
     returns (Bearer) {
       option (google.api.method_signature) = "bearer,bearer_id";
@@ -162,7 +170,8 @@ service InterconnectService {
       };
     }
 
-  // Deletes a bearer.
+  // Deletes a bearer. Bearers can only be deleted if no attachmet circuits are attached to a bearer.
+  // If an attachment circuit is still attached, the service should return a FAILED_RPECONDITION.
   rpc DeleteBearer(DeleteBearerRequest)
     returns (google.protobuf.Empty) {
       option (google.api.method_signature) = "name";
@@ -188,7 +197,10 @@ service InterconnectService {
     };
   }
 
-  // Creates an attachment circuit.
+  // Creates an attachment circuit. There is currently no API to check possible attachment circuits
+  // with the providers. It is assumed that the client and the provider know in advance what kind
+  // of attachment circuits are possible. If an attachment circuit is requested, which does not meet
+  // the provider's criteria, they may just respond with a FAILED_PRECONDITION. 
   rpc CreateAttachmentCircuit(CreateAttachmentCircuitRequest)
     returns (AttachmentCircuit) {
       option (google.api.method_signature) = "attachment_circuit,attachment_circuit_id";
@@ -405,11 +417,14 @@ message Bearer {
   ];
 }
 
+// TODO: Replace draft with RFC once they are out.
 // An attachment circuit is a means of attaching to a router.
 // Per Section 1.2 of RFC4364, it may be the sort of connection that is usually
 // thought of as a "data link", or it may be a tunnel of some sort; what matters
 // is that it be possible for two devices to be network layer peers over the
 // attachment circuit.
+// The L2Connection and therefore the attachment circuit is attached to a bearer. 
+// This message is similar to section A.2. in draft-ietf-opsawg-teas-attachment-circuit-20.
 message AttachmentCircuit {
   option (google.api.resource) = {
     type: "interconnect.outernetcouncil.org/AttachmentCircuit"
@@ -451,10 +466,15 @@ message AttachmentCircuit {
       }
     }
 
-    Encapsulation encapsulation = 1 [
+    string bearer = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.resource_reference).type = "interconnect.outernetcouncil.org/Bearer"
+    ];  
+
+    Encapsulation encapsulation = 2 [
       (google.api.field_behavior) = REQUIRED
     ];
-    L2Service l2_service = 2 [
+    L2Service l2_service = 3 [
       (google.api.field_behavior) = REQUIRED
     ];
   }
