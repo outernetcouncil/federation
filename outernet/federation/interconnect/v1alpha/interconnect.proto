@@ -19,6 +19,15 @@
 // (-- api-linter: core::0192::has-comments=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
 
+// TODO: List rules should be paginated
+// (-- api-linter: core::0158::response-next-page-token-field=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0158::request-page-size-field=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0158::request-page-token-field=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+
+
 syntax = "proto3";
 
 package outernet.federation.interconnect.v1alpha;
@@ -475,45 +484,14 @@ message Target {
 // (-- api-linter: core::0132::request-parent-required=disabled
 //     aip.dev/not-precedent: AIP requires resources to be a directed, acyclic graph with one origin, but we have a flat hierarchy, so parents don't exist today. --)
 message ListCompatibleTransceiverTypesRequest {
-  // The maximum number of compatible types to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 1 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListCompatibleTransceiverTypes` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListCompatibleTransceiverTypes` must match the call that provided the page token.
-  string page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListCompatibleTransceiverTypesResponse {
   repeated CompatibleTransceiverType compatible_transceiver_types = 1;
-
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListTransceiversRequest {
   string filter = 1 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // The maximum number of transceivers to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListTransceivers` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListTransceivers` must match the call that provided the page token.
-  string page_token = 3 [
     (google.api.field_behavior) = OPTIONAL
   ];
 }
@@ -521,12 +499,6 @@ message ListTransceiversRequest {
 message ListTransceiversResponse {
   repeated Transceiver transceivers = 1 [
     (google.api.field_behavior) = REQUIRED
-  ];
-  
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
   ];
 }
 
@@ -567,30 +539,11 @@ message ListContactWindowsRequest {
   string filter = 1 [
     (google.api.field_behavior) = OPTIONAL
   ];
-
-  // The maximum number of contact windows to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListContactWindows` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListContactWindows` must match the call that provided the page token.
-  string page_token = 3 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListContactWindowsResponse {
   repeated ContactWindow contact_windows = 1 [
     (google.api.field_behavior) = REQUIRED
-  ];
-  
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
   ];
 }
 
@@ -605,30 +558,11 @@ message ListBearersRequest {
   string filter = 1 [
     (google.api.field_behavior) = OPTIONAL
   ];
-
-  // The maximum number of bearers to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListBearers` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListBearers` must match the call that provided the page token.
-  string page_token = 3 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListBearersResponse {
   repeated Bearer bearers = 1 [
     (google.api.field_behavior) = REQUIRED
-  ];
-  
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
   ];
 }
 
@@ -653,30 +587,11 @@ message ListAttachmentCircuitsRequest {
   string filter = 1 [
     (google.api.field_behavior) = OPTIONAL
   ];
-
-  // The maximum number of attachment circuits to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListAttachmentCircuits` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListAttachmentCircuits` must match the call that provided the page token.
-  string page_token = 3 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListAttachmentCircuitsResponse {
   repeated AttachmentCircuit attachment_circuits = 1 [
     (google.api.field_behavior) = REQUIRED
-  ];
-
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
   ];
 }
 
@@ -712,29 +627,11 @@ message GetTargetRequest {
 }
 
 message ListTargetsRequest {
-  // The maximum number of targets to return. The service may return fewer than this value.
-  // If unspecified, at most 100 types will be returned. 
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 2 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  // A page token, received from a previous `ListTargets` call. Provide this to retrieve the subsequent page.
-  // When paginating, all other parameters provided to `ListTargets` must match the call that provided the page token.
-  string page_token = 3 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
 }
 
 message ListTargetsResponse {
   repeated Target targets = 1 [
     (google.api.field_behavior) = REQUIRED
-  ];
-
-  // A token that can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2 [
-    (google.api.field_behavior) = OPTIONAL
   ];
 }
 
