@@ -19,13 +19,13 @@
 // (-- api-linter: core::0192::has-comments=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
 
-// TODO: List rules should be paginated
+// TODO: Pagination of List responses will be added in a future version of the API
 // (-- api-linter: core::0158::response-next-page-token-field=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
+//     aip.dev/not-precedent: We need to do this because it introduces too much complexity for now. --)
 // (-- api-linter: core::0158::request-page-size-field=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
+//     aip.dev/not-precedent: We need to do this because it introduces too much complexity for now. --)
 // (-- api-linter: core::0158::request-page-token-field=disabled
-//     aip.dev/not-precedent: We need to do this because reasons. --)
+//     aip.dev/not-precedent: We need to do this because it introduces too much complexity for now. --)
 
 
 syntax = "proto3";
