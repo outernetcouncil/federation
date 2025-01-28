@@ -158,7 +158,9 @@ service InterconnectService {
   // between client operated hardware and the provider's network. Bearers must reside within a contact window 
   // both in terms of the time interval of their provisioning and the frequency band information. However, multiple
   // bearers may in principle occupy the same contact window if their respective frequency bands or time intervals do not overlap.
-  // The provider can limit this possibility if their hardware does not support multiple bearers on different frequency bands at
+  // Note here that interval protos by definition contain the start time timestamp but not the end time timestamp to allow for
+  // time intervals which share an endpoint. For details, see the google/type/interval.proto file.
+  // The provider may limit this possibility if their hardware does not support multiple bearers on different frequency bands at
   // the same time.
   // If the bearer cannot be created because it is not part of a valid contact window, the service should return a FAILED_RPECONDITION.
   rpc CreateBearer(CreateBearerRequest)
