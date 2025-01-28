@@ -40,7 +40,7 @@ type PrototypeHandler struct {
 	mu                 sync.Mutex
 	transceivers       map[string]*pb.Transceiver
 	bearers            map[string]*pb.Bearer
-	target             map[string]*pb.Target
+	targets            map[string]*pb.Target
 	attachmentCircuits map[string]*pb.AttachmentCircuit
 	// Contact windows are mostly going to be computed on the fly. To simplify the example, we just "compute" them whenever a transceiver is created.
 	contactWindows []*pb.ContactWindow
@@ -58,7 +58,7 @@ func NewPrototypeHandler() *PrototypeHandler {
 	return &PrototypeHandler{
 		transceivers:       make(map[string]*pb.Transceiver),
 		bearers:            make(map[string]*pb.Bearer),
-		target:             targets,
+		targets:            targets,
 		attachmentCircuits: make(map[string]*pb.AttachmentCircuit),
 		contactWindows:     make([]*pb.ContactWindow, 0, 1),
 	}
@@ -76,11 +76,32 @@ func (p *PrototypeHandler) ListCompatibleTransceiverTypes(context.Context, *pb.L
 }
 
 func (p *PrototypeHandler) GetTransceiver(ctx context.Context, trans *pb.GetTransceiverRequest) (*pb.Transceiver, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	if p.transceivers[trans.Name] == nil {
 		return nil, status.Errorf(codes.NotFound, "transceiver with requested ID was not found")
 	}
 
 	return p.transceivers[trans.Name], nil
+}
+
+func (p *PrototypeHandler) ListTransceivers(ctx context.Context, request *pb.ListTransceiversRequest) (*pb.ListTransceiversResponse, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if request.Filter != "" {
+		return nil, status.Errorf(codes.Unimplemented, "filters are not yet implemented")
+	}
+
+	transceivers := make([]*pb.Transceiver, 0, len(p.transceivers))
+	for _, transceiver := range p.transceivers {
+		transceivers = append(transceivers, transceiver)
+	}
+
+	return &pb.ListTransceiversResponse{
+		Transceivers: transceivers,
+	}, nil
 }
 
 func (p *PrototypeHandler) CreateTransceiver(_ context.Context, trans *pb.CreateTransceiverRequest) (*pb.Transceiver, error) {
@@ -99,7 +120,7 @@ func (p *PrototypeHandler) CreateTransceiver(_ context.Context, trans *pb.Create
 	trans.Transceiver.Name = transceiverName
 	p.transceivers[transceiverName] = trans.Transceiver
 
-	for _, target := range p.target {
+	for _, target := range p.targets {
 		targetID := strings.Split(target.Name, "/")[1]
 		p.contactWindows = append(p.contactWindows, &pb.ContactWindow{
 			Name: fmt.Sprintf("contactWindow/%s%s", trans.TransceiverId, targetID),
@@ -191,16 +212,28 @@ func (p *PrototypeHandler) DeleteTransceiver(_ context.Context, trans *pb.Delete
 	return &emptypb.Empty{}, nil
 }
 
-func (p *PrototypeHandler) ListContactWindows(context.Context, *pb.ListContactWindowsRequest) (*pb.ListContactWindowsResponse, error) {
-	// TODO: Handle filter
+func (p *PrototypeHandler) ListContactWindows(_ context.Context, request *pb.ListContactWindowsRequest) (*pb.ListContactWindowsResponse, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if request.Filter != "" {
+		return nil, status.Errorf(codes.Unimplemented, "filters are not yet implemented")
+	}
+
 	return &pb.ListContactWindowsResponse{
 		ContactWindows: p.contactWindows,
 	}, nil
 }
 
-func (p *PrototypeHandler) ListBearers(context.Context, *pb.ListBearersRequest) (*pb.ListBearersResponse, error) {
-	// TODO: Handle filter
-	bearers := make([]*pb.Bearer, 0, len(p.attachmentCircuits))
+func (p *PrototypeHandler) ListBearers(_ context.Context, request *pb.ListBearersRequest) (*pb.ListBearersResponse, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if request.Filter != "" {
+		return nil, status.Errorf(codes.Unimplemented, "filters are not yet implemented")
+	}
+
+	bearers := make([]*pb.Bearer, 0, len(p.bearers))
 	for _, bearer := range p.bearers {
 		bearers = append(bearers, bearer)
 	}
@@ -209,6 +242,9 @@ func (p *PrototypeHandler) ListBearers(context.Context, *pb.ListBearersRequest) 
 }
 
 func (p *PrototypeHandler) GetBearer(_ context.Context, bearer *pb.GetBearerRequest) (*pb.Bearer, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	if p.bearers[bearer.Name] == nil {
 		return nil, status.Errorf(codes.NotFound, "bearer with requested ID was not found")
 	}
@@ -250,14 +286,14 @@ func (p *PrototypeHandler) checkForSufficientContactWindow(bearer *pb.Bearer) bo
 			continue
 		}
 
-		if contactWindow.MinRxCenterFrequencyHz >= bearer.RxCenterFrequencyHz ||
-			contactWindow.MaxRxCenterFrequencyHz <= bearer.RxCenterFrequencyHz ||
-			contactWindow.MinRxBandwidthHz >= bearer.RxBandwidthHz ||
-			contactWindow.MaxRxBandwidthHz <= bearer.RxBandwidthHz ||
-			contactWindow.MinTxCenterFrequencyHz >= bearer.TxCenterFrequencyHz ||
-			contactWindow.MaxTxCenterFrequencyHz <= bearer.TxCenterFrequencyHz ||
-			contactWindow.MinTxBandwidthHz >= bearer.TxBandwidthHz ||
-			contactWindow.MaxTxBandwidthHz <= bearer.TxBandwidthHz {
+		if contactWindow.MinRxCenterFrequencyHz > bearer.RxCenterFrequencyHz ||
+			contactWindow.MaxRxCenterFrequencyHz < bearer.RxCenterFrequencyHz ||
+			contactWindow.MinRxBandwidthHz > bearer.RxBandwidthHz ||
+			contactWindow.MaxRxBandwidthHz < bearer.RxBandwidthHz ||
+			contactWindow.MinTxCenterFrequencyHz > bearer.TxCenterFrequencyHz ||
+			contactWindow.MaxTxCenterFrequencyHz < bearer.TxCenterFrequencyHz ||
+			contactWindow.MinTxBandwidthHz > bearer.TxBandwidthHz ||
+			contactWindow.MaxTxBandwidthHz < bearer.TxBandwidthHz {
 			continue
 		}
 
@@ -306,8 +342,14 @@ func (p *PrototypeHandler) DeleteBearer(_ context.Context, bearer *pb.DeleteBear
 	return &emptypb.Empty{}, nil
 }
 
-func (p *PrototypeHandler) ListAttachmentCircuits(context.Context, *pb.ListAttachmentCircuitsRequest) (*pb.ListAttachmentCircuitsResponse, error) {
-	// TODO: Handle filter
+func (p *PrototypeHandler) ListAttachmentCircuits(_ context.Context, request *pb.ListAttachmentCircuitsRequest) (*pb.ListAttachmentCircuitsResponse, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if request.Filter != "" {
+		return nil, status.Errorf(codes.Unimplemented, "filters are not yet implemented")
+	}
+
 	attachmentCircuits := make([]*pb.AttachmentCircuit, 0, len(p.attachmentCircuits))
 	for _, circuit := range p.attachmentCircuits {
 		attachmentCircuits = append(attachmentCircuits, circuit)
@@ -317,6 +359,9 @@ func (p *PrototypeHandler) ListAttachmentCircuits(context.Context, *pb.ListAttac
 }
 
 func (p *PrototypeHandler) GetAttachmentCircuit(_ context.Context, circuit *pb.GetAttachmentCircuitRequest) (*pb.AttachmentCircuit, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	if p.attachmentCircuits[circuit.Name] == nil {
 		return nil, status.Errorf(codes.NotFound, "attachment circuit with requested ID was not found")
 	}
@@ -329,7 +374,7 @@ func (p *PrototypeHandler) CreateAttachmentCircuit(_ context.Context, ac *pb.Cre
 	defer p.mu.Unlock()
 
 	attachmentCircuitName := fmt.Sprintf("attachmentCircuits/%s", ac.AttachmentCircuitId)
-	if p.bearers[attachmentCircuitName] != nil {
+	if p.attachmentCircuits[attachmentCircuitName] != nil {
 		return nil, status.Errorf(codes.AlreadyExists, "attachment circuit with requested ID was already created")
 	}
 	if !p.checkForSufficientBearer(ac.AttachmentCircuit) {
@@ -374,16 +419,22 @@ func (p *PrototypeHandler) DeleteAttachmentCircuit(_ context.Context, request *p
 }
 
 func (p *PrototypeHandler) GetTarget(_ context.Context, targetRequest *pb.GetTargetRequest) (*pb.Target, error) {
-	if p.target[targetRequest.Name] != nil {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.targets[targetRequest.Name] == nil {
 		return nil, status.Errorf(codes.NotFound, "could not find target")
 	}
 
-	return p.target[targetRequest.Name], nil
+	return p.targets[targetRequest.Name], nil
 }
 
 func (p *PrototypeHandler) ListTargets(context.Context, *pb.ListTargetsRequest) (*pb.ListTargetsResponse, error) {
-	targets := make([]*pb.Target, 0, len(p.target))
-	for _, target := range targets {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	targets := make([]*pb.Target, 0, len(p.targets))
+	for _, target := range p.targets {
 		targets = append(targets, target)
 	}
 	targetResponse := &pb.ListTargetsResponse{

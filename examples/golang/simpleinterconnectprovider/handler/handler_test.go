@@ -26,7 +26,54 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"outernetcouncil.org/nmts/v1alpha/proto/ek/physical"
+	"outernetcouncil.org/nmts/v1alpha/proto/types/geophys"
 )
+
+func TestPrototypeHandler_Targets(t *testing.T) {
+	h := NewPrototypeHandler()
+	ctx := context.Background()
+
+	t.Run("GetTarget returns current known targets", func(t *testing.T) {
+		resp, err := h.GetTarget(ctx, &pb.GetTargetRequest{
+			Name: TARGET_NAME,
+		})
+
+		if err != nil {
+			t.Fatalf("error not expected but was %s", err)
+		}
+		if diff := cmp.Diff(&pb.Target{
+			Name:   TARGET_NAME,
+			Motion: &geophys.Motion{},
+		}, resp,
+			protocmp.Transform()); diff != "" {
+			t.Errorf("Target mismatch (-want +got):\n%s", diff)
+		}
+	})
+
+	t.Run("GetTarget returns error if target is unknown", func(t *testing.T) {
+		_, err := h.GetTarget(ctx, &pb.GetTargetRequest{
+			Name: "unknown name",
+		})
+
+		if err == nil {
+			t.Fatalf("error expected")
+		}
+		if !strings.HasPrefix(err.Error(), "rpc error: code = NotFound") {
+			t.Fatalf("expected error did not match error %v", err)
+		}
+	})
+
+	t.Run("ListTarget returns a list of all targets", func(t *testing.T) {
+		resp, err := h.ListTargets(ctx, &pb.ListTargetsRequest{})
+
+		if err != nil {
+			t.Fatal("error expected")
+		}
+		if len(resp.Targets) != 1 {
+			t.Fatal("unexpected number of targets")
+		}
+	})
+}
 
 func TestPrototypeHandler_CreateTransceiver(t *testing.T) {
 	h := NewPrototypeHandler()
@@ -158,12 +205,29 @@ func TestPrototypeHandler_UpdateTransceiver(t *testing.T) {
 	tests := []struct {
 		name        string
 		transceiver *pb.Transceiver
-		wantError   bool
+		wantError   string
 	}{
 		{
-			name: "Fails updating a transceiver with none-existing ID",
+			name: "Allows update to compatible receiver",
 			transceiver: &pb.Transceiver{
-				Name: "transceiver/non-existant",
+				Name: "transceivers/existing",
+				TransmitSignalChain: &pb.TransmitSignalChain{
+					Antenna: &physical.Antenna{
+						Type: physical.Antenna_OPTICAL,
+					},
+				},
+				ReceiveSignalChain: &pb.ReceiveSignalChain{
+					Antenna: &physical.Antenna{
+						Type: physical.Antenna_OPTICAL,
+					},
+				},
+			},
+			wantError: "",
+		},
+		{
+			name: "Fails updating a transceiver with non-existing ID",
+			transceiver: &pb.Transceiver{
+				Name: "transceivers/non-existant",
 				TransmitSignalChain: &pb.TransmitSignalChain{
 					Antenna: &physical.Antenna{
 						Type: physical.Antenna_RF,
@@ -175,12 +239,12 @@ func TestPrototypeHandler_UpdateTransceiver(t *testing.T) {
 					},
 				},
 			},
-			wantError: true,
+			wantError: "NotFound",
 		},
 		{
-			name: "Fails creating a transceiver with wrong antenna type in transmit signal chain",
+			name: "Fails updating a transceiver with wrong antenna type in transmit signal chain",
 			transceiver: &pb.Transceiver{
-				Name: "transceiver/existing",
+				Name: "transceivers/existing",
 				TransmitSignalChain: &pb.TransmitSignalChain{
 					Antenna: &physical.Antenna{
 						Type: physical.Antenna_RF,
@@ -192,12 +256,12 @@ func TestPrototypeHandler_UpdateTransceiver(t *testing.T) {
 					},
 				},
 			},
-			wantError: true,
+			wantError: "FailedPrecondition",
 		},
 		{
-			name: "Fails creating a transceiver with wrong antenna type in receive signal chain",
+			name: "Fails updating a transceiver with wrong antenna type in receive signal chain",
 			transceiver: &pb.Transceiver{
-				Name: "transceiver/existing",
+				Name: "transceivers/existing",
 				TransmitSignalChain: &pb.TransmitSignalChain{
 					Antenna: &physical.Antenna{
 						Type: physical.Antenna_OPTICAL,
@@ -209,12 +273,14 @@ func TestPrototypeHandler_UpdateTransceiver(t *testing.T) {
 					},
 				},
 			},
-			wantError: true,
+			wantError: "FailedPrecondition",
 		},
 		{
-			name:        "Fails creating a transceiver with unspecified antenna type",
-			transceiver: &pb.Transceiver{},
-			wantError:   true,
+			name: "Fails updating a transceiver with unspecified antenna type",
+			transceiver: &pb.Transceiver{
+				Name: "transceivers/existing",
+			},
+			wantError: "FailedPrecondition",
 		},
 	}
 
@@ -225,17 +291,17 @@ func TestPrototypeHandler_UpdateTransceiver(t *testing.T) {
 			}
 
 			_, err := h.UpdateTransceiver(ctx, req)
-			if !tt.wantError && err != nil {
+			if tt.wantError == "" && err != nil {
 				t.Fatalf("Updating a transceiver failed %s.", err)
 			}
-			if tt.wantError && err == nil {
-				t.Fatalf("Updating a transceiver should have failed, but did not.")
+			if tt.wantError != "" && !strings.Contains(err.Error(), tt.wantError) {
+				t.Fatalf("Updating a transceiver has wrong error message %v.", err.Error())
 			}
 		})
 	}
 }
 
-func TestPrototypeHandler_TransceiverCannotBeChangedIfBearerIsAttached(t *testing.T) {
+func TestPrototypeHandler_Transceivers(t *testing.T) {
 	h, ctx := createExistingTransceiver(t)
 
 	t.Run("gets information about transceiver", func(t *testing.T) {
@@ -325,6 +391,7 @@ func TestPrototypeHandler_TransceiverCannotBeChangedIfBearerIsAttached(t *testin
 	t.Run("cannot update transceiver if bearer is attached", func(t *testing.T) {
 		_, err := h.UpdateTransceiver(ctx, &pb.UpdateTransceiverRequest{
 			Transceiver: &pb.Transceiver{
+				Name: "transceivers/existing",
 				TransmitSignalChain: &pb.TransmitSignalChain{
 					Antenna: &physical.Antenna{
 						Type: physical.Antenna_OPTICAL,
@@ -341,6 +408,9 @@ func TestPrototypeHandler_TransceiverCannotBeChangedIfBearerIsAttached(t *testin
 		if err == nil {
 			t.Fatal("should have failed updating")
 		}
+		if !strings.Contains(err.Error(), "has bearer attached") {
+			t.Fatal("error should relate to no bearer being attached but was %s", err.Error())
+		}
 	})
 
 	t.Run("cannot delete transceiver if bearer is attached", func(t *testing.T) {
@@ -353,6 +423,30 @@ func TestPrototypeHandler_TransceiverCannotBeChangedIfBearerIsAttached(t *testin
 		}
 		if err.Error() != "rpc error: code = FailedPrecondition desc = transceiver has bearer attached and cannot be deleted" {
 			t.Fatalf("Wrong error message, was %s", err.Error())
+		}
+	})
+
+	t.Run("ListTransceivers lists all bearers", func(t *testing.T) {
+		resp, err := h.ListTransceivers(ctx, &pb.ListTransceiversRequest{})
+
+		if err != nil {
+			t.Fatalf("Expected no error but was %v", err)
+		}
+		if len(resp.Transceivers) != 1 {
+			t.Fatalf("Unexpected number of attachment circuits")
+		}
+	})
+
+	t.Run("ListTransceivers throws error on filter", func(t *testing.T) {
+		_, err := h.ListTransceivers(ctx, &pb.ListTransceiversRequest{
+			Filter: "test filter",
+		})
+
+		if err == nil {
+			t.Fatal("Error expected")
+		}
+		if !strings.HasPrefix(err.Error(), "rpc error: code = Unimplemented") {
+			t.Fatalf("expected error did not match error %v", err)
 		}
 	})
 }
@@ -421,6 +515,21 @@ func TestPrototypeHandler_CreateBearer(t *testing.T) {
 				Target:              TARGET_NAME,
 				Transceiver:         "transceivers/existing",
 				Interval:            createInterval(20, 60*60),
+				RxCenterFrequencyHz: 16000000000,
+				RxBandwidthHz:       30000000,
+				TxCenterFrequencyHz: 16000000000,
+				TxBandwidthHz:       30000000,
+			},
+			wantError: false,
+		},
+		{
+			name:     "Allows creation of adjacent bearers in time",
+			bearerID: "adjacent",
+			bearer: &pb.Bearer{
+				Name:                "bearers/adjacent",
+				Target:              TARGET_NAME,
+				Transceiver:         "transceivers/existing",
+				Interval:            createInterval(60*60, 60*60*2),
 				RxCenterFrequencyHz: 16000000000,
 				RxBandwidthHz:       30000000,
 				TxCenterFrequencyHz: 16000000000,
@@ -583,6 +692,20 @@ func TestPrototypeHandler_CreateBearer(t *testing.T) {
 			}, wantError: false,
 		},
 		{
+			name:     "Creates bearer with edge frequencies",
+			bearerID: "edgefrequencies",
+			bearer: &pb.Bearer{
+				Name:                "bearers/edgefrequencies",
+				Target:              TARGET_NAME,
+				Transceiver:         "transceivers/existing",
+				Interval:            createInterval(60*60*20, 60*60*21),
+				RxCenterFrequencyHz: 12000000000,
+				RxBandwidthHz:       40000000,
+				TxCenterFrequencyHz: 18000000000,
+				TxBandwidthHz:       40000000,
+			}, wantError: false,
+		},
+		{
 			name:     "Returns correct name, even if initial name is not set correctly",
 			bearerID: "correct",
 			bearer: &pb.Bearer{
@@ -733,6 +856,30 @@ func TestPrototypeHandler_Bearer(t *testing.T) {
 			t.Fatalf("Mismatch in error message, got: %v", err)
 		}
 	})
+
+	t.Run("ListBearers lists all bearers", func(t *testing.T) {
+		resp, err := h.ListBearers(ctx, &pb.ListBearersRequest{})
+
+		if err != nil {
+			t.Fatalf("Expected no error but was %v", err)
+		}
+		if len(resp.Bearers) != 1 {
+			t.Fatalf("Unexpected number of attachment circuits")
+		}
+	})
+
+	t.Run("ListBearers throws error on filter", func(t *testing.T) {
+		_, err := h.ListBearers(ctx, &pb.ListBearersRequest{
+			Filter: "test filter",
+		})
+
+		if err == nil {
+			t.Fatal("Error expected")
+		}
+		if !strings.HasPrefix(err.Error(), "rpc error: code = Unimplemented") {
+			t.Fatalf("expected error did not match error %v", err)
+		}
+	})
 }
 
 func TestPrototypeHandler_CreateAttachmentCircuit(t *testing.T) {
@@ -786,6 +933,18 @@ func TestPrototypeHandler_CreateAttachmentCircuit(t *testing.T) {
 				},
 			},
 			wantError: false,
+		},
+		{
+			name: "Does not create a new attachment circuit if it already exists",
+			acID: "unique",
+			ac: &pb.AttachmentCircuit{
+				Name:     "attachmentCircuits/existing",
+				Interval: createInterval(60*60*4, 60*60*5),
+				L2Connection: &pb.AttachmentCircuit_L2Connection{
+					Bearer: "bearers/existing",
+				},
+			},
+			wantError: true,
 		},
 		{
 			name: "Creates no new attachment circuit if underlying bearer does not exist",
@@ -926,6 +1085,103 @@ func TestPrototypeHandler_AttachmentCircuits(t *testing.T) {
 		})
 		if err == nil {
 			t.Fatal("Expected error but there was none")
+		}
+	})
+
+	t.Run("ListAttachmentCircuits lists all circuits", func(t *testing.T) {
+		resp, err := h.ListAttachmentCircuits(ctx, &pb.ListAttachmentCircuitsRequest{})
+
+		if err != nil {
+			t.Fatalf("Expected no error but was %v", err)
+		}
+		if len(resp.AttachmentCircuits) != 0 { // All attachment circuits were deleted
+			t.Fatalf("Unexpected number of attachment circuits")
+		}
+
+		_, err = h.CreateAttachmentCircuit(ctx, &pb.CreateAttachmentCircuitRequest{
+			AttachmentCircuitId: "existing",
+			AttachmentCircuit: &pb.AttachmentCircuit{
+				Name:     "attachmentCircuits/existing",
+				Interval: createInterval(60*60*2, 60*60*3),
+				L2Connection: &pb.AttachmentCircuit_L2Connection{
+					Bearer: "bearers/existing",
+				},
+			},
+		})
+		if err != nil {
+			t.Fatalf("Setup for ListAttachmentCircuit failed: %v", err)
+		}
+
+		resp, err = h.ListAttachmentCircuits(ctx, &pb.ListAttachmentCircuitsRequest{})
+
+		if err != nil {
+			t.Fatalf("Expected no error but was %v", err)
+		}
+		if len(resp.AttachmentCircuits) != 1 {
+			t.Fatalf("Unexpected number of attachment circuits")
+		}
+	})
+
+	t.Run("ListAttachmentCircuits throws error on filter", func(t *testing.T) {
+		_, err := h.ListAttachmentCircuits(ctx, &pb.ListAttachmentCircuitsRequest{
+			Filter: "test filter",
+		})
+
+		if err == nil {
+			t.Fatal("Error expected")
+		}
+		if !strings.HasPrefix(err.Error(), "rpc error: code = Unimplemented") {
+			t.Fatalf("expected error did not match error %v", err)
+		}
+	})
+}
+
+func TestPrototypeHandler_ListCompatibleTransceiverTypes(t *testing.T) {
+	h, ctx := createExistingTransceiver(t)
+
+	t.Run("ListCompatibleTransceiverTypes gets us some information about compatible transceivers", func(t *testing.T) {
+		response, err := h.ListCompatibleTransceiverTypes(ctx, &pb.ListCompatibleTransceiverTypesRequest{})
+
+		if err != nil {
+			t.Fatalf("expected no error, but was %v", err)
+		}
+		if diff := cmp.Diff(&pb.ListCompatibleTransceiverTypesResponse{
+			CompatibleTransceiverTypes: []*pb.CompatibleTransceiverType{
+				{
+					TransceiverFilter: "transmit_signal_chain.antenna.type = OPTICAL AND receive_signal_chain.antenna.type = OPTICAL",
+				},
+			},
+		}, response,
+			protocmp.Transform()); diff != "" {
+			t.Fatalf("Compatible transceivers mismatch (-want +got):\n%s", diff)
+		}
+	})
+}
+
+func TestPrototypeHandler_ListContactWindows(t *testing.T) {
+	h, ctx := createExistingTransceiver(t)
+
+	t.Run("ListContactWindows gets a list of all contact windows", func(t *testing.T) {
+		response, err := h.ListContactWindows(ctx, &pb.ListContactWindowsRequest{})
+
+		if err != nil {
+			t.Fatalf("expected no error, but was %v", err)
+		}
+		if len(response.ContactWindows) != 1 { // We created one transceiver, so there is one contact window
+			t.Fatalf("Unexected number of contact windows")
+		}
+	})
+
+	t.Run("ListContactWindows returns unimplemented when used with a filter", func(t *testing.T) {
+		_, err := h.ListContactWindows(ctx, &pb.ListContactWindowsRequest{
+			Filter: "test filter",
+		})
+
+		if err == nil {
+			t.Fatal("Error expected")
+		}
+		if !strings.HasPrefix(err.Error(), "rpc error: code = Unimplemented") {
+			t.Fatalf("expected error did not match error %v", err)
 		}
 	})
 }
