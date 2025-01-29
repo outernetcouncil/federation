@@ -148,7 +148,7 @@ grpcurl -plaintext -d '{ "name": "transceivers/my_custom_transceiver" }' localho
 Understanding the project structure helps in navigating and customizing the Cosmic Connector.
 
 ```
-/cosmicconnector/
+/simpleinterconnectprovider/
 ├── BUILD.bazel     # Example binary build configuration
 ├── README.md       # This file
 ├── config/         # Configuration package
