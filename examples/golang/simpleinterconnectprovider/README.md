@@ -1,10 +1,10 @@
-## Cosmic Connector Example Implementation
+## Interconnect Provider Example Implementation
 
-This example showcases a basic setup of the Cosmic Connector, a Federation server implementation allowing for custom handlers per Federation RPC. The example demonstrates configuration, server setup, and interaction with gRPC services.
+This example showcases a basic setup of the Simple Interconnect Provider, a Federation server implementation allowing for custom handlers per Federation RPC. The example demonstrates configuration, server setup, and interaction with gRPC services.
 
 ## Sample Configuration
 
-The Cosmic Connector is configured using a [ConnectorParams](../../pkg/go/config/config.proto) message defined in Protocol Buffers. Below is an example of a configuration in text protobuf format:
+The Simple Interconnect Provider is configured using a [ConnectorParams](../../pkg/go/config/config.proto) message defined in Protocol Buffers. Below is an example of a configuration in text protobuf format:
 
 ```textproto
 port: 50052
@@ -21,7 +21,7 @@ observability_params {
   - For more details, refer to [config/config.proto](../../pkg/go/config/config.proto).
 
 - **Provider Endpoint URI**:
-  - `provider_endpoint_uri`: Specifies the RESTful provider endpoint that the Cosmic Connector bridges.
+  - `provider_endpoint_uri`: Specifies the RESTful provider endpoint that the Simple Interconnect Provider bridges.
 
 - **Authentication Strategy**:
   - `auth_strategy { none: {} }`: Sets the authentication strategy to none. For secure communication, refer to the [serverauth](../../pkg/go/auth/serverauth.go) package to implement JWT-based authentication.
@@ -52,7 +52,7 @@ The example can be built and run using Bazel.
 Build the example using Bazel:
 
 ```bash
-bazel build //examples/golang/cosmicconnector:cosmic_connector
+bazel build //examples/golang/simpleinterconnectprovider:simpleinterconnectprovider
 ```
 
 ### Running the Example
@@ -60,7 +60,7 @@ bazel build //examples/golang/cosmicconnector:cosmic_connector
 Execute the built binary with the necessary flags:
 
 ```bash
-bazel run //examples/golang/cosmicconnector:cosmic_connector -- \
+bazel run //examples/golang/simpleinterconnectprovider:simpleinterconnectprovider -- \
   -config path/to/config.textproto \
   -log-level info
 ```
@@ -74,7 +74,7 @@ bazel run //examples/golang/cosmicconnector:cosmic_connector -- \
 **Example: Dry Run Configuration Validation**
 
 ```bash
-bazel run //examples/golang/cosmicconnector:cosmic_connector -- \
+bazel run //examples/golang/simpleinterconnectprovider:simpleinterconnectprovider -- \
   -config path/to/config.textproto -dry-run
 ```
 
@@ -82,97 +82,66 @@ For more details, refer to the [main.go](./main.go) source file.
 
 ## Sample gRPC Calls
 
-Once the Cosmic Connector is running, you can interact with its gRPC services using `grpcurl`. Below are sample commands for various operations.
+Once the Simple Interconnect Provider is running, you can interact with its gRPC services using `grpcurl`. Below are sample commands for various operations.
 
-### ListServiceOptions
+### ListTargets
 
 Retrieve service options based on specific filters.
 
 ```bash
-grpcurl -plaintext -d '{
-  "service_attributes_filters": {
-    "bidirectional_service_attributes_filter": {
-      "bandwidth_bps_minimum": 1000000,
-      "one_way_latency_maximum": "100ms"
-    }
-  }
-}' localhost:50052 outernet.federation.v1alpha.Federation/ListServiceOptions
+grpcurl -plaintext -d '{}' localhost:50052 outernet.federation.interconnect.v1alpha.InterconnectService/ListTargets
 ```
 
 *Refer to [grpc_server.go](../../pkg/go/server/grpc_server.go) and [handler.go](./handler/handler.go) for implementation details.*
 
-### ScheduleService
+### CreateTransceiver
 
-Schedule a new service with specified parameters.
+Create a transceiver to connect to the provider's network.
 
 ```bash
 grpcurl -plaintext -d '{
-  "requestor_edge_to_requestor_edge": {
-    "x_interconnection_points": [{
-      "uuid": "point1",
-      "coordinates": {
-        "entry": [{
-          "interval": {
-            "start_time": "2024-01-01T00:00:00Z",
-            "end_time": "2024-01-02T00:00:00Z"
-          },
-          "geodetic_wgs84": {
-            "longitude_deg": 0,
-            "latitude_deg": 0,
-            "height_wgs84_m": 0
-          }
-        }]
-      }
-    }],
-    "y_interconnection_points": [{
-      "uuid": "point2",
-      "coordinates": {
-        "entry": [{
-          "interval": {
-            "start_time": "2024-01-01T00:00:00Z",
-            "end_time": "2024-01-02T00:00:00Z"
-          },
-          "geodetic_wgs84": {
-            "longitude_deg": 1,
-            "latitude_deg": 1,
-            "height_wgs84_m": 0
-          }
-        }]
-      }
-    }],
-    "directionality": "DIRECTIONALITY_BIDIRECTIONAL"
-  },
-  "service_attributes_filters": {
-    "bidirectional_service_attributes_filter": {
-      "bandwidth_bps_minimum": 1000000,
-      "one_way_latency_maximum": "1s"
-    }
-  },
-  "priority": 1
-}' localhost:50052 outernet.federation.v1alpha.Federation/ScheduleService
+  "transceiver_id": "my_custom_transceiver",
+  "transceiver": {
+    "transmit_signal_chain": {
+			"antenna": {
+				"type": "OPTICAL",
+			},
+		},    
+    "receive_signal_chain": {
+			"antenna": {
+				"type": "OPTICAL",
+			},
+		},
+		ReceiveSignalChain: &pb.ReceiveSignalChain{
+			Antenna: &physical.Antenna{
+				Type: physical.Antenna_OPTICAL,
+			},
+		},
+  }
+}' localhost:50052 outernet.federation.interconnect.v1alpha.InterconnectService/CreateTransceiver
 ```
 
-*See [handler.go](./handler/handler.go) for the implementation of `ScheduleService`.*
+*See [handler.go](./handler/handler.go) for the implementation of `CreateTransceiver`.*
 
-### MonitorServices
+### ListContactWindows
 
-Monitor existing services by their IDs.
+Get the contact windows, where connection between the provider's network and the client's transceiver is possible.
 
 ```bash
-grpcurl -plaintext -d '{"add_service_ids": ["service-1", "service-2"]}' localhost:50052 outernet.federation.v1alpha.Federation/MonitorServices
+grpcurl -plaintext -d '{}' localhost:50052 outernet.federation.interconnect.v1alpha.InterconnectService/ListContactWindows
 ```
 
-*Implemented in [handler.go](./handler/handler.go).*
+*See [handler.go](./handler/handler.go) for the implementation of `ListContactWindows`.*
 
-### CancelService
+### DeleteTransceiver
 
-Cancel an active service.
+Delete the created transceiver.
 
 ```bash
-grpcurl -plaintext -d '{"service_id": "service-1"}' localhost:50052 outernet.federation.v1alpha.Federation/CancelService
+grpcurl -plaintext -d '{ "name": "transceivers/my_custom_transceiver" }' localhost:50052 outernet.federation.interconnect.v1alpha.InterconnectService/DeleteTransceiver
 ```
 
-*Refer to [handler.go](./handler/handler.go) for the `CancelService` functionality.*
+*See [handler.go](./handler/handler.go) for the implementation of `DeleteTransceiver`.*
 
 ## Project Structure
 

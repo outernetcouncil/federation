@@ -15,18 +15,22 @@
 load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 package(
-    default_visibility = ["//examples/golang/cosmicconnector:__subpackages__"],
+    default_visibility = ["//examples/golang/simpleinterconnectprovider:__subpackages__"],
 )
 
 go_library(
     name = "handler",
     srcs = ["handler.go"],
-    importpath = "github.com/outernetcouncil/federation/examples/golang/cosmicconnector/handler",
+    importpath = "github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider/handler",
     deps = [
-        "//outernet/federation/v1alpha:federation_go_grpc",
+        "//outernet/federation/interconnect/v1alpha:federation_interconnect_go_grpc",
+        "@org_golang_google_protobuf//types/known/emptypb",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+        "@org_golang_google_genproto//googleapis/type/interval",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
-        "@org_outernetcouncil_nmts//v1alpha/proto/types/ietf:ietf_go_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto",
     ],
 )
 
@@ -36,13 +40,15 @@ go_test(
     srcs = ["handler_test.go"],
     embed = [":handler"],
     deps = [
-        "//outernet/federation/v1alpha:federation_go_grpc",
+        "//outernet/federation/interconnect/v1alpha:federation_interconnect_go_grpc",
         "@com_github_google_go_cmp//cmp",
         "@com_github_google_go_cmp//cmp/cmpopts",
         "@org_golang_google_grpc//:grpc",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
         "@org_golang_google_protobuf//testing/protocmp",
-        "@org_outernetcouncil_nmts//v1alpha/proto/types/ietf:ietf_go_proto",
+        "@org_golang_google_genproto//googleapis/type/interval",
+        "@org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto",
+        "@org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto",
     ],
 )

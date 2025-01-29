@@ -26,14 +26,14 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/outernetcouncil/federation/examples/golang/cosmicconnector/config"
-	examplehandler "github.com/outernetcouncil/federation/examples/golang/cosmicconnector/handler"
-	"github.com/outernetcouncil/federation/pkg/go/cosmicconnector"
+	"github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider/config"
+	examplehandler "github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider/handler"
+	"github.com/outernetcouncil/federation/pkg/go/interconnectprovider"
 	"github.com/outernetcouncil/federation/pkg/go/server"
 )
 
 const (
-	appName = "cosmic_connector"
+	appName = "interconnect_provider"
 )
 
 func baseContext(ctx context.Context) context.Context {
@@ -87,8 +87,8 @@ func main() {
 	pprofServer := server.NewPprofServer(cp.GetObservabilityParams().GetPprofAddress(), *logger)
 	channelzServer := server.NewChannelzServer(cp.GetObservabilityParams().GetChannelzAddress(), *logger)
 
-	// Create CosmicConnector with initialized servers
-	connector := cosmicconnector.NewCosmicConnector(*logger, grpcServer, pprofServer, channelzServer)
+	// Create InterconnectProvider with initialized servers
+	connector := interconnectprovider.NewInterconnectProvider(*logger, grpcServer, pprofServer, channelzServer)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
@@ -102,7 +102,7 @@ func main() {
 	select {
 	case err := <-errChan:
 		if err != nil {
-			logger.Fatal().Err(err).Msg("cosmicconnector.Run(...) failed")
+			logger.Fatal().Err(err).Msg("interconnectprovider.Run(...) failed")
 		}
 	case <-sigChan:
 		logger.Info().Msg("Received interrupt signal. Shutting down...")

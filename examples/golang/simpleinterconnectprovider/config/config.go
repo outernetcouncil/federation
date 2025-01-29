@@ -24,7 +24,7 @@ import (
 	"github.com/rs/zerolog"
 	"google.golang.org/protobuf/encoding/prototext"
 
-	configpb "github.com/outernetcouncil/federation/gen/go/examples/golang/cosmicconnector/config"
+	configpb "github.com/outernetcouncil/federation/gen/go/examples/golang/simpleinterconnectprovider/config"
 )
 
 func ReadParams(confPath string) (*configpb.ConnectorParams, error) {

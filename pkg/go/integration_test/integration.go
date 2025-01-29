@@ -11,56 +11,83 @@ import (
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "github.com/outernetcouncil/federation/gen/go/federation/v1alpha"
-	"github.com/outernetcouncil/federation/pkg/go/cosmicconnector"
+	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
+	"github.com/outernetcouncil/federation/pkg/go/interconnectprovider"
 	"github.com/outernetcouncil/federation/pkg/go/server"
 )
 
 // testHandler implements the FederationHandler interface for testing
 type testHandler struct {
-	pb.UnimplementedFederationServiceServer
+	pb.UnimplementedInterconnectServiceServer
 }
 
 func createTestHandler(t *testing.T) *testHandler {
 	return &testHandler{}
 }
 
-// Implement the required FederationHandler interface methods
-func (h *testHandler) StreamInterconnectionPoints(req *pb.StreamInterconnectionPointsRequest, stream pb.FederationService_StreamInterconnectionPointsServer) error {
-	return nil
+func (h *testHandler) ListCompatibleTransceiverTypes(context.Context, *pb.ListCompatibleTransceiverTypesRequest) (*pb.ListCompatibleTransceiverTypesResponse, error) {
+	return nil, nil
 }
 
-func (h *testHandler) ListServiceOptions(req *pb.ListServiceOptionsRequest, stream pb.FederationService_ListServiceOptionsServer) error {
-	// Send a test response
-	return stream.Send(&pb.ListServiceOptionsResponse{
-		ServiceOptions: []*pb.ServiceOption{
-			{
-				Id: "test-service-1",
-			},
-		},
-	})
+func (h *testHandler) GetTransceiver(context.Context, *pb.GetTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, nil
 }
 
-func (h *testHandler) ScheduleService(ctx context.Context, req *pb.ScheduleServiceRequest) (*pb.ScheduleServiceResponse, error) {
-	return &pb.ScheduleServiceResponse{
-		ServiceId: "test-scheduled-service",
-	}, nil
+func (h *testHandler) CreateTransceiver(context.Context, *pb.CreateTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, nil
 }
 
-func (h *testHandler) MonitorServices(stream pb.FederationService_MonitorServicesServer) error {
-	return nil
+func (h *testHandler) UpdateTransceiver(context.Context, *pb.UpdateTransceiverRequest) (*pb.Transceiver, error) {
+	return nil, nil
 }
 
-func (h *testHandler) CancelService(ctx context.Context, req *pb.CancelServiceRequest) (*pb.CancelServiceResponse, error) {
-	return &pb.CancelServiceResponse{}, nil
+func (h *testHandler) DeleteTransceiver(context.Context, *pb.DeleteTransceiverRequest) (*emptypb.Empty, error) {
+	return nil, nil
+}
+
+func (h *testHandler) ListContactWindows(context.Context, *pb.ListContactWindowsRequest) (*pb.ListContactWindowsResponse, error) {
+	return nil, nil
+}
+
+func (h *testHandler) ListBearers(context.Context, *pb.ListBearersRequest) (*pb.ListBearersResponse, error) {
+	return nil, nil
+}
+
+func (h *testHandler) CreateBearer(context.Context, *pb.CreateBearerRequest) (*pb.Bearer, error) {
+	return nil, nil
+}
+
+func (h *testHandler) DeleteBearer(context.Context, *pb.DeleteBearerRequest) (*emptypb.Empty, error) {
+	return nil, nil
+}
+
+func (h *testHandler) ListAttachmentCircuits(context.Context, *pb.ListAttachmentCircuitsRequest) (*pb.ListAttachmentCircuitsResponse, error) {
+	return nil, nil
+}
+
+func (h *testHandler) CreateAttachmentCircuit(context.Context, *pb.CreateAttachmentCircuitRequest) (*pb.AttachmentCircuit, error) {
+	return nil, nil
+}
+
+func (h *testHandler) DeleteAttachmentCircuit(context.Context, *pb.DeleteAttachmentCircuitRequest) (*emptypb.Empty, error) {
+	return nil, nil
+}
+
+func (h *testHandler) GetTarget(context.Context, *pb.GetTargetRequest) (*pb.Target, error) {
+	return nil, nil
+}
+
+func (h *testHandler) ListTargets(context.Context, *pb.ListTargetsRequest) (*pb.ListTargetsResponse, error) {
+	return nil, nil
 }
 
 type testServers struct {
 	grpcAddr     string
 	channelzAddr string
 	pprofAddr    string
-	cc           *cosmicconnector.CosmicConnector
+	cc           *interconnectprovider.InterconnectProvider
 	cleanup      func()
 }
 
@@ -88,7 +115,7 @@ func setupTestServers(t *testing.T) *testServers {
 	channelzServer := server.NewChannelzServer(fmt.Sprintf(":%d", channelzPort), logger)
 	pprofServer := server.NewPprofServer(fmt.Sprintf(":%d", pprofPort), logger)
 
-	cc := cosmicconnector.NewCosmicConnector(
+	cc := interconnectprovider.NewInterconnectProvider(
 		logger,
 		grpcServer,
 		channelzServer,
@@ -159,12 +186,12 @@ func TestBasicServerLifecycle(t *testing.T) {
 		}
 		defer conn.Close()
 
-		client := pb.NewFederationServiceClient(conn)
+		client := pb.NewInterconnectServiceClient(conn)
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
 		// Make a simple RPC call
-		_, err = client.ListServiceOptions(ctx, &pb.ListServiceOptionsRequest{})
+		_, err = client.ListBearers(ctx, &pb.ListBearersRequest{})
 		if err != nil {
 			failTest(t, "ListServiceOptions failed: %v", err)
 		}
