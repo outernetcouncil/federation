@@ -276,6 +276,9 @@ message Transceiver {
   TransmitSignalChain transmit_signal_chain = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
+  nmts.v1alpha.ek.physical.Platform platform = 4 [
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ReceiveSignalChain {
@@ -289,10 +292,7 @@ message ReceiveSignalChain {
   nmts.v1alpha.ek.physical.Receiver receiver = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
-  nmts.v1alpha.ek.physical.Platform platform = 4 [
-    (google.api.field_behavior) = REQUIRED
-  ];
-  nmts.v1alpha.ek.physical.Antenna antenna = 5 [
+  nmts.v1alpha.ek.physical.Antenna antenna = 4 [
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -308,10 +308,7 @@ message TransmitSignalChain {
   nmts.v1alpha.ek.physical.Transmitter transmitter = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
-  nmts.v1alpha.ek.physical.Platform platform = 4 [
-    (google.api.field_behavior) = REQUIRED
-  ];
-  nmts.v1alpha.ek.physical.Antenna antenna = 5 [
+  nmts.v1alpha.ek.physical.Antenna antenna = 4 [
     (google.api.field_behavior) = REQUIRED
   ];
 }
