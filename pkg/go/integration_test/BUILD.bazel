@@ -12,6 +12,6 @@ go_test(
         "@com_github_rs_zerolog//:zerolog",
         "@org_golang_google_grpc//:grpc",
         "@org_golang_google_grpc//credentials/insecure",
-        "@org_golang_google_protobuf//types/known/emptypb"
+        "@org_golang_google_protobuf//types/known/emptypb",
     ],
 )

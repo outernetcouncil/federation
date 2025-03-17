@@ -25,7 +25,7 @@ go_binary(
 go_library(
     name = "simpleinterconnectprovider_lib",
     srcs = ["main.go"],
-    importpath = "github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider/example",
+    importpath = "github.com/outernetcouncil/federation/examples/golang/simpleinterconnectprovider",
     visibility = ["//visibility:private"],
     deps = [
         "//examples/golang/simpleinterconnectprovider/config",
@@ -40,6 +40,6 @@ go_path(
     name = "gopath",
     mode = "copy",
     deps = [
-        "//examples/golang/simpleinterconnectprovider/handler:handler",
+        "//examples/golang/simpleinterconnectprovider/handler",
     ],
 )
