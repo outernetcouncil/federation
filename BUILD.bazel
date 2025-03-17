@@ -12,16 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_go//go:def.bzl", "go_path")
 load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "go_path")
+
+gazelle(name = "gazelle")
 
 # gazelle:prefix github.com/outernetcouncil/federation
-gazelle(name = "gazelle")
+# gazelle:resolve go outernetcouncil.org/nmts/v1alpha/proto/ek/physical @org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto
+# gazelle:resolve go outernetcouncil.org/nmts/v1alpha/proto/types/geophys @org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto
 
 go_path(
     name = "gopath",
     mode = "copy",
     deps = [
-        "//pkg/go/interconnectprovider:interconnectprovider",
+        "//pkg/go/interconnectprovider",
     ],
 )
