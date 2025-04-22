@@ -27,8 +27,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"outernetcouncil.org/nmts/v1alpha/proto/ek/physical"
-	"outernetcouncil.org/nmts/v1alpha/proto/types/geophys"
+	"outernetcouncil.org/nmts/v1/proto/ek/physical"
+	"outernetcouncil.org/nmts/v1/proto/types/geophys"
 
 	pb "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha"
 )

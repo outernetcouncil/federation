@@ -28,7 +28,7 @@ bazel_dep(name = "rules_shell", version = "0.3.0")
 bazel_dep(name = "org_outernetcouncil_nmts", version = "v1.0.0-alpha.2")
 git_override(
     module_name = "org_outernetcouncil_nmts",
-    commit = "657c8a1a3b16fca348248c95c9cdb90119bf3b74",
+    commit = "7979a2477584b37846bc84f1376f96117d0161ea",
     remote = "https://github.com/outernetcouncil/nmts.git",
 )
 

@@ -18,8 +18,8 @@ load("@rules_go//go:def.bzl", "go_path")
 gazelle(name = "gazelle")
 
 # gazelle:prefix github.com/outernetcouncil/federation
-# gazelle:resolve go outernetcouncil.org/nmts/v1alpha/proto/ek/physical @org_outernetcouncil_nmts//v1alpha/proto/ek/physical:physical_go_proto
-# gazelle:resolve go outernetcouncil.org/nmts/v1alpha/proto/types/geophys @org_outernetcouncil_nmts//v1alpha/proto/types/geophys:geophys_go_proto
+# gazelle:resolve go outernetcouncil.org/nmts/v1/proto/ek/physical @org_outernetcouncil_nmts//v1/proto/ek/physical:physical_go_proto
+# gazelle:resolve go outernetcouncil.org/nmts/v1/proto/types/geophys @org_outernetcouncil_nmts//v1/proto/types/geophys:geophys_go_proto
 
 go_path(
     name = "gopath",
