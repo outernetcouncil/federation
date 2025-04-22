@@ -34,12 +34,12 @@ import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "nmts/v1alpha/proto/ek/physical/antenna.proto";
-import "nmts/v1alpha/proto/ek/physical/modem.proto";
-import "nmts/v1alpha/proto/ek/physical/platform.proto";
-import "nmts/v1alpha/proto/ek/physical/signal_processing_chain.proto";
-import "nmts/v1alpha/proto/ek/physical/transceiver.proto";
-import "nmts/v1alpha/proto/types/geophys/motion.proto";
+import "nmts/v1/proto/ek/physical/antenna.proto";
+import "nmts/v1/proto/ek/physical/modem.proto";
+import "nmts/v1/proto/ek/physical/platform.proto";
+import "nmts/v1/proto/ek/physical/signal_processing_chain.proto";
+import "nmts/v1/proto/ek/physical/transceiver.proto";
+import "nmts/v1/proto/types/geophys/motion.proto";
 
 option go_package = "github.com/outernetcouncil/federation/gen/go/federation/interconnect/v1alpha;interconnectpb";
 option java_outer_classname = "InterconnectProto";
@@ -276,39 +276,39 @@ message Transceiver {
   TransmitSignalChain transmit_signal_chain = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
-  nmts.v1alpha.ek.physical.Platform platform = 4 [
+  nmts.v1.ek.physical.Platform platform = 4 [
     (google.api.field_behavior) = REQUIRED
   ];
 }
 
 message ReceiveSignalChain {
-  nmts.v1alpha.ek.physical.Demodulator demodulator = 1 [
+  nmts.v1.ek.physical.Demodulator demodulator = 1 [
     (google.api.field_behavior) = REQUIRED
   ];
-  repeated nmts.v1alpha.ek.physical.SignalProcessingChain
+  repeated nmts.v1.ek.physical.SignalProcessingChain
     signal_processing_chains = 2 [
       (google.api.field_behavior) = REQUIRED
     ];
-  nmts.v1alpha.ek.physical.Receiver receiver = 3 [
+  nmts.v1.ek.physical.Receiver receiver = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
-  nmts.v1alpha.ek.physical.Antenna antenna = 4 [
+  nmts.v1.ek.physical.Antenna antenna = 4 [
     (google.api.field_behavior) = REQUIRED
   ];
 }
 
 message TransmitSignalChain {
-  nmts.v1alpha.ek.physical.Modulator modulator = 1 [
+  nmts.v1.ek.physical.Modulator modulator = 1 [
     (google.api.field_behavior) = REQUIRED
   ];
-  repeated nmts.v1alpha.ek.physical.SignalProcessingChain
+  repeated nmts.v1.ek.physical.SignalProcessingChain
     signal_processing_chains = 2 [
       (google.api.field_behavior) = REQUIRED
     ];
-  nmts.v1alpha.ek.physical.Transmitter transmitter = 3 [
+  nmts.v1.ek.physical.Transmitter transmitter = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
-  nmts.v1alpha.ek.physical.Antenna antenna = 4 [
+  nmts.v1.ek.physical.Antenna antenna = 4 [
     (google.api.field_behavior) = REQUIRED
   ];
 }
@@ -562,7 +562,7 @@ message Target {
   
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  nmts.v1alpha.types.geophys.Motion motion = 2 [
+  nmts.v1.types.geophys.Motion motion = 2 [
     (google.api.field_behavior) = REQUIRED
   ];
 }

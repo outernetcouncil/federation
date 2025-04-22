@@ -25,8 +25,8 @@ import (
 	"google.golang.org/genproto/googleapis/type/interval"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"outernetcouncil.org/nmts/v1alpha/proto/ek/physical"
-	"outernetcouncil.org/nmts/v1alpha/proto/types/geophys"
+	"outernetcouncil.org/nmts/v1/proto/ek/physical"
+	"outernetcouncil.org/nmts/v1/proto/types/geophys"
 )
 
 func TestPrototypeHandler_Targets(t *testing.T) {
